@@ -14,12 +14,35 @@ var playerState *spotify.PlayerState
 var (
 	auth  = spotify.NewAuthenticator(redirectURI, spotify.ScopeUserReadCurrentlyPlaying, spotify.ScopeUserReadPlaybackState, spotify.ScopeUserModifyPlaybackState)
 	ch    = make(chan *spotify.Client)
-	state = "abc123"
+	state = "salaleser-token"
 )
 
 func Start() {
 	go func() {
 		url := auth.AuthURL(state)
+
+		// TODO auto auth
+		//c := http.Client{}
+		//req, err := http.NewRequest(http.MethodGet, url, nil)
+		//if err != nil {
+		//	log.Fatal(err)
+		//}
+		//res, err := c.Do(req)
+		//if err != nil {
+		//	log.Println(err)
+		//}
+		//defer func() {
+		//	err := res.Body.Close()
+		//	if err != nil {
+		//		log.Printf("res close: %v\n", err)
+		//	}
+		//}()
+		//b, err := ioutil.ReadAll(res.Body)
+		//if err != nil {
+		//	log.Print(err)
+		//}
+		//fmt.Printf("status %q\nResponse body: %q", res.Status, string(b))
+
 		fmt.Println("Please log in to Spotify by visiting the following page in your browser:", url)
 
 		// wait for auth to complete
