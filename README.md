@@ -1,4 +1,3 @@
-# qrrc
-Quick Response Remote Control
+# QRRC — Quick Response Remote Control
 
 Компонент для моей задумки: интерактивная карта музыкальных жанров (подробности позже, может быть, когда-нибудь).
