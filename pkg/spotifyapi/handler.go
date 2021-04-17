@@ -26,7 +26,7 @@ func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 	ch <- &client
 }
 
-func DefaultHandler(_ http.ResponseWriter, r *http.Request) {
+func DefaultHandler(rw http.ResponseWriter, r *http.Request) {
 	action := strings.TrimPrefix(r.URL.Path, "/spotify/")
 	var err error
 	switch action {
@@ -35,8 +35,26 @@ func DefaultHandler(_ http.ResponseWriter, r *http.Request) {
 		artist := query.Get("artist")
 		album := query.Get("album")
 
-		if artist == "" || album == "" {
-			err = client.Play()
+		if artist == "" && album == "" {
+			if playerState.Playing {
+				err = client.Pause()
+				if err != nil {
+					fmt.Printf("pause: %v", err)
+				}
+				_, err = rw.Write([]byte("Paused"))
+				if err != nil {
+					fmt.Printf("pause write: %v", err)
+				}
+			} else {
+				err = client.Play()
+				if err != nil {
+					fmt.Printf("play: %v", err)
+				}
+				_, err = rw.Write([]byte("Paused"))
+				if err != nil {
+					fmt.Printf("play write: %v", err)
+				}
+			}
 			return
 		}
 
