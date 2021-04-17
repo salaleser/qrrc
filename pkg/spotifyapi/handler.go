@@ -11,7 +11,6 @@ import (
 )
 
 func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
-	c := *client
 	if client == nil {
 		token, err := auth.Token(state, r)
 		if err != nil {
@@ -25,11 +24,21 @@ func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		client := auth.NewClient(token)
-		c = client
 		ch <- &client
 	}
 
-	ps, err := c.PlayerState()
+	loadPageReplace(w, "home", "text",
+		"Успех! Теперь можешь управлять спотифаем или поиграть в угадаечку.")
+}
+
+func DefaultHandler(w http.ResponseWriter, r *http.Request) {
+	if client == nil {
+		loadPageReplace(w, "auth", "auth_link", auth.AuthURL(state))
+		return
+	}
+
+	var err error
+	ps, err := client.PlayerState()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		fmt.Printf("error: player state: %v\n", err)
@@ -46,19 +55,8 @@ func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		text += "Музыка не играет."
 	}
-	loadPageReplace(w, "home", "text",
-		"Успех! Теперь можешь управлять спотифаем ("+ps.Device.Name+
-			") или поиграть в угадаечку."+text)
-}
-
-func DefaultHandler(w http.ResponseWriter, r *http.Request) {
-	if client == nil {
-		loadPageReplace(w, "auth", "auth_link", auth.AuthURL(state))
-		return
-	}
 
 	action := strings.TrimPrefix(r.URL.Path, "/spotify/")
-	var err error
 	switch action {
 	case "auth":
 		loadPageReplace(w, action, "{{auth_link}}", auth.AuthURL(state))
