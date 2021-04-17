@@ -56,7 +56,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		loadPage(w, action, []string{"text", "toggle_play"}, []string{text, togglePlay})
 		return
 	case "game":
-		loadPage(w, action, []string{"text"}, []string{"--"})
+		loadPage(w, action, []string{"text"}, []string{"Toggle Play/Pause"})
 		return
 	case "settings":
 		loadPage(w, action, []string{}, []string{})
