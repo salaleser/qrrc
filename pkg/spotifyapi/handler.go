@@ -46,18 +46,10 @@ func DefaultHandler(rw http.ResponseWriter, r *http.Request) {
 				if err != nil {
 					fmt.Printf("play toggle to pause: %v", err)
 				}
-				_, err = rw.Write([]byte("Paused"))
-				if err != nil {
-					fmt.Printf("play toggle to pause write: %v", err)
-				}
 			} else {
 				err = client.Play()
 				if err != nil {
 					fmt.Printf("play toggle to play: %v", err)
-				}
-				_, err = rw.Write([]byte("Playing"))
-				if err != nil {
-					fmt.Printf("play toggle to play write: %v", err)
 				}
 			}
 		} else {
@@ -101,7 +93,6 @@ func DefaultHandler(rw http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			fmt.Printf("settings read file: %v", err)
 		}
-		rw.Header().Set("Content-Type", "text/html")
 		_, err = rw.Write(html)
 		if err != nil {
 			fmt.Printf("settings write: %v", err)
