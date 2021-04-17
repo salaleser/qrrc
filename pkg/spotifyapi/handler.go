@@ -45,21 +45,8 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	togglePlay := ""
-	text := "<br/> "
-	if ps.Playing {
-		togglePlay = "Остановить воспроизведение"
-		ft, err := client.GetTrack(ps.Item.ID)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			fmt.Printf("error: get track: %v\n", err)
-		}
-		text += fmt.Sprintf("Сейчас играет: %s — %s", ft.Artists[0].Name, ps.Item.Name)
-	} else {
-		togglePlay = "Продолжить воспроизведение"
-		text += "Музыка не играет."
-	}
-
+	var togglePlay string
+	var text string
 	action := strings.TrimPrefix(r.URL.Path, "/spotify/")
 	switch action {
 	case "auth":
@@ -78,7 +65,6 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		query := r.URL.Query()
 		artist := query.Get("artist")
 		album := query.Get("album")
-
 		if artist == "" && album == "" {
 			ps, err := client.PlayerState()
 			if err != nil {
@@ -127,29 +113,17 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 		}
-		loadPage(w, "home", []string{"text", "toggle_play"}, []string{text, togglePlay})
-	case "pause":
-		err = client.Pause()
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			fmt.Printf("error: pause: pause: %v\n", err)
-			return
-		}
-		loadPage(w, "home", []string{"text", "toggle_play"}, []string{text, togglePlay})
-	case "next":
-		err = client.Next()
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			fmt.Printf("error: next: next: %v\n", err)
-			return
-		}
-		loadPage(w, "home", []string{"text", "toggle_play"}, []string{text, togglePlay})
-	case "previous":
-		err = client.Previous()
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			fmt.Printf("error: previous: previous: %v\n", err)
-			return
+		if ps.Playing {
+			togglePlay = "Остановить воспроизведение"
+			ft, err := client.GetTrack(ps.Item.ID)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				fmt.Printf("error: get track: %v\n", err)
+			}
+			text += fmt.Sprintf("Сейчас играет: %s — %s", ft.Artists[0].Name, ps.Item.Name)
+		} else {
+			togglePlay = "Продолжить воспроизведение"
+			text += "Музыка не играет."
 		}
 		loadPage(w, "home", []string{"text", "toggle_play"}, []string{text, togglePlay})
 	default:
