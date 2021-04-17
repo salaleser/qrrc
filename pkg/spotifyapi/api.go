@@ -22,7 +22,6 @@ var (
 
 func Start() {
 	state = os.Getenv("SPOTIFY_STATE")
-	// fmt.Println(auth.AuthURL(state))
 	go func() {
 		client = <-ch
 

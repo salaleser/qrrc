@@ -41,6 +41,19 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 	action := strings.TrimPrefix(r.URL.Path, "/spotify/")
 	var err error
 	switch action {
+	case "auth":
+		html, err := ioutil.ReadFile("html/auth.html")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			fmt.Printf("error: auth: read file: %v", err)
+		}
+		html = []byte(strings.Replace(string(html), "{{auth_link}}", auth.AuthURL(state), -1))
+		_, err = w.Write(html)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			fmt.Printf("error: auth: write: %v", err)
+		}
+		return
 	case "play":
 		query := r.URL.Query()
 		artist := query.Get("artist")
