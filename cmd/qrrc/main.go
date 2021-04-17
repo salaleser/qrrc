@@ -8,8 +8,9 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/spotify/callback", spotifyapi.CompleteAuthHandler)
 	http.HandleFunc("/spotify/", spotifyapi.DefaultHandler)
+	http.HandleFunc("/spotify/callback", spotifyapi.CompleteAuthHandler)
+	http.HandleFunc("/spotify/game", spotifyapi.GameHandler)
 
 	spotifyapi.Start()
 
