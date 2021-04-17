@@ -18,11 +18,12 @@ func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("error: get token: %v\n", err)
 		}
 		if s := r.FormValue("state"); s != state {
-			http.NotFound(w, r)
+			http.Error(w, "State mismatch: %s != %s", http.StatusForbidden)
 			fmt.Printf("State mismatch: %s != %s\n", s, state)
 		}
 		client := auth.NewClient(token)
 		ch <- &client
+		return
 	}
 
 	html, err := ioutil.ReadFile("html/home.html")
