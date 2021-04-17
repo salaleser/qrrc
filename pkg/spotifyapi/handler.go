@@ -16,10 +16,12 @@ func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			http.Error(w, "Couldn't get token", http.StatusForbidden)
 			fmt.Printf("error: get token: %v\n", err)
+			return
 		}
 		if s := r.FormValue("state"); s != state {
-			http.Error(w, "State mismatch: %s != %s", http.StatusForbidden)
+			http.Error(w, "State mismatch", http.StatusForbidden)
 			fmt.Printf("State mismatch: %s != %s\n", s, state)
+			return
 		}
 		client := auth.NewClient(token)
 		ch <- &client
