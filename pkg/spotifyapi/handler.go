@@ -54,6 +54,19 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		loadPage(w, action, []string{"auth_link"}, []string{auth.AuthURL(state)})
 		return
 	case "home":
+		// __повтор кода__
+		if ps.Playing {
+			togglePlay = "Продолжить воспроизведение"
+			text += "Музыка не играет."
+		} else {
+			togglePlay = "Остановить воспроизведение"
+			ft, err := client.GetTrack(ps.Item.ID)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				fmt.Printf("error: get track: %v\n", err)
+			}
+			text += fmt.Sprintf("Сейчас играет: %s — %s", ft.Artists[0].Name, ps.Item.Name)
+		} // ^^повтор кода^^
 		loadPage(w, action, []string{"text", "toggle_play"}, []string{text, togglePlay})
 		return
 	case "game":
