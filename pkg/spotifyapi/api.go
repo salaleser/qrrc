@@ -12,7 +12,7 @@ var playerState *spotify.PlayerState
 
 var (
 	auth = spotify.NewAuthenticator(
-		fmt.Sprintf("http://%s/spotify/callback", os.Getenv("HOST")),
+		fmt.Sprintf("https://%s/spotify/callback", os.Getenv("REDIRECT_HOST")),
 		spotify.ScopeUserReadCurrentlyPlaying,
 		spotify.ScopeUserReadPlaybackState,
 		spotify.ScopeUserModifyPlaybackState,
