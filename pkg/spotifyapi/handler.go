@@ -28,6 +28,7 @@ func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ps, _ := client.PlayerState()
+	fmt.Printf("%+v\n\n\n%+v", ps.Item, ps.CurrentlyPlaying)
 	loadPageReplace(w, "home", "text",
 		"Успех! Теперь можешь управлять спотифаем ("+ps.Device.Name+
 			") или поиграть в угадаечку.<br/>Сейчас играет: "+ps.Item.Name)
