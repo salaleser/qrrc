@@ -59,16 +59,16 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 	action := strings.TrimPrefix(r.URL.Path, "/spotify/")
 	switch action {
 	case "auth":
-		loadPageReplace(w, action, "{{auth_link}}", auth.AuthURL(state))
+		loadPage(w, action, "{{auth_link}}", auth.AuthURL(state))
 		return
 	case "home":
-		loadPage(w, action)
+		loadPage(w, action, "text", text)
 		return
 	case "settings":
-		loadPage(w, action)
+		loadPage(w, action, "", "")
 		return
 	case "help":
-		loadPage(w, action)
+		loadPage(w, action, "", "")
 		return
 	case "play":
 		query := r.URL.Query()
@@ -123,7 +123,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 		}
-		loadPage(w, "home")
+		loadPage(w, "home", "text", text)
 	case "pause":
 		err = client.Pause()
 		if err != nil {
@@ -131,7 +131,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("error: pause: pause: %v\n", err)
 			return
 		}
-		loadPage(w, "home")
+		loadPage(w, "home", "text", text)
 	case "next":
 		err = client.Next()
 		if err != nil {
@@ -139,7 +139,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("error: next: next: %v\n", err)
 			return
 		}
-		loadPage(w, "home")
+		loadPage(w, "home", "text", text)
 	case "previous":
 		err = client.Previous()
 		if err != nil {
@@ -147,27 +147,13 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("error: previous: previous: %v\n", err)
 			return
 		}
-		loadPage(w, "home")
+		loadPage(w, "home", "text", text)
 	default:
 		http.NotFound(w, r)
 	}
 }
 
-func loadPage(w http.ResponseWriter, p string) {
-	html, err := ioutil.ReadFile(fmt.Sprintf("html/%s.html", p))
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		fmt.Printf("error: load page: read file: %v", err)
-	}
-	w.Header().Set("Content-Type", "text/html")
-	_, err = w.Write(html)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		fmt.Printf("error: load page: %v", err)
-	}
-}
-
-func loadPageReplace(w http.ResponseWriter, p string, old string, new string) {
+func loadPage(w http.ResponseWriter, p string, old string, new string) {
 	html, err := ioutil.ReadFile(fmt.Sprintf("html/%s.html", p))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
