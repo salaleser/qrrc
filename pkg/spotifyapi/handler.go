@@ -25,7 +25,6 @@ func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		client := auth.NewClient(token)
 		ch <- &client
-		return
 	}
 
 	html, err := ioutil.ReadFile("html/home.html")
