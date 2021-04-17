@@ -75,13 +75,6 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			[]string{"Правила пока просты: жми кнопку и пытайся угадать."})
 		return
 	case "game/next":
-		r, err := client.GetAvailableGenreSeeds()
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			fmt.Printf("error: get track: %v\n", err)
-			return
-		}
-		loadPage(w, "game", []string{"text"}, []string{strings.Join(r, "<br/>")})
 	case "game/show":
 		r, err := client.NewReleases()
 		if err != nil {
