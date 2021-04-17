@@ -28,7 +28,8 @@ func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	loadPage(w, "home", []string{"text", "toggle_play"},
-		[]string{"Успех! Теперь можешь управлять спотифаем или поиграть в угадаечку.", ""})
+		[]string{"Успех! Теперь можешь управлять спотифаем или поиграть в угадаечку.",
+			"Toggle Play/Pause"})
 }
 
 func DefaultHandler(w http.ResponseWriter, r *http.Request) {
@@ -56,7 +57,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		loadPage(w, action, []string{"text", "toggle_play"}, []string{text, togglePlay})
 		return
 	case "game":
-		loadPage(w, action, []string{"text"}, []string{"Toggle Play/Pause"})
+		loadPage(w, action, []string{"text"}, []string{"--"})
 		return
 	case "settings":
 		loadPage(w, action, []string{}, []string{})
@@ -117,6 +118,9 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 		if ps.Playing {
+			togglePlay = "Продолжить воспроизведение"
+			text += "Музыка не играет."
+		} else {
 			togglePlay = "Остановить воспроизведение"
 			ft, err := client.GetTrack(ps.Item.ID)
 			if err != nil {
@@ -124,9 +128,6 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				fmt.Printf("error: get track: %v\n", err)
 			}
 			text += fmt.Sprintf("Сейчас играет: %s — %s", ft.Artists[0].Name, ps.Item.Name)
-		} else {
-			togglePlay = "Продолжить воспроизведение"
-			text += "Музыка не играет."
 		}
 		loadPage(w, "home", []string{"text", "toggle_play"}, []string{text, togglePlay})
 	default:
