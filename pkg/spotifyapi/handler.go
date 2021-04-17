@@ -31,6 +31,11 @@ func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func DefaultHandler(w http.ResponseWriter, r *http.Request) {
+	if client == nil {
+		loadPageReplace(w, "auth", "{{auth_link}}", auth.AuthURL(state))
+		return
+	}
+
 	action := strings.TrimPrefix(r.URL.Path, "/spotify/")
 	var err error
 	switch action {
