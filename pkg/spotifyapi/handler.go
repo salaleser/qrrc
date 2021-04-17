@@ -50,7 +50,7 @@ func DefaultHandler(rw http.ResponseWriter, r *http.Request) {
 				if err != nil {
 					fmt.Printf("play: %v", err)
 				}
-				_, err = rw.Write([]byte("Paused"))
+				_, err = rw.Write([]byte("Playing"))
 				if err != nil {
 					fmt.Printf("play write: %v", err)
 				}
