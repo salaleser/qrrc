@@ -3,6 +3,7 @@ package spotifyapi
 import (
 	"fmt"
 	"github.com/zmb3/spotify"
+	"io/ioutil"
 	"log"
 	"math/rand"
 	"net/http"
@@ -36,53 +37,82 @@ func DefaultHandler(rw http.ResponseWriter, r *http.Request) {
 		album := query.Get("album")
 
 		if artist == "" && album == "" {
-			if playerState.Playing {
+			ps, err := client.PlayerState()
+			if err != nil {
+				fmt.Printf("play get player state: %v", err)
+			}
+			if ps.Playing {
 				err = client.Pause()
 				if err != nil {
-					fmt.Printf("pause: %v", err)
+					fmt.Printf("play toggle to pause: %v", err)
 				}
 				_, err = rw.Write([]byte("Paused"))
 				if err != nil {
-					fmt.Printf("pause write: %v", err)
+					fmt.Printf("play toggle to pause write: %v", err)
 				}
 			} else {
 				err = client.Play()
 				if err != nil {
-					fmt.Printf("play: %v", err)
+					fmt.Printf("play toggle to play: %v", err)
 				}
 				_, err = rw.Write([]byte("Playing"))
 				if err != nil {
-					fmt.Printf("play write: %v", err)
+					fmt.Printf("play toggle to play write: %v", err)
 				}
 			}
-			return
+		} else {
+			sr, err := client.Search(fmt.Sprintf("%s %s", artist, album), spotify.SearchTypeAlbum)
+			if err != nil {
+				fmt.Printf("play search: %v", err)
+				return
+			}
+			stp, err := client.GetAlbumTracks(sr.Albums.Albums[0].ID)
+			if err != nil {
+				fmt.Printf("play get album tracks: %v", err)
+				return
+			}
+			err = client.QueueSong(stp.Tracks[rand.Intn(stp.Total)].ID)
+			if err != nil {
+				fmt.Printf("play queue song: %v", err)
+				return
+			}
+			err = client.Next()
+			if err != nil {
+				fmt.Printf("play next: %v", err)
+			}
 		}
-
-		sr, err := client.Search(fmt.Sprintf("%s %s", artist, album), spotify.SearchTypeAlbum)
-		if err != nil {
-			log.Print(err)
-			return
-		}
-
-		stp, err := client.GetAlbumTracks(sr.Albums.Albums[0].ID)
-		if err != nil {
-			log.Print(err)
-			return
-		}
-		err = client.QueueSong(stp.Tracks[rand.Intn(stp.Total)].ID)
-		if err != nil {
-			log.Print(err)
-			return
-		}
-		err = client.Next()
 	case "pause":
 		err = client.Pause()
+		if err != nil {
+			fmt.Printf("pause pause: %v", err)
+		}
 	case "next":
 		err = client.Next()
+		if err != nil {
+			fmt.Printf("next next: %v", err)
+		}
 	case "previous":
 		err = client.Previous()
+		if err != nil {
+			fmt.Printf("previous previous: %v", err)
+		}
+	case "settings":
+		html, err := ioutil.ReadFile("html/settings.html")
+		if err != nil {
+			fmt.Printf("settings read file: %v", err)
+		}
+		_, err = rw.Write(html)
+		if err != nil {
+			fmt.Printf("settings write: %v", err)
+		}
+		return
 	}
+	html, err := ioutil.ReadFile("html/index.html")
 	if err != nil {
-		log.Print(err)
+		fmt.Printf("play read file: %v", err)
+	}
+	_, err = rw.Write(html)
+	if err != nil {
+		fmt.Printf("play write: %v", err)
 	}
 }

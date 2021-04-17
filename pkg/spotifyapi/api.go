@@ -8,7 +8,6 @@ import (
 )
 
 var client *spotify.Client
-var playerState *spotify.PlayerState
 
 var (
 	auth = spotify.NewAuthenticator(
@@ -36,7 +35,7 @@ func Start() {
 		}
 		fmt.Println("Logged in as:", user.ID)
 
-		playerState, err = client.PlayerState()
+		playerState, err := client.PlayerState()
 		if err != nil {
 			log.Fatal(err)
 		}
