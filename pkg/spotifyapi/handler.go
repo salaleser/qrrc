@@ -27,13 +27,13 @@ func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 		ch <- &client
 	}
 
-	loadPageReplace(w, "home", "text",
+	loadPage(w, "home", "text",
 		"Успех! Теперь можешь управлять спотифаем или поиграть в угадаечку.")
 }
 
 func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 	if client == nil {
-		loadPageReplace(w, "auth", "auth_link", auth.AuthURL(state))
+		loadPage(w, "auth", "auth_link", auth.AuthURL(state))
 		return
 	}
 
