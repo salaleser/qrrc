@@ -22,26 +22,19 @@ var (
 
 func Start() {
 	state = os.Getenv("SPOTIFY_STATE")
-	print(-10)
 	go func() {
 		client = <-ch
-		print(-9)
 
 		user, err := client.CurrentUser()
-		print(-8)
 		if err != nil {
 			fmt.Printf("error: get current user: %v\n", err)
 		}
-		print(-7)
 		fmt.Println("Logged in as:", user.ID)
 
-		print(-6)
 		ps, err := client.PlayerState()
-		print(-5)
 		if err != nil {
 			fmt.Printf("error: get player state: %v\n", err)
 		}
-		print(-4)
 		fmt.Printf("Found your %s (%s)\n", ps.Device.Type, ps.Device.Name)
 	}()
 }
