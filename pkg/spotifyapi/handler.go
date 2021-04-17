@@ -33,7 +33,7 @@ func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("error: player state: %v\n", err)
 		return
 	}
-	text := "<br/>"
+	text := "<br/> "
 	if ps.Playing {
 		ft, err := client.GetTrack(ps.Item.ID)
 		if err != nil {
@@ -79,44 +79,48 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			ps, err := client.PlayerState()
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
-				fmt.Printf("error: play: get player state: %v", err)
+				fmt.Printf("error: play: get player state: %v\n", err)
+				return
 			}
 			if ps.Playing {
 				err = client.Pause()
 				if err != nil {
 					http.Error(w, err.Error(), http.StatusInternalServerError)
-					fmt.Printf("error: play: toggle to pause: %v", err)
+					fmt.Printf("error: play: toggle to pause: %v\n", err)
+					return
 				}
 			} else {
 				err = client.Play()
 				if err != nil {
 					http.Error(w, err.Error(), http.StatusInternalServerError)
-					fmt.Printf("error: play: toggle to play: %v", err)
+					fmt.Printf("error: play: toggle to play: %v\n", err)
+					return
 				}
 			}
 		} else {
 			sr, err := client.Search(fmt.Sprintf("%s %s", artist, album), spotify.SearchTypeAlbum)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
-				fmt.Printf("error: play: search: %v", err)
+				fmt.Printf("error: play: search: %v\n", err)
 				return
 			}
 			stp, err := client.GetAlbumTracks(sr.Albums.Albums[0].ID)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
-				fmt.Printf("error: play: get album tracks: %v", err)
+				fmt.Printf("error: play: get album tracks: %v\n", err)
 				return
 			}
 			err = client.QueueSong(stp.Tracks[rand.Intn(stp.Total)].ID)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
-				fmt.Printf("error: play: queue song: %v", err)
+				fmt.Printf("error: play: queue song: %v\n", err)
 				return
 			}
 			err = client.Next()
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
-				fmt.Printf("error: play: next: %v", err)
+				fmt.Printf("error: play: next: %v\n", err)
+				return
 			}
 		}
 		loadPage(w, "home")
@@ -124,21 +128,24 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		err = client.Pause()
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
-			fmt.Printf("error: pause: pause: %v", err)
+			fmt.Printf("error: pause: pause: %v\n", err)
+			return
 		}
 		loadPage(w, "home")
 	case "next":
 		err = client.Next()
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
-			fmt.Printf("error: next: next: %v", err)
+			fmt.Printf("error: next: next: %v\n", err)
+			return
 		}
 		loadPage(w, "home")
 	case "previous":
 		err = client.Previous()
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
-			fmt.Printf("error: previous: previous: %v", err)
+			fmt.Printf("error: previous: previous: %v\n", err)
+			return
 		}
 		loadPage(w, "home")
 	default:
