@@ -14,7 +14,7 @@ var playerState *spotify.PlayerState
 var (
 	auth  = spotify.NewAuthenticator(redirectURI, spotify.ScopeUserReadCurrentlyPlaying, spotify.ScopeUserReadPlaybackState, spotify.ScopeUserModifyPlaybackState)
 	ch    = make(chan *spotify.Client)
-	state = "salaleser-token"
+	state = "sal123ale456ser789"
 )
 
 func Start() {
