@@ -14,7 +14,7 @@ func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 	if client == nil {
 		token, err := auth.Token(state, r)
 		if err != nil {
-			http.Error(w, "Couldn't get token", http.StatusForbidden)
+			http.Error(w, err.Error(), http.StatusForbidden)
 			fmt.Printf("error: get token: %v\n", err)
 			return
 		}
