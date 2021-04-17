@@ -34,9 +34,20 @@ func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Printf("%+v\n\n\n%+v", ps.Item, ps.CurrentlyPlaying)
+	text := "<br/>"
+	if ps.Playing {
+		ft, err := client.GetTrack(ps.Item.ID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			fmt.Printf("error: get track: %v\n", err)
+		}
+		text = fmt.Sprintf("Сейчас играет: %s — %s", ft.Artists[0].Name, ps.Item.Name)
+	} else {
+		text = "Музыка не играет."
+	}
 	loadPageReplace(w, "home", "text",
 		"Успех! Теперь можешь управлять спотифаем ("+ps.Device.Name+
-			") или поиграть в угадаечку.<br/>Сейчас играет: "+ps.Item.Name)
+			") или поиграть в угадаечку."+text)
 }
 
 func DefaultHandler(w http.ResponseWriter, r *http.Request) {
