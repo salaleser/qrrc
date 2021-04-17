@@ -74,6 +74,26 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		loadPage(w, action, []string{"text"},
 			[]string{"Правила пока просты: жми кнопку и пытайся угадать."})
 		return
+	case "game/next":
+		r, err := client.GetAvailableGenreSeeds()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			fmt.Printf("error: get track: %v\n", err)
+			return
+		}
+		loadPage(w, "game", []string{"text"}, []string{strings.Join(r, "<br/>")})
+	case "game/show":
+		r, err := client.NewReleases()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			fmt.Printf("error: get track: %v\n", err)
+			return
+		}
+		var text string
+		for i, v := range r.Albums {
+			text += fmt.Sprintf("%d. %s (%s)<br/>", i, v.Name, v.AlbumGroup)
+		}
+		loadPage(w, "game", []string{"text"}, []string{text})
 	case "settings":
 		loadPage(w, action, []string{}, []string{})
 		return
@@ -146,39 +166,6 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			text += fmt.Sprintf("Сейчас играет: %s — %s", ft.Artists[0].Name, ps.Item.Name)
 		}
 		loadPage(w, "home", []string{"text", "toggle_play"}, []string{text, togglePlay})
-	default:
-		http.NotFound(w, r)
-	}
-}
-
-func GameHandler(w http.ResponseWriter, r *http.Request) {
-	if client == nil {
-		loadPage(w, "auth", []string{"auth_link"}, []string{auth.AuthURL(state)})
-		return
-	}
-
-	action := strings.TrimPrefix(r.URL.Path, "/spotify/game/")
-	switch action {
-	case "next":
-		r, err := client.GetAvailableGenreSeeds()
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			fmt.Printf("error: get track: %v\n", err)
-			return
-		}
-		loadPage(w, "game", []string{"text"}, []string{strings.Join(r, "<br/>")})
-	case "show":
-		r, err := client.NewReleases()
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			fmt.Printf("error: get track: %v\n", err)
-			return
-		}
-		var text string
-		for i, v := range r.Albums {
-			text += fmt.Sprintf("%d. %s (%s)<br/>", i, v.Name, v.AlbumGroup)
-		}
-		loadPage(w, "game", []string{"text"}, []string{text})
 	default:
 		http.NotFound(w, r)
 	}
