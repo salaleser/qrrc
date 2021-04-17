@@ -40,9 +40,9 @@ func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			fmt.Printf("error: get track: %v\n", err)
 		}
-		text = fmt.Sprintf("Сейчас играет: %s — %s", ft.Artists[0].Name, ps.Item.Name)
+		text += fmt.Sprintf("Сейчас играет: %s — %s", ft.Artists[0].Name, ps.Item.Name)
 	} else {
-		text = "Музыка не играет."
+		text += "Музыка не играет."
 	}
 	loadPageReplace(w, "home", "text",
 		"Успех! Теперь можешь управлять спотифаем ("+ps.Device.Name+
