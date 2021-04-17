@@ -12,27 +12,33 @@ import (
 
 func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 	if client == nil {
+		print(-1)
 		token, err := auth.Token(state, r)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusForbidden)
 			fmt.Printf("error: get token: %v\n", err)
 			return
 		}
+		print(0)
 		if s := r.FormValue("state"); s != state {
 			http.Error(w, "State mismatch", http.StatusForbidden)
 			fmt.Printf("State mismatch: %s != %s\n", s, state)
 			return
 		}
+		print(1)
 		client := auth.NewClient(token)
+		print(2)
 		ch <- &client
 	}
 
+	print(3)
 	ps, err := client.PlayerState()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		fmt.Printf("error: player state: %v\n", err)
 		return
 	}
+	print(4)
 	text := "<br/> "
 	if ps.Playing {
 		ft, err := client.GetTrack(ps.Item.ID)
@@ -44,6 +50,7 @@ func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		text += "Музыка не играет."
 	}
+	print(5)
 	loadPageReplace(w, "home", "text",
 		"Успех! Теперь можешь управлять спотифаем ("+ps.Device.Name+
 			") или поиграть в угадаечку."+text)
