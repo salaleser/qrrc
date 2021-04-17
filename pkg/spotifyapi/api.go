@@ -31,10 +31,10 @@ func Start() {
 		}
 		fmt.Println("Logged in as:", user.ID)
 
-		playerState, err := client.PlayerState()
+		ps, err := client.PlayerState()
 		if err != nil {
 			fmt.Printf("error: get player state: %v\n", err)
 		}
-		fmt.Printf("Found your %s (%s)\n", playerState.Device.Type, playerState.Device.Name)
+		fmt.Printf("Found your %s (%s)\n", ps.Device.Type, ps.Device.Name)
 	}()
 }

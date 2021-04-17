@@ -27,12 +27,15 @@ func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 		ch <- &client
 	}
 
-	loadPage(w, "home")
+	ps, _ := client.PlayerState()
+	loadPageReplace(w, "home", "text",
+		"Успех! Теперь можешь управлять спотифаем ("+ps.Device.Name+
+			") или поиграть в угадаечку.<br/>Сейчас играет: "+ps.Item.Name)
 }
 
 func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 	if client == nil {
-		loadPageReplace(w, "auth", "{{auth_link}}", auth.AuthURL(state))
+		loadPageReplace(w, "auth", "auth_link", auth.AuthURL(state))
 		return
 	}
 
@@ -148,7 +151,7 @@ func loadPageReplace(w http.ResponseWriter, p string, old string, new string) {
 		fmt.Printf("error: load page replace: read file: %v", err)
 	}
 	w.Header().Set("Content-Type", "text/html")
-	html = []byte(strings.Replace(string(html), old, new, -1))
+	html = []byte(strings.Replace(string(html), "{{"+old+"}}", new, -1))
 	_, err = w.Write(html)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
