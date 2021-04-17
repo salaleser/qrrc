@@ -33,7 +33,6 @@ func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("error: player state: %v\n", err)
 		return
 	}
-	fmt.Printf("%+v\n\n\n%+v", ps.Item, ps.CurrentlyPlaying)
 	text := "<br/>"
 	if ps.Playing {
 		ft, err := client.GetTrack(ps.Item.ID)
