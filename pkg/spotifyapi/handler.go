@@ -27,8 +27,8 @@ func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 		ch <- &client
 	}
 
-	loadPage(w, "home", []string{"text"},
-		[]string{"Успех! Теперь можешь управлять спотифаем или поиграть в угадаечку."})
+	loadPage(w, "home", []string{"text", "toggle_play"},
+		[]string{"Успех! Теперь можешь управлять спотифаем или поиграть в угадаечку.", ""})
 }
 
 func DefaultHandler(w http.ResponseWriter, r *http.Request) {
