@@ -2,12 +2,13 @@ package spotifyapi
 
 import (
 	"fmt"
-	"github.com/zmb3/spotify"
-	"log"
 	"os"
+
+	"github.com/zmb3/spotify"
 )
 
 var client *spotify.Client
+var state string
 
 var (
 	auth = spotify.NewAuthenticator(
@@ -16,28 +17,24 @@ var (
 		spotify.ScopeUserReadPlaybackState,
 		spotify.ScopeUserModifyPlaybackState,
 	)
-	ch    = make(chan *spotify.Client)
-	state = "sal123ale456ser789"
+	ch = make(chan *spotify.Client)
 )
 
 func Start() {
+	state = os.Getenv("SPOTIFY_STATE")
+	// fmt.Println(auth.AuthURL(state))
 	go func() {
-		// log in to Spotify by visiting the following page in your browser
-		fmt.Println(auth.AuthURL(state))
-
-		// wait for auth to complete
 		client = <-ch
 
-		// use the client to make calls that require authorization
 		user, err := client.CurrentUser()
 		if err != nil {
-			log.Fatal(err)
+			fmt.Printf("error: get current user: %v\n", err)
 		}
 		fmt.Println("Logged in as:", user.ID)
 
 		playerState, err := client.PlayerState()
 		if err != nil {
-			log.Fatal(err)
+			fmt.Printf("error: get player state: %v\n", err)
 		}
 		fmt.Printf("Found your %s (%s)\n", playerState.Device.Type, playerState.Device.Name)
 	}()
