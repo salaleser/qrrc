@@ -44,8 +44,11 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("error: player state: %v\n", err)
 		return
 	}
+
+	togglePlay := ""
 	text := "<br/> "
 	if ps.Playing {
+		togglePlay = "Остановить воспроизведение"
 		ft, err := client.GetTrack(ps.Item.ID)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -53,6 +56,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		text += fmt.Sprintf("Сейчас играет: %s — %s", ft.Artists[0].Name, ps.Item.Name)
 	} else {
+		togglePlay = "Продолжить воспроизведение"
 		text += "Музыка не играет."
 	}
 
@@ -62,7 +66,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		loadPage(w, action, []string{"auth_link"}, []string{auth.AuthURL(state)})
 		return
 	case "home":
-		loadPage(w, action, []string{"text"}, []string{text})
+		loadPage(w, action, []string{"text", "toggle_play"}, []string{text, togglePlay})
 		return
 	case "settings":
 		loadPage(w, action, []string{}, []string{})
@@ -123,7 +127,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 		}
-		loadPage(w, "home", []string{"text"}, []string{text})
+		loadPage(w, "home", []string{"text", "toggle_play"}, []string{text, togglePlay})
 	case "pause":
 		err = client.Pause()
 		if err != nil {
@@ -131,7 +135,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("error: pause: pause: %v\n", err)
 			return
 		}
-		loadPage(w, "home", []string{"text"}, []string{text})
+		loadPage(w, "home", []string{"text", "toggle_play"}, []string{text, togglePlay})
 	case "next":
 		err = client.Next()
 		if err != nil {
@@ -139,7 +143,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("error: next: next: %v\n", err)
 			return
 		}
-		loadPage(w, "home", []string{"text"}, []string{text})
+		loadPage(w, "home", []string{"text", "toggle_play"}, []string{text, togglePlay})
 	case "previous":
 		err = client.Previous()
 		if err != nil {
@@ -147,7 +151,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("error: previous: previous: %v\n", err)
 			return
 		}
-		loadPage(w, "home", []string{"text"}, []string{text})
+		loadPage(w, "home", []string{"text", "toggle_play"}, []string{text, togglePlay})
 	default:
 		http.NotFound(w, r)
 	}
