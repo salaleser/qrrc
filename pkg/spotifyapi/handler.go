@@ -27,13 +27,7 @@ func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 		ch <- &client
 	}
 
-	html, err := ioutil.ReadFile("html/home.html")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		fmt.Printf("error: auth read file home: %v\n", err)
-	}
-	w.Header().Set("Content-Type", "text/html")
-	_, err = w.Write(html)
+	loadPage(w, "home")
 }
 
 func DefaultHandler(w http.ResponseWriter, r *http.Request) {
@@ -41,17 +35,16 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 	var err error
 	switch action {
 	case "auth":
-		html, err := ioutil.ReadFile("html/auth.html")
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			fmt.Printf("error: auth: read file: %v", err)
-		}
-		html = []byte(strings.Replace(string(html), "{{auth_link}}", auth.AuthURL(state), -1))
-		_, err = w.Write(html)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			fmt.Printf("error: auth: write: %v", err)
-		}
+		loadPageReplace(w, action, "{{auth_link}}", auth.AuthURL(state))
+		return
+	case "home":
+		loadPage(w, action)
+		return
+	case "settings":
+		loadPage(w, action)
+		return
+	case "help":
+		loadPage(w, action)
 		return
 	case "play":
 		query := r.URL.Query()
@@ -102,60 +95,58 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				fmt.Printf("error: play: next: %v", err)
 			}
 		}
+		loadPage(w, "home")
 	case "pause":
 		err = client.Pause()
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			fmt.Printf("error: pause: pause: %v", err)
 		}
+		loadPage(w, "home")
 	case "next":
 		err = client.Next()
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			fmt.Printf("error: next: next: %v", err)
 		}
+		loadPage(w, "home")
 	case "previous":
 		err = client.Previous()
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			fmt.Printf("error: previous: previous: %v", err)
 		}
-	case "settings":
-		html, err := ioutil.ReadFile("html/settings.html")
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			fmt.Printf("error: settings: read file: %v", err)
-		}
-		_, err = w.Write(html)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			fmt.Printf("error: settings: write: %v", err)
-		}
-		return
-	case "help":
-		html, err := ioutil.ReadFile("html/help.html")
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			fmt.Printf("error: help: read file: %v", err)
-		}
-		_, err = w.Write(html)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			fmt.Printf("error: help: write: %v", err)
-		}
-		return
+		loadPage(w, "home")
 	default:
 		http.NotFound(w, r)
 	}
-	html, err := ioutil.ReadFile("html/home.html")
+}
+
+func loadPage(w http.ResponseWriter, p string) {
+	html, err := ioutil.ReadFile(fmt.Sprintf("html/%s.html", p))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		fmt.Printf("error: play: read file: %v", err)
+		fmt.Printf("error: load page: read file: %v", err)
 	}
 	w.Header().Set("Content-Type", "text/html")
 	_, err = w.Write(html)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		fmt.Printf("error: write: %v", err)
+		fmt.Printf("error: load page: %v", err)
+	}
+}
+
+func loadPageReplace(w http.ResponseWriter, p string, old string, new string) {
+	html, err := ioutil.ReadFile(fmt.Sprintf("html/%s.html", p))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		fmt.Printf("error: load page replace: read file: %v", err)
+	}
+	w.Header().Set("Content-Type", "text/html")
+	html = []byte(strings.Replace(string(html), old, new, -1))
+	_, err = w.Write(html)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		fmt.Printf("error: load page replace: %v", err)
 	}
 }
