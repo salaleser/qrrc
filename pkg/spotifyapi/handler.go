@@ -27,13 +27,13 @@ func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 		ch <- &client
 	}
 
-	loadPage(w, "home", "text",
-		"Успех! Теперь можешь управлять спотифаем или поиграть в угадаечку.")
+	loadPage(w, "home", []string{"text"},
+		[]string{"Успех! Теперь можешь управлять спотифаем или поиграть в угадаечку."})
 }
 
 func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 	if client == nil {
-		loadPage(w, "auth", "auth_link", auth.AuthURL(state))
+		loadPage(w, "auth", []string{"auth_link"}, []string{auth.AuthURL(state)})
 		return
 	}
 
@@ -59,16 +59,16 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 	action := strings.TrimPrefix(r.URL.Path, "/spotify/")
 	switch action {
 	case "auth":
-		loadPage(w, action, "{{auth_link}}", auth.AuthURL(state))
+		loadPage(w, action, []string{"auth_link"}, []string{auth.AuthURL(state)})
 		return
 	case "home":
-		loadPage(w, action, "text", text)
+		loadPage(w, action, []string{"text"}, []string{text})
 		return
 	case "settings":
-		loadPage(w, action, "", "")
+		loadPage(w, action, []string{}, []string{})
 		return
 	case "help":
-		loadPage(w, action, "", "")
+		loadPage(w, action, []string{}, []string{})
 		return
 	case "play":
 		query := r.URL.Query()
@@ -123,7 +123,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 		}
-		loadPage(w, "home", "text", text)
+		loadPage(w, "home", []string{"text"}, []string{text})
 	case "pause":
 		err = client.Pause()
 		if err != nil {
@@ -131,7 +131,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("error: pause: pause: %v\n", err)
 			return
 		}
-		loadPage(w, "home", "text", text)
+		loadPage(w, "home", []string{"text"}, []string{text})
 	case "next":
 		err = client.Next()
 		if err != nil {
@@ -139,7 +139,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("error: next: next: %v\n", err)
 			return
 		}
-		loadPage(w, "home", "text", text)
+		loadPage(w, "home", []string{"text"}, []string{text})
 	case "previous":
 		err = client.Previous()
 		if err != nil {
@@ -147,20 +147,22 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("error: previous: previous: %v\n", err)
 			return
 		}
-		loadPage(w, "home", "text", text)
+		loadPage(w, "home", []string{"text"}, []string{text})
 	default:
 		http.NotFound(w, r)
 	}
 }
 
-func loadPage(w http.ResponseWriter, p string, old string, new string) {
+func loadPage(w http.ResponseWriter, p string, old []string, new []string) {
 	html, err := ioutil.ReadFile(fmt.Sprintf("html/%s.html", p))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		fmt.Printf("error: load page replace: read file: %v", err)
 	}
 	w.Header().Set("Content-Type", "text/html")
-	html = []byte(strings.Replace(string(html), "{{"+old+"}}", new, -1))
+	for i := 0; i < len(old); i++ {
+		html = []byte(strings.Replace(string(html), "{{"+old[i]+"}}", new[i], -1))
+	}
 	_, err = w.Write(html)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
