@@ -101,6 +101,7 @@ func DefaultHandler(rw http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			fmt.Printf("settings read file: %v", err)
 		}
+		rw.Header().Set("Content-Type", "text/html")
 		_, err = rw.Write(html)
 		if err != nil {
 			fmt.Printf("settings write: %v", err)
@@ -111,6 +112,7 @@ func DefaultHandler(rw http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Printf("play read file: %v", err)
 	}
+	rw.Header().Set("Content-Type", "text/html")
 	_, err = rw.Write(html)
 	if err != nil {
 		fmt.Printf("play write: %v", err)
