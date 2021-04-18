@@ -165,6 +165,16 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("error: settings: player devices: %v\n", err)
 			return
 		}
+		var devicesList string
+		for _, v := range devices {
+			if v.Active {
+				devicesList += fmt.Sprintf(
+					"%s [%s] %d%%<br/>", v.Name, v.Type, v.Volume)
+			}
+			devicesList += fmt.Sprintf(
+				"<a href=/spotify/settings/selectDeviceId=%s>%s [%s] %d%%</a><br/>",
+				v.ID.String(), v.Name, v.Type, v.Volume)
+		}
 		loadPage(w, action, []string{"text", "option_1"},
 			[]string{"Тут будет (soon) переключение (switch) на режим игры " +
 				"(гейм моуд) в угадывание трека (ugadai melodiyu), " +
