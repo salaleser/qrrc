@@ -17,7 +17,7 @@ func main() {
 	if len(port) == 0 {
 		log.Fatal("No port provided")
 	}
-	err := http.ListenAndServeTLS(":"+port, "", "", nil)
+	err := http.ListenAndServe(":"+port, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
