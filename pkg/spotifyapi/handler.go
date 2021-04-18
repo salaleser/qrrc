@@ -133,9 +133,24 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("error: game: next: next: %v\n", err)
 			return
 		}
+		loadPage(w, action, []string{"text"},
+			[]string{"Запущен трек, попытайтесь отгадать!"})
+		return
 	case "game/show":
-		loadPage(w, "error", []string{"text"},
-			[]string{"not implemented"})
+		if ps.Playing {
+			text += "Музыка не играет."
+		} else {
+			ft, err := client.GetTrack(ps.Item.ID)
+			if err != nil {
+				loadPage(w, "error", []string{"text"},
+					[]string{fmt.Sprintf(errorFormat, err.Error())})
+				fmt.Printf("error: get track: %v\n", err)
+				return
+			}
+			text += fmt.Sprintf("Это был: \"%s — %s\"", ft.Artists[0].Name,
+				ps.Item.Name)
+		}
+		loadPage(w, "game", []string{"text"}, []string{text})
 	case "settings":
 		loadPage(w, action, []string{}, []string{})
 		return
