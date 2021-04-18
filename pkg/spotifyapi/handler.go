@@ -186,7 +186,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func loadPage(w http.ResponseWriter, p string, old []string, new []string) {
-	html, err := ioutil.ReadFile(fmt.Sprintf("html/%s.html", p))
+	html, err := ioutil.ReadFile(fmt.Sprintf("template/%s.html", p))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		fmt.Printf("error: load page replace: read file: %v", err)
