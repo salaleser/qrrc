@@ -1,500 +1,500 @@
-1	Like a Rolling Stone	Боб Дилан	1965	▬	Том Уилсон
-2	(I Can’t Get No) Satisfaction	The Rolling Stones	1965	▬	Эндрю Луг Олдэм
-3	Imagine	Джон Леннон	1971	▬	Фил Спектор, Джон Леннон, Йоко Оно
-4	What’s Going On	Марвин Гэй	1971	▬	Марвин Гэй
-5	Respect	Арета Франклин	1967	▬	Джерри Векслер
-6	Good Vibrations	The Beach Boys	1966	▬	Брайан Уилсон
-7	Johnny B. Goode	Чак Берри	1958	▬	Леонард Чесс, Фил Чесс
-8	Hey Jude	The Beatles	1968	▬	Джордж Мартин
-9	Smells Like Teen Spirit	Nirvana	1991	▬	Бутч Виг
-10	What’d I Say	Рэй Чарльз	1959	▬	Ахмет Эртегюн, Джерри Векслер
-11	My Generation	The Who	1965	▬	Шел Талми
-12	A Change Is Gonna Come	Сэм Кук	1964	▬	Хьюго Перетти, Луиджи Креаторе
-13	Yesterday	The Beatles	1965	▬	Джордж Мартин
-14	Blowin’ in the Wind	Боб Дилан	1963	▬	Джон Хэммонд
-15	London Calling	The Clash	1980	▬	Гай Стивенс
-16	I Want to Hold Your Hand	The Beatles	1963	▬	Джордж Мартин
-17	Purple Haze	The Jimi Hendrix Experience	1967	▬	Чес Чендлер
-18	Maybellene	Чак Берри	1955	▬	Леонард Чесс, Фил Чесс
-19	Hound Dog	Элвис Пресли	1956	▬	Стив Шоулз
-20	Let It Be	The Beatles	1970	▬	Джордж Мартин (запись и выпуск сингла), Фил Спектор (ремикс и выпуск песни на альбоме)
-21	Born to Run	Брюс Спрингстин	1975	▬	Брюс Спрингстин, Майк Аппел
-22	Be My Baby	The Ronettes	1963	▬	Фил Спектор
-23	In My Life	The Beatles	1965	▬	Джордж Мартин
-24	People Get Ready	The Impressions	1965	▬	Джонни Пейт
-25	God Only Knows	The Beach Boys	1966	▬	Брайан Уилсон
-26	(Sittin’ on) The Dock of the Bay	Отис Реддинг	1968	▲ 2	Стив Кроппер
-27	Layla	Derek and the Dominos	1970	▬	Том Дауд, Derek and the Dominos
-28	A Day in the Life	The Beatles	1967	▼ 2	Джордж Мартин
-29	Help!	The Beatles	1965	▬	Джордж Мартин
-30	I Walk the Line	Джонни Кэш	1956	▬	Сэм Филлипс
-31	Stairway to Heaven	Led Zeppelin	1971	▬	Джимми Пейдж
-32	Sympathy for the Devil	The Rolling Stones	1968	▬	Джимми Миллер
-33	River Deep – Mountain High	Айк Тёрнер и Тина Тёрнер	1966	▬	Фил Спектор
-34	You’ve Lost That Lovin’ Feelin’	The Righteous Brothers	1964	▬	Фил Спектор
-35	Light My Fire	The Doors	1967	▬	Пол Ротшильд
-36	One	U2	1992	▬	Даниэль Лануа, Брайан Ино
-37	No Woman, No Cry	Боб Марли и The Wailers	1975	▬	Крис Блэквелл, Боб Марли и The Wailers
-38	Gimme Shelter	The Rolling Stones	1969	▬	Джимми Миллер
-39	That’ll Be the Day	Бадди Холли и The Crickets	1957	▬	Норман Петти
-40	Dancing in the Street	Martha and the Vandellas	1964	▬	Уильям «Микки» Стивенсон
-41	The Weight	The Band	1968	▬	Джон Саймон
-42	Waterloo Sunset	The Kinks	1968	▬	Рей Дэвис
-43	Tutti Frutti	Литл Ричард	1955	▬	Роберт Блэкуэлл
-44	Georgia on My Mind	Рэй Чарльз	1960	▬	Сид Феллер
-45	Heartbreak Hotel	Элвис Пресли	1956	▬	Стив Шоулз
-46	Heroes	Дэвид Боуи	1977	▬	Тони Висконти
-47	All Along the Watchtower	The Jimi Hendrix Experience	1968	▲ 1	Джими Хендрикс
-48	Bridge Over Troubled Water	Simon & Garfunkel	1970	▼ 1	Рой Хэли, Пол Саймон, Арт Гарфанкел
-49	Hotel California	Eagles	1976	▬	Билл Симзик
-50	The Tracks of My Tears	Смоки Робинсон и The Miracles	1965	▬	Смоки Робинсон
-51	The Message	Grandmaster Flash and the Furious Five	1982	▬	Сильвия Робинсон
-52	When Doves Cry	Принс	1984	▬	Принс
-53	When a Man Loves a Woman	Перси Следж	1966	▲ 1	Марлин Грин, Куин Айви
-54	Louie Louie	The Kingsmen	1963	▲ 1	Кен Чэйс
-55	Long Tall Sally	Литл Ричард	1956	▲ 1	Роберт Блэкуэлл
-56	Anarchy in the UK	Sex Pistols	1977	▼ 3	Крис Томас, Билл Прайс
-57	A Whiter Shade of Pale	Procol Harum	1967	▬	Дэнни Корделл
-58	Billie Jean	Майкл Джексон	1983	▬	Майкл Джексон, Куинси Джонс
-59	The Times They Are a-Changin’	Боб Дилан	1964	▬	Боб Джонстон
-60	Let’s Stay Together	Эл Грин	1971	▬	Вилли Митчелл
-61	Whole Lotta Shakin’ Goin’ On	Джерри Ли Льюис	1957	▬	Джек Клемент
-62	Bo Diddley	Бо Диддли	1955	▬	Леонард Чесс, Фил Чесс
-63	For What It’s Worth	Buffalo Springfield	1967	▬	Чарльз Грин, Брайан Стоун
-64	She Loves You	The Beatles	1963	▬	Джордж Мартин
-65	Sunshine of Your Love	Cream	1968	▬	Феликс Паппаларди
-66	Redemption Song	Боб Марли и The Wailers	1980	▬	Крис Блэквелл
-67	Jailhouse Rock	Элвис Пресли	1957	▬	Стив Шоулз
-68	Tangled Up in Blue	Боб Дилан	1975	▬	Боб Дилан
-69	Crying	Рой Орбисон	1961	▬	Фред Фостер
-70	Walk On By	Дайон Уорвик	1964	▬	Берт Бакарак, Хэл Дэвид
-71	Papa’s Got a Brand New Bag	Джеймс Браун	1966	▲ 1	Джеймс Браун
-72	California Girls	The Beach Boys	1965	▼ 1	Брайан Уилсон
-73	Superstition	Стиви Уандер	1972	▲ 1	Стиви Уандер, Малкольм Сесил, Роберт Маргулефф
-74	Summertime Blues	Эдди Кокран	1958	▼ 1	Джерри Кэйпхарт
-75	Whole Lotta Love	Led Zeppelin	1969	▬	Джимми Пейдж
-76	Strawberry Fields Forever	The Beatles	1967	▬	Джордж Мартин
-77	Mystery Train	Элвис Пресли	1955	▬	Сэм Филлипс
-78	I Got You (I Feel Good)	Джеймс Браун	1965	▬	Джеймс Браун
-79	Mr. Tambourine Man	The Byrds	1965	▬	Терри Мелчер
-80	You Really Got Me	The Kinks	1964	▲ 2	Шел Талми
-81	I Heard It Through the Grapevine	Марвин Гэй	1968	▼ 1	Норман Уитфилд
-82	Blueberry Hill	Фэтс Домино	1956	▼ 1	Дейв Бартоломью
-83	Norwegian Wood (This Bird Has Flown)	The Beatles	1965	▬	Джордж Мартин
-84	Every Breath You Take	The Police	1983	▬	Хью Пэдхам
-85	Crazy	Пэтси Клайн	1961	▬	Оуэн Брэдли
-86	Thunder Road	Брюс Спрингстин	1975	▬	Брюс Спрингстин, Джон Ландау, Майк Аппел
-87	Ring of Fire	Джонни Кэш	1963	▬	Дон Лоу
-88	My Girl	The Temptations	1965	▬	Смоки Робинсон, Рональд Уайт
-89	California Dreamin'	The Mamas and The Papas	1965	▬	Лу Адлер
-90	In the Still of the Night	The Five Satins	1956	▬	The Five Satins
-91	Suspicious Minds	Элвис Пресли	1969	▬	Чипс Моман, Фелтон Джарвис, Элвис Пресли
-92	Blitzkrieg Bop	Ramones	1976	▬	Крейг Леон
-93	I Still Haven’t Found What I’m Looking For	U2	1987	▬	Даниэль Лануа, Брайан Ино
-94	Good Golly Miss Molly	Литл Ричард	1958	▬	Роберт Блэкуэлл
-95	Blue Suede Shoes	Карл Перкинс	1956	▬	Сэм Филлипс
-96	Great Balls of Fire	Джерри Ли Льюис	1957	▬	Сэм Филлипс
-97	Roll Over Beethoven	Чак Берри	1956	▬	Леонард Чесс, Фил Чесс
-98	Love and Happiness	Эл Грин	1972	▬	Вилли Митчелл
-99	Fortunate Son	Creedence Clearwater Revival	1969	▬	Джон Фогерти
-100	Crazy	Gnarls Barkley	2006	new	Danger Mouse
-101	You Can’t Always Get What You Want	The Rolling Stones	1969	▼ 1	Джимми Миллер
-102	Voodoo Child (Slight Return)	The Jimi Hendrix Experience	1968	▼ 1	Чес Чендлер
-103	Be-Bop-A-Lula	Джин Винсент и Blue Caps	1956	▼ 1	Кен Нельсон
-104	Hot Stuff	Донна Саммер	1979	▼ 1	Джорджо Мородер, Пит Беллотт
-105	Living for the City	Стиви Уандер	1973	▼ 1	Стиви Уандер
-106	The Boxer	Simon & Garfunkel	1969	▼ 1	Рой Хэли, Пол Саймон, Арт Гарфанкел
-107	Mr. Tambourine Man	Боб Дилан	1965	▼ 1	Том Уилсон
-108	Not Fade Away	Бадди Холли и The Crickets	1957	▼ 1	Норман Петти
-109	Little Red Corvette	Принс	1983	▼ 1	Принс
-110	Brown Eyed Girl	Ван Моррисон	1967	▼ 1	Берт Бернс
-111	I’ve Been Loving You Too Long (To Stop Now)	Отис Реддинг	1965	▼ 1	Джим Стюарт, Стив Кроппер
-112	I’m So Lonesome I Could Cry	Хэнк Уильямс	1949	▼ 1	Фред Роуз
-113	That’s All Right	Элвис Пресли	1954	▼ 1	Сэм Филлипс
-114	Up on the Roof	The Drifters	1962	▼ 1	Джерри Либер и Майк Столлер
-115	You Send Me	Сэм Кук	1957	▬	Роберт Блэкуэлл
-116	Honky Tonk Women	The Rolling Stones	1969	▬	Джимми Миллер
-117	Take Me to the River	Эл Грин	1974	▬	Вилли Митчелл
-118	Crazy in Love	Бейонсе и Jay-Z	2003	new	Бейонсе, Рич Харриссон
-119	Shout (Parts 1 and 2)	The Isley Brothers	1959	▼ 1	Хьюго Перетти, Луиджи Креаторе
-120	Go Your Own Way	Fleetwood Mac	1977	▼ 1	Fleetwood Mac, Ричард Дэшут, Кен Кейллат
-121	I Want You Back	The Jackson 5	1969	▼ 1	Фредди Перрен, Альфонсо Мизелл, Дек Ричардс, Берри Горди
-122	Stand by Me	Бен Кинг	1961	▼ 1	Джерри Либер и Майк Столлер
-123	House of the Rising Sun	The Animals	1964	▼ 1	Микки Мост
-124	It’s a Man’s Man’s Man’s World	Джеймс Браун	1966	▼ 1	Джеймс Браун
-125	Jumpin’ Jack Flash	The Rolling Stones	1968	▼ 1	Джимми Миллер
-126	Will You Love Me Tomorrow	The Shirelles	1960	▼ 1	Лютер Диксон
-127	Shake, Rattle and Roll	Биг Джо Тернер	1954	▼ 1	Ахмет Эртегюн, Джерри Векслер
-128	Changes	Дэвид Боуи	1971	▼ 1	Кен Скотт
-129	Rock and Roll Music	Чак Берри	1957	▼ 1	Леонард Чесс, Фил Чесс
-130	Born to Be Wild	Steppenwolf	1968	▼ 1	Гэбриел Меклер
-131	Maggie May	Род Стюарт	1971	▼ 1	Род Стюарт
-132	With or Without You	U2	1987	▼ 1	Даниэль Лануа, Брайан Ино
-133	Who Do You Love?	Бо Диддли	1957	▼ 1	Леонард Чесс, Фил Чесс
-134	Won’t Get Fooled Again	The Who	1971	▼ 1	The Who, Глин Джонс
-135	In the Midnight Hour	Уилсон Пикетт	1965	▼ 1	Джерри Векслер, Джим Стюарт
-136	While My Guitar Gently Weeps	The Beatles	1968	▼ 1	Джордж Мартин
-137	Your Song	Элтон Джон	1970	▼ 1	Гас Даджен
-138	Eleanor Rigby	The Beatles	1966	▼ 1	Джордж Мартин
-139	Family Affair	Sly & the Family Stone	1971	▼ 1	Слай Стоун
-140	I Saw Her Standing There	The Beatles	1964	▼ 1	Джордж Мартин
-141	Kashmir	Led Zeppelin	1975	▼ 1	Джимми Пейдж
-142	All I Have to Do Is Dream	The Everly Brothers	1958	▼ 1	Арчи Блайер
-143	Please, Please, Please	Джеймс Браун и Famous Flames	1956	▼ 1	Ральф Басс
-144	Purple Rain	Принс и The Revolution	1984	▼ 1	Принс
-145	I Wanna Be Sedated	The Ramones	1978	▼ 1	Томми Рамон, Эд Стейсиум
-146	Everyday People	Sly & the Family Stone	1968	▼ 1	Слай Стоун
-147	Rock Lobster	The B-52s	1979	▼ 1	Кевин Данн (сингл), Крис Блэквелл (альбом)
-148	Me and Bobby McGee	Дженис Джоплин	1971	▬	Пол Ротшильд
-149	Lust for Life	Игги Поп	1977	▼ 2	Дэвид Боуи
-150	Cathy’s Clown	The Everly Brothers	1960	▼ 1	Уэсли Роуз
-151	Eight Miles High	The Byrds	1966	▼ 1	Аллен Стэнтон
-152	Earth Angel	The Penguins	1954	▼ 1	Дутси Уильямс
-153	Foxey Lady	The Jimi Hendrix Experience	1965	▼ 1	Чес Чендлер
-154	A Hard Day’s Night	The Beatles	1964	▼ 1	Джордж Мартин
-155	Rave On	Бадди Холли и The Crickets	1958	▼ 1	Норман Петти
-156	Proud Mary	Creedence Clearwater Revival	1969	▼ 1	Джон Фогерти
-157	The Sound of Silence	Simon & Garfunkel	1965	▼ 1	Том Уилсон
-158	I Only Have Eyes for You	The Flamingos	1959	▼ 1	Джордж Голднер
-159	Rock Around the Clock	Билл Хейли и The Comets	1954	▼ 1	Милт Гейблер
-160	Moment of Surrender	U2	2009	new	Даниэль Лануа, Брайан Ино
-161	I’m Waiting for the Man	The Velvet Underground	1967	▼ 2	Энди Уорхол, Том Уилсон
-162	Bring the Noise	Public Enemy	1988	▼ 2	Рик Рубин, Chuck D
-163	Folsom Prison Blues	Джонни Кэш	1956	▲ 1	Сэм Филлипс
-164	I Can’t Stop Loving You	Рэй Чарльз	1962	▼ 3	Сид Феллер
-165	Nothing Compares 2 U	Шинейд О’Коннор	1990	▼ 3	Принс, Шинейд О’Коннор
-166	Bohemian Rhapsody	Queen	1975	▼ 3	Рой Томас Бейкер
-167	Fast Car	Трэйси Чэпмен	1988	▼ 2	Дэвид Кершенбаум
-168	Let’s Get It On	Марвин Гэй	1973	▼ 1	Марвин Гэй, Эд Таунсенд
-169	Papa Was a Rollin’ Stone	The Temptations	1972	▼ 1	Норман Уитфилд
-170	Losing My Religion	R.E.M.	1991	▼ 1	Скотт Литт, R.E.M.
-171	Both Sides, Now	Джони Митчелл	1969	▼ 1	Джони Митчелл
-172	99 Problems	Jay-Z	2003	new	Рик Рубин
-173	Dream On	Aerosmith	1973	▼ 1	Эдриан Барбер
-174	Dancing Queen	ABBA	1976	▼ 3	Бьорн Ульвеус, Бенни Андерссон
-175	God Save the Queen	Sex Pistols	1977	▼ 2	Крис Томас
-176	Paint It Black	The Rolling Stones	1966	▼ 2	Эндрю Луг Олдэм
-177	I Fought the Law	The Bobby Fuller Four	1966	▼ 2	Боб Кин
-178	Don’t Worry Baby	The Beach Boys	1964	▼ 2	Брайан Уилсон
-179	Free Fallin’	Том Петти	1989	▼ 2	Джефф Линн
-180	September Gurls	Big Star	1974	▼ 2	Big Star
-181	Love Will Tear Us Apart	Joy Division	1980	▼ 2	Мартин Хэннет
-182	Hey Ya!	Outkast	2003	▼ 2	André 3000
-183	Green Onions	Booker T and the MG’s	1962	▼ 2	Джим Стюарт
-184	Save the Last Dance for Me	The Drifters	1960	▼ 2	Джерри Либер и Майк Столлер
-185	The Thrill Is Gone	Би Би Кинг	1969	▼ 2	Билл Симзик
-186	Please Please Me	The Beatles	1964	▼ 2	Джордж Мартин
-187	Desolation Row	Боб Дилан	1965	▼ 2	Боб Джонстон
-188	Who’ll Stop the Rain	Creedence Clearwater Revival	1970	▬	Джон Фогерти
-189	I Never Loved a Man (The Way I Love You)	Арета Франклин	1967	▼ 3	Джерри Векслер
-190	Back in Black	AC/DC	1980	▼ 3	Матт Ланг
-191	Stayin’ Alive	Bee Gees	1977	▼ 2	Bee Gees, Элби Галютен, Карл Ричардсон
-192	Knockin’ on Heaven’s Door	Боб Дилан	1973	▼ 2	Гордон Кэрролл
-193	Free Bird	Lynyrd Skynyrd	1973	▼ 2	Эл Купер
-194	Rehab	Эми Уайнхаус	2007	new	Марк Ронсон
-195	Wichita Lineman (англ.)	Глен Кэмпбелл	1968	▼ 3	Аль Де Лори
-196	There Goes My Baby	The Drifters	1959	▼ 3	Джерри Либер и Майк Столлер
-197	Peggy Sue	Бадди Холли	1957	▼ 3	Норман Петти
-198	Sweet Child O' Mine	Guns N’ Roses	1987	▼ 2	Майк Клинк
-199	Maybe	The Chantels	1957	▼ 4	Ричард Барретт
-200	Don’t Be Cruel	Элвис Пресли	1956	▼ 3	Стив Шоулз
-201	Hey Joe	The Jimi Hendrix Experience	1966	▼ 3	Чес Чендлер
-202	Flash Light (англ.)	Parliament	1977	▼ 3	Джордж Клинтон
-203	Loser	Бек	1993	▼ 3	Карл Стивенсон
-204	Bizarre Love Triangle	New Order	1986	▼ 3	New Order
-205	Come Together	The Beatles	1969	▼ 3	Джордж Мартин
-206	Positively 4th Street	Боб Дилан	1965	▼ 3	Боб Джонстон
-207	Try a Little Tenderness (англ.)	Отис Реддинг	1966	▼ 3	Джим Стюарт, Стив Кроппер
-208	Lean on Me	Билл Уизерс	1972	▼ 3	Билл Уизерс
-209	Reach Out I’ll Be There	The Four Tops	1966	▼ 3	Брайан Холланд, Ламонт Дозье, Эдди Холланд
-210	Bye Bye Love	The Everly Brothers	1957	▼ 3	Арчи Блайер
-211	Gloria	Them	1964	▼ 3	Томми Скотт
-212	In My Room	The Beach Boys	1963	▼ 3	Брайан Уилсон
-213	96 Tears (англ.)	Question Mark & the Mysterians	1966	▼ 3	Руди Мартинес
-214	Caroline, No	The Beach Boys	1966	▼ 3	Брайан Уилсон
-215	1999	Принс	1982	▼ 3	Принс
-216	Rockin’ in the Free World	Нил Янг	1989	▼ 2	Нил Янг, Нико Болес
-217	Your Cheatin’ Heart	Хэнк Уильямс	1953	▼ 4	Фред Роуз
-218	Do You Believe in Magic	The Lovin’ Spoonful	1965	▼ 2	Эрик Джекобсен
-219	Jolene	Долли Партон	1973	▼ 2	Боб Фергюсон
-220	Boom Boom	Джон Ли Хукер	1962	▼ 2	Кельвин Картер
-221	Spoonful	Хаулин Вулф	1960	▼ 2	Леонард Чесс, Фил Чесс
-222	Walk Away Renée	The Left Banke	1966	▼ 2	Гарри Лукофски
-223	Walk on the Wild Side	Лу Рид	1972	▼ 2	Дэвид Боуи, Мик Ронсон, Лу Рид
-224	Oh, Pretty Woman	Рой Орбисон	1964	▼ 2	Уэсли Роуз
-225	Dance to the Music (англ.)	Sly & the Family Stone	1968	▼ 2	Слай Стоун
-226	Hoochie Coochie Man	Мадди Уотерс	1954	▼ 1	Леонард Чесс, Фил Чесс, Вилли Диксон
-227	Fire and Rain (англ.)	Джеймс Тейлор	1970	▬	Питер Эшер
-228	Should I Stay or Should I Go	The Clash	1982	▬	Глин Джонс
-229	Good Times (англ.)	Chic	1979	▼ 5	Бернард Эдвардс, Найл Роджерс
-230	Mannish Boy	Мадди Уотерс	1955	▼ 1	Леонард Чесс, Фил Чесс, Вилли Диксон
-231	Moondance (англ.)	Ван Моррисон	1970	▼ 5	Ван Моррисон
-232	Just Like a Woman	Боб Дилан	1966	▼ 2	Боб Джонстон
-233	Sexual Healing	Марвин Гэй	1982	▼ 2	Марвин Гэй
-234	Only the Lonely	Рой Орбисон	1960	▼ 2	Фред Фостер
-235	We Gotta Get out of This Place	The Animals	1965	▼ 2	Микки Мост
-236	Paper Planes	M.I.A.	2007	new	Diplo, Switch
-237	I’ll Feel a Whole Lot Better	The Byrds	1965	▼ 3	Терри Мелчер
-238	Everyday	Бадди Холли	1957	▼ 2	Норман Петти
-239	I Got a Woman	Рэй Чарльз	1954	▼ 4	Джерри Векслер
-240	Planet Rock (англ.)	Afrika Bambaataa & Soulsonic Force (англ.)	1982	▼ 3	Артур Бейкер, Afrika Bambaataa
-241	I Fall to Pieces	Пэтси Клайн	1961	▼ 3	Оуэн Брэдли
-242	Son of a Preacher Man	Дасти Спрингфилд	1968	▼ 2	Джерри Векслер
-243	The Wanderer	Дион	1961	▼ 4	Джин Шварц
-244	Stand! (англ.)	Sly & the Family Stone	1969	▼ 3	Слай Стоун
-245	Rocket Man	Элтон Джон	1972	▼ 3	Гас Даджен
-246	Love Shack	The B-52s	1989	▼ 3	Дон Уоз, Найл Роджерс
-247	Gimme Some Lovin’ (англ.)	The Spencer Davis Group	1966	▼ 3	Джимми Миллер
-248	(Your Love Keeps Lifting Me) Higher and Higher	Джеки Уилсон	1967	▼ 2	Карл Дэвис
-249	The Night They Drove Old Dixie Down	The Band	1969	▼ 4	Джон Саймон, The Band
-250	Hot Fun in the Summertime (англ.)	Sly & the Family Stone	1969	▼ 3	Слай Стоун
-251	Rapper’s Delight (англ.)	The Sugarhill Gang	1979	▼ 3	Сильвия Робинсон
-252	Chain of Fools	Арета Франклин	1967	▼ 3	Джерри Векслер
-253	Paranoid	Black Sabbath	1970	▼ 3	Роджер Бэйн
-254	Money Honey	The Drifters	1953	▼ 2	Ахмет Эртегюн, Джерри Векслер
-255	Mack the Knife	Бобби Дарин	1959	▼ 4	Ахмет Эртегюн
-256	All the Young Dudes	Mott the Hoople	1972	▼ 3	Дэвид Боуи
-257	Paranoid Android	Radiohead	1997	▼ 1	Найджел Годрич, Radiohead
-258	Highway to Hell	AC/DC	1979	▼ 4	Роберт Лэндж
-259	Heart of Glass	Blondie	1978	▼ 4	Майк Чепмен
-260	Mississippi (англ.)	Боб Дилан	2001	new	Боб Дилан
-261	Wild Thing	The Troggs	1966	▼ 4	Ларри Пейдж
-262	I Can See for Miles	The Who	1967	▼ 4	Кит Ламберт
-263	Oh, What a Night (англ.)	The Dells	1969	▼ 3	Бобби Миллер
-264	Hallelujah	Джефф Бакли	1994	▼ 5	Джефф Бакли, Энди Уоллес
-265	Higher Ground	Стиви Уандер	1973	▼ 4	Стиви Уандер
-266	Ooo Baby Baby (англ.)	The Miracles	1965	▼ 4	Смоки Робинсон
-267	He’s a Rebel	The Crystals	1962	▼ 4	Фил Спектор
-268	Sail Away (англ.)	Рэнди Ньюмен	1972	▼ 4	Ленни Уоронкер
-269	Walking in the Rain	The Ronettes	1964	▼ 3	Фил Спектор
-270	Tighten Up	Archie Bell and the Drells	1968	▼ 5	Берк Фрилот
-271	Personality Crisis	New York Dolls	1973	▼ 4	Тодд Рандгрен
-272	Sunday Bloody Sunday	U2	1983	▼ 4	Стив Лиллиуайт
-273	Jesus Walks	Канье Уэст	2004	new	Канье Уэст
-274	Roadrunner (англ.)	The Modern Lovers	1976	▼ 5	Джон Кейл
-275	He Stopped Loving Her Today	Джордж Джонс	1980	▼ 5	Билли Шеррилл
-276	Sloop John B	The Beach Boys	1966	▼ 5	Брайан Уилсон
-277	Sweet Little Sixteen	Чак Берри	1958	▼ 5	Леонард Чесс, Фил Чесс
-278	Something	The Beatles	1969	▼ 5	Джордж Мартин
-279	Somebody to Love	Jefferson Airplane	1967	▼ 5	Рик Джерард
-280	Born in the U.S.A.	Брюс Спрингстин	1984	▼ 5	Джон Ландау, Чак Плоткин, Брюс Спрингстин, Стив Ван Зандт
-281	I’ll Take You There (англ.)	The Staple Singers	1972	▼ 5	Аль Белл
-282	Ziggy Stardust	Дэвид Боуи	1972	▼ 5	Дэвид Боуи, Кен Скотт
-283	Pictures of You	The Cure	1989	▼ 5	Роберт Смит, Дэвид М. Аллен
-284	Chapel of Love (англ.)	The Dixie Cups	1964	▼ 5	Джерри Либер и Майк Столлер, Элли Гринвич, Джефф Барри
-285	Ain’t No Sunshine	Билл Уизерс	1971	▼ 5	Букер Ти Джонс
-286	Seven Nation Army	The White Stripes	2003	new	Джек Уайт
-287	You Are the Sunshine of My Life	Стиви Уандер	1972	▼ 6	Стиви Уандер
-288	Help Me (англ.)	Джони Митчелл	1974	▼ 6	Джони Митчелл
-289	Call Me	Blondie	1980	▼ 6	Джорджо Мородер
-290	(What’s So Funny ’Bout) Peace Love and Understanding? (англ.)	Elvis Costello & the Attractions	1979	▼ 6	Ник Лоу
-291	Smokestack Lightning	Хаулин Вулф	1956	▼ 6	Леонард Чесс, Фил Чесс, Вилли Диксон
-292	Summer Babe (англ.)	Pavement	1992	▼ 6	Стивен Малкмус, Скотт Каннберг
-293	Walk This Way	Run-DMC и Aerosmith	1986	▼ 6	Рик Рубин, Расселл Симмонс
-294	Money (That’s What I Want)	Барретт Стронг	1960	▼ 6	Берри Горди
-295	Can’t Buy Me Love	The Beatles	1964	▼ 6	Джордж Мартин
-296	Stan	Эминем и Дайдо	2000	▼ 6	Эминем, The 45 King
-297	She’s Not There	The Zombies	1964	▼ 6	Кен Джонс
-298	Train in Vain	The Clash	1979	▼ 6	Гай Стивенс
-299	Tired of Being Alone (англ.)	Эл Грин	1971	▼ 6	Вилли Митчелл
-300	Black Dog	Led Zeppelin	1971	▼ 6	Джимми Пейдж
-301	Street Fighting Man	The Rolling Stones	1968	▼ 6	Джимми Миллер
-302	Get Up, Stand Up	Bob Marley & The Wailers	1975	▼ 6	Крис Блэквелл
-303	Heart of Gold	Нил Янг	1972	▼ 6	Эллиот Мазер, Нил Янг
-304	Sign o’ the Times	Принс	1987	▼ 5	Принс
-305	One Way or Another	Blondie	1979	▼ 7	Майк Чепмен
-306	Like a Prayer	Мадонна	1989	▼ 6	Мадонна, Патрик Леонард
-307	One More Time	Daft Punk	2000	new	Daft Punk
-308	Da Ya Think I’m Sexy?	Род Стюарт	1978	▼ 7	Том Дауд
-309	Blue Eyes Crying in the Rain	Вилли Нельсон	1975	▼ 7	Вилли Нельсон
-310	Ruby Tuesday	The Rolling Stones	1967	▼ 7	Эндрю Луг Олдем
-311	With a Little Help from My Friends	The Beatles	1967	▼ 7	Джордж Мартин
-312	Say It Loud – I’m Black and I’m Proud	Джеймс Браун	1968	▼ 7	Джеймс Браун
-313	That’s Entertainment (англ.)	The Jam	1980	▼ 7	Вик Копперсмит-Хэвен, The Jam
-314	Why Do Fools Fall in Love	The Teenagers	1956	▼ 7	Джордж Голднер
-315	Lonely Teardrops	Джеки Уилсон	1958	▼ 7	Берри Горди
-316	What’s Love Got to Do with It	Тина Тёрнер	1984	▼ 7	Терри Бриттен
-317	Iron Man	Black Sabbath	1971	▼ 7	Роджер Бэйн
-318	Wake Up Little Susie	The Everly Brothers	1957	▼ 7	Арчи Блайер
-319	In Dreams	Рой Орбисон	1963	▼ 7	Фред Фостер
-320	I Put a Spell on You	Скримин Джей Хокинс	1956	▼ 7	Арнольд Максин
-321	Comfortably Numb	Pink Floyd	1979	▼ 7	Боб Эзрин
-322	Don’t Let Me Be Misunderstood	The Animals	1965	▼ 7	Микки Мост
-323	Alison (англ.)	Элвис Костелло	1977	▼ 5	Ник Лоу
-324	Wish You Were Here	Pink Floyd	1975	▼ 8	Pink Floyd
-325	Many Rivers to Cross	Джимми Клифф	1969	▼ 8	Джимми Клифф
-326	School’s Out	Элис Купер	1972	▼ 7	Боб Эзрин
-327	Take Me Out	Franz Ferdinand	2004	new	Торе Юханссон
-328	Heartbreaker	Led Zeppelin	1969	▼ 8	Джимми Пейдж
-329	Cortez the Killer (англ.)	Нил Янг	1975	▼ 8	Нил Янг, Дэвид Бригс
-330	Fight the Power	Public Enemy	1989	▼ 8	Эрик Сэдлер, Хэнк Шокли
-331	Dancing Barefoot	Patti Smith Group	1979	▼ 8	Тодд Рандгрен
-332	Baby Love	The Supremes	1964	▼ 8	Брайан Холланд, Ламонт Дозье
-333	Good Lovin’ (англ.)	The Young Rascals	1966	▼ 8	Ариф Мардин, Том Дауд
-334	Get Up (I Feel Like Being a) Sex Machine	Джеймс Браун	1970	▼ 8	Джеймс Браун
-335	For Your Precious Love (англ.)	Джерри Батлер и The Impressions	1958	▼ 8	Калвин Картер
-336	The End	The Doors	1967	▼ 8	Пол Ротшильд
-337	That’s the Way of the World (англ.)	Earth, Wind and Fire	1975	▼ 8	Морис Уайт
-338	We Will Rock You	Queen	1977	▼ 8	Queen
-339	I Can’t Make You Love Me (англ.)	Бонни Рэйтт	1991	▼ 8	Бонни Рэйтт, Дон Уоз
-340	Subterranean Homesick Blues	Боб Дилан	1965	▼ 8	Том Уилсон
-341	Spirit in the Sky	Норман Гринбаум	1970	▼ 8	Эрик Джекобсен
-342	Sweet Jane	The Velvet Underground	1970	▼ 7	Джеффри Хэслэм, Шэл Кейган, The Velvet Underground
-343	Wild Horses	The Rolling Stones	1971	▼ 9	Джимми Миллер
-344	Beat It	Майкл Джексон	1982	▼ 7	Куинси Джонс
-345	Beautiful Day	U2	2000	new	Даниэль Лануа, Брайан Ино
-346	Walk This Way	Aerosmith	1976	▼ 10	Джек Дуглас
-347	Maybe I’m Amazed (англ.)	Пол Маккартни	1970	▼ 9	Пол Маккартни
-348	You Keep Me Hangin’ On	The Supremes	1966	▼ 9	Брайан Холланд, Ламонт Дозье
-349	Baba O’Riley	The Who	1971	▼ 9	The Who, Глин Джонс
-350	The Harder They Come (англ.)	Джимми Клифф	1975	▼ 9	Джимми Клифф
-351	Runaround Sue	Дион	1961	▼ 9	Джин Шварц
-352	Jim Dandy (англ.)	Лаверн Бейкер	1956	▼ 9	Ахмет Эртегюн, Джерри Векслер
-353	Piece of My Heart (англ.)	Big Brother and the Holding Company	1968	▼ 9	Джон Саймон
-354	La Bamba	Ричи Валенс	1958	▼ 9	Боб Кин
-355	California Love	Dr. Dre и 2Pac	1996	▼ 9	Dr. Dre
-356	Candle in the Wind	Элтон Джон	1973	▼ 9	Гас Даджен
-357	That Lady (Part 1 and 2) (англ.)	The Isley Brothers	1973	▼ 9	The Isley Brothers
-358	Spanish Harlem	Бен Кинг	1960	▼ 9	Джерри Либер и Майк Столлер
-359	The Loco-Motion	Литл Ива	1962	▼ 9	Джерри Гоффин
-360	The Great Pretender	The Platters	1955	▼ 9	Бак Рам
-361	All Shook Up	Элвис Пресли	1957	▼ 9	Стив Шоулз
-362	Tears in Heaven	Эрик Клэптон	1992	▼ 9	Расс Тителман
-363	Watching the Detectives (англ.)	Элвис Костелло	1977	▼ 9	Ник Лоу
-364	Bad Moon Rising	Creedence Clearwater Revival	1969	▼ 9	Джон Фогерти
-365	Sweet Dreams (Are Made of This)	Eurythmics	1983	▼ 9	Дэйв Стюарт
-366	Little Wing	The Jimi Hendrix Experience	1968	▼ 9	Чес Чендлер
-367	Nowhere to Run	Martha and the Vandellas	1965	▼ 9	Брайан Холланд, Ламонт Дозье
-368	Got My Mojo Working	Мадди Уотерс	1957	▼ 9	Леонард Чесс, Фил Чесс, Вилли Диксон
-369	Killing Me Softly with His Song	Роберта Флэк	1973	▼ 9	Джоэл Дорн
-370	All You Need Is Love	The Beatles	1967	▼ 8	Джордж Мартин
-371	Complete Control	The Clash	1979	▼ 10	Ли Перри
-372	The Letter (англ.)	The Box Tops	1967	▼ 9	Дэн Пенн
-373	Highway 61 Revisited	Боб Дилан	1965	▼ 9	Боб Джонстон
-374	Unchained Melody	The Righteous Brothers	1965	▼ 9	Фил Спектор
-375	How Deep Is Your Love	Bee Gees	1977	▼ 9	Bee Gees, Элби Галютен, Карл Ричардсон
-376	White Room	Cream	1968	▼ 9	Феликс Паппаларди
-377	Personal Jesus	Depeche Mode	1989	▼ 9	Depeche Mode, Flood
-378	I’m a Man	Бо Диддли	1955	▼ 9	Леонард Чесс, Фил Чесс, Бо Диддли
-379	The Wind Cries Mary	The Jimi Hendrix Experience	1967	▼ 9	Чес Чендлер
-380	I Can’t Explain	The Who	1965	▼ 9	Шел Талми
-381	Marquee Moon	Television	1977	▼ 9	Энди Джонс
-382	Wonderful World	Сэм Кук	1960	▼ 9	Лу Адлер, Сэм Кук
-383	Brown Eyed Handsome Man	Чак Берри	1956	▼ 9	Леонард Чесс, Фил Чесс
-384	Another Brick in the Wall Part 2	Pink Floyd	1979	▼ 9	Боб Эзрин, Дэвид Гилмор, Роджер Уотерс
-385	Fake Plastic Trees	Radiohead	1995	▼ 9	Джон Леки
-386	Maps	Yeah Yeah Yeahs	2004	new	Дэвид Эндрю Ситек
-387	Hit the Road Jack	Рэй Чарльз	1961	▼ 10	Сид Феллер
-388	Pride (In the Name of Love)	U2	1984	▼ 10	Брайан Ино, Даниэль Лануа
-389	Radio Free Europe	R.E.M.	1983	▼ 10	Митч Истер, Дон Диксон
-390	Goodbye Yellow Brick Road	Элтон Джон	1973	▼ 10	Гас Даджен
-391	Tell It Like It Is (англ.)	Аарон Невилл	1966	▼ 10	Джордж Дэвис
-392	Bitter Sweet Symphony	The Verve	1997	▼ 10	Мартин «Youth» Гловер, Крис Поттер, The Verve
-393	Whipping Post (англ.)	The Allman Brothers Band	1969	▼ 10	Том Дауд
-394	Ticket to Ride	The Beatles	1965	▼ 10	Джордж Мартин
-395	Ohio (англ.)	Crosby, Stills, Nash and Young	1970	▼ 10	Дэвид Кросби, Стивен Стиллз, Грэм Нэш, Нил Янг
-396	I Know You Got Soul	Eric B. & Rakim	1987	▼ 10	Эрик Барьер, Раким
-397	Tiny Dancer	Элтон Джон	1971	▼ 10	Гас Даджен
-398	Roxanne	The Police	1979	▼ 10	The Police
-399	Just My Imagination (Running Away with Me) (англ.)	The Temptations	1971	▼ 10	Норман Уитфилд
-400	Baby I Need Your Loving (англ.)	The Four Tops	1964	▼ 10	Брайан Холланд, Ламонт Дозье, Эдди Холланд
-401	Summer in the City	The Lovin’ Spoonful	1966	▼ 8	Эрик Джекобсен
-402	O-o-h Child (англ.)	The Five Stairsteps	1970	▼ 10	Стэн Винсент
-403	Can’t Help Falling in Love	Элвис Пресли	1961	▼ 9	Джозеф Лилли
-404	Remember (Walkin’ in the Sand)	The Shangri-Las	1964	▼ 9	Шадоу Мортон
-405	(Don’t Fear) The Reaper	Blue Oyster Cult	1976	▼ 8	Дэвид Лукас, Мюррей Кругман, Санди Пирлман
-406	Thirteen (англ.)	Big Star	1972	▼ 10	Джон Фрай
-407	Sweet Home Alabama	Lynyrd Skynyrd	1974	▼ 9	Эл Купер
-408	Enter Sandman	Metallica	1991	▼ 9	Боб Рок, Джеймс Хэтфилд, Ларс Ульрих
-409	Tonight’s the Night	The Shirelles	1960	▼ 8	Лютер Диксон
-410	Thank You (Falettinme Be Mice Elf Agin) (англ.)	Sly & the Family Stone	1970	▼ 8	Слай Стоун
-411	C’mon Everybody	Эдди Кокран	1958	▼ 8	Джерри Кэйпхарт
-412	Umbrella	Рианна и Jay-Z	2007	new	Кук Харрелл, Трики Стюарт
-413	Visions of Johanna	Боб Дилан	1966	▼ 9	Боб Джонстон
-414	We’ve Only Just Begun (англ.)	The Carpenters	1970	▼ 9	Джек Догерти
-415	In Bloom	Nirvana	1991	▼ 8	Бутч Виг
-416	Sweet Emotion	Aerosmith	1975	▼ 8	Джек Дуглас
-417	Monkey Gone to Heaven (англ.)	Pixies	1989	▼ 7	Джил Нортон
-418	I Feel Love	Донна Саммер	1977	▼ 7	Джорджо Мородер, Пит Беллотт
-419	Ode to Billie Joe	Бобби Джентри	1967	▼ 7	Келли Гордон, Бобби Пэрис
-420	The Girl Can’t Help It	Литл Ричард	1957	▼ 7	Роберт Блэкуэлл
-421	Young Blood	The Coasters	1957	▼ 7	Джерри Либер и Майк Столлер
-422	I Can’t Help Myself (Sugar Pie Honey Bunch) (англ.)	The Four Tops	1965	▼ 7	Брайан Холланд, Ламонт Дозье, Эдди Холланд
-423	The Boys of Summer	Дон Хенли	1984	▼ 7	Дон Хенли, Дэнни Кортчмар, Грег Ладании, Майк Кэмпбелл
-424	Juicy	The Notorious B.I.G.	1994	new	Шон Комбс, Poke
-425	Fuck tha Police	N.W.A.	1989	▼ 8	Dr. Dre, DJ Yella
-426	Suite: Judy Blue Eyes	Crosby, Stills & Nash	1969	▼ 8	Дэвид Кросби, Грэм Нэш, Стивен Стиллз
-427	Nuthin’ But a “G” Thang	Dr. Dre	1993	▼ 8	Dr. Dre
-428	It’s Your Thing (англ.)	The Isley Brothers	1969	▼ 8	The Isley Brothers
-429	Piano Man	Билли Джоэл	1973	▼ 8	Майкл Стюарт
-430	Blue Suede Shoes	Элвис Пресли	1956	▼ 7	Стив Шоулз
-431	William, It Was Really Nothing (англ.)	The Smiths	1984	▼ 6	Джон Портер
-432	American Idiot	Green Day	2004	new	Роб Кавалло, Green Day
-433	Tumbling Dice	The Rolling Stones	1972	▼ 9	Джимми Миллер
-434	Smoke on the Water	Deep Purple	1972	▼ 8	Deep Purple
-435	New Year’s Day	U2	1983	▼ 8	Стив Лиллиуайт
-436	Everybody Needs Somebody to Love	Соломон Берк	1964	▼ 7	Берт Бернс
-437	(White Man) In Hammersmith Palais	The Clash	1979	▼ 7	The Clash
-438	Ain’t That a Shame	Фэтс Домино	1955	▼ 7	Дейв Бартоломью
-439	Midnight Train to Georgia (англ.)	Gladys Knight and the Pips	1973	▼ 7	Тони Камилло
-440	Ramble On	Led Zeppelin	1969	▼ 7	Джимми Пейдж
-441	Mustang Sally	Уилсон Пикетт	1966	▼ 7	Джерри Векслер
-442	Alone Again Or (англ.)	Love	1968	▼ 6	Брюс Ботник, Артур Ли
-443	Beast of Burden	The Rolling Stones	1978	▼ 8	The Glimmer Twins
-444	Love Me Tender	Элвис Пресли	1956	▼ 7	Стив Шоулз
-445	I Wanna Be Your Dog	The Stooges	1969	▼ 7	Джон Кейл
-446	Push It	Salt-N-Pepa	1987	▼ 6	Харби Азор
-447	Pink Houses (англ.)	John Cougar Mellencamp	1983	▼ 8	Джон Мелленкамп, Дон Джеман
-448	In da Club	50 Cent	2002	new	Dr. Dre, Майк Элисондо
-449	Come Go with Me (англ.)	The Del-Vikings	1957	▼ 8	Джо Авербах
-450	I Shot the Sheriff	Боб Марли и The Wailers	1973	▼ 7	Крис Блэквелл
-451	I Got You Babe	Сонни и Шер	1965	▼ 7	Сонни Боно
-452	Come as You Are	Nirvana	1991	▼ 7	Бутч Виг, Nirvana
-453	Pressure Drop (англ.)	Toots and the Maytals	1973	▼ 7	Лесли Конг
-454	Leader of the Pack	The Shangri-Las	1964	▼ 7	Шадоу Мортон, Элли Гринвич, Джефф Барри
-455	Heroin	The Velvet Underground	1967	▼ 7	Энди Уорхол, Том Уилсон
-456	Penny Lane	The Beatles	1967	▼ 7	Джордж Мартин
-457	The Twist	Чабби Чекер	1960	▼ 6	Карл Манн
-458	Cupid	Сэм Кук	1961	▼ 6	Сэм Кук, Луиджи Креаторе, Хьюго Перетти
-459	Paradise City	Guns N’ Roses	1987	▼ 6	Майк Клинк
-460	My Sweet Lord	Джордж Харрисон	1970	▼ 6	Джордж Харрисон, Фил Спектор
-461	Sheena Is a Punk Rocker	Ramones	1977	▼ 4	Тони Бонджови, Томми Рамон
-462	All Apologies	Nirvana	1993	▼ 7	Стив Альбини
-463	Soul Man (англ.)	Сэм и Дейв	1967	▼ 5	Айзек Хейз, Дэвид Портер
-464	Kiss	Принс и The Revolution	1986	▼ 3	Принс и The Revolution
-465	Rollin’ Stone	Мадди Уотерс	1948	▼ 6	Леонард Чесс, Фил Чесс
-466	Get Ur Freak On	Мисси Эллиотт	2001	new	Тимбалэнд
-467	Big Pimpin’ (англ.)	Jay-Z	1999	new	Тимбалэнд
-468	Respect Yourself (англ.)	The Staple Singers	1971	▼ 6	Аль Белл
-469	Rain	The Beatles	1966	▼ 6	Джордж Мартин
-470	Standing in the Shadows of Love (англ.)	The Four Tops	1966	▼ 6	Брайан Холланд, Ламонт Дозье
-471	Surrender	Cheap Trick	1978	▼ 6	Том Верман
-472	Runaway	Дел Шеннон	1961	▼ 6	Гарри Балк, Ирвинг Миканик
-473	Welcome to the Jungle	Guns N’ Roses	1987	▼ 6	Майк Клинк
-474	Into the Mystic (англ.)	Ван Моррисон	1970	▲ 6	Ван Моррисон
-475	Where Did Our Love Go	The Supremes	1964	▼ 3	Брайан Холланд, Ламонт Дозье
-476	Do Right Woman, Do Right Man	Арета Франклин	1967	▼ 3	Джерри Векслер
-477	How Soon Is Now?	The Smiths	1985	▲ 9	Джон Портер
-478	Last Nite (англ.)	The Strokes	2001	new	Гордон Рафаэл
-479	I Want to Know What Love Is	Foreigner	1984	▼ 3	Мик Джонс, Алекс Садкин
-480	Sabotage	Beastie Boys	1994	▼ 5	Beastie Boys, Марио Калдато-младший
-481	Super Freak	Рик Джеймс	1981	▼ 4	Рик Джеймс
-482	Since U Been Gone	Келли Кларксон	2004	new	Dr. Luke, Макс Мартин
-483	White Rabbit	Jefferson Airplane	1967	▼ 5	Рик Джерард
-484	Cry Me a River	Джастин Тимберлейк	2002	new	Тимбалэнд
-485	Lady Marmalade	Labelle	1975	▼ 6	Алан Туссен
-486	Young Americans	Дэвид Боуи	1975	▼ 5	Тони Висконти
-487	I’m Eighteen	Элис Купер	1971	▼ 5	Боб Эзрин, Джек Ричардсон
-488	Just Like Heaven	The Cure	1987	▼ 5	Дэвид М. Аллен, Роберт Смит
-489	Under the Boardwalk	The Drifters	1964	▼ 2	Берт Бернс
-490	Clocks	Coldplay	2002	new	Кен Нельсон, Марк Фитиан
-491	I Love Rock ’n’ Roll	Joan Jett & the Blackhearts	1982	▼ 7	Ритчи Корделл, Кенни Лагуна
-492	I Will Survive	Глория Гейнор	1978	▼ 3	Дино Фекарис, Фредди Перрен
-493	Time to Pretend	MGMT	2008	new	Дейв Фрайдманн
-494	Ignition (Remix) (англ.)	Ар Келли	2002	new	Ар Келли
-495	Brown Sugar	The Rolling Stones	1971	▼ 5	Джимми Миллер
-496	Running on Empty (англ.)	Джексон Браун	1977	▼ 4	Джексон Браун
-497	The Rising (англ.)	Брюс Спрингстин	2002	new	Брендан О’Брайан
-498	Miss You	The Rolling Stones	1978	▼ 2	The Glimmer Twins
-499	Buddy Holly	Weezer	1994	▼ 2	Рик Окасек
-500	Shop Around (англ.)	The Miracles	1960	▼ 5	Берри Горди
+Like a Rolling Stone	Боб Дилан
+(I Can’t Get No) Satisfaction	The Rolling Stones
+Imagine	Джон Леннон
+What’s Going On	Марвин Гэй
+Respect	Арета Франклин
+Good Vibrations	The Beach Boys
+Johnny B. Goode	Чак Берри
+Hey Jude	The Beatles
+Smells Like Teen Spirit	Nirvana
+What’d I Say	Рэй Чарльз
+My Generation	The Who
+A Change Is Gonna Come	Сэм Кук
+Yesterday	The Beatles
+Blowin’ in the Wind	Боб Дилан
+London Calling	The Clash
+I Want to Hold Your Hand	The Beatles
+Purple Haze	The Jimi Hendrix Experience
+Maybellene	Чак Берри
+Hound Dog	Элвис Пресли
+Let It Be	The Beatles(запись и выпуск сингла), Фил Спектор (ремикс и выпуск песни на альбоме)
+Born to Run	Брюс Спрингстин
+Be My Baby	The Ronettes
+In My Life	The Beatles
+People Get Ready	The Impressions
+God Only Knows	The Beach Boys
+(Sittin’ on) The Dock of the Bay	Отис Реддинг	1968	▲ 2	Стив Кроппер
+Layla	Derek and the Dominos
+A Day in the Life	The Beatles
+Help!	The Beatles
+I Walk the Line	Джонни Кэш
+Stairway to Heaven	Led Zeppelin
+Sympathy for the Devil	The Rolling Stones
+River Deep – Mountain High	Айк Тёрнер и Тина Тёрнер
+You’ve Lost That Lovin’ Feelin’	The Righteous Brothers
+Light My Fire	The Doors
+One	U2
+No Woman, No Cry	Боб Марли и The Wailers
+Gimme Shelter	The Rolling Stones
+That’ll Be the Day	Бадди Холли и The Crickets
+Dancing in the Street	Martha and the Vandellas«Микки» Стивенсон
+The Weight	The Band
+Waterloo Sunset	The Kinks
+Tutti Frutti	Литл Ричард
+Georgia on My Mind	Рэй Чарльз
+Heartbreak Hotel	Элвис Пресли
+Heroes	Дэвид Боуи
+All Along the Watchtower	The Jimi Hendrix Experience	1968	▲ 1	Джими Хендрикс
+Bridge Over Troubled Water	Simon & Garfunkel
+Hotel California	Eagles
+The Tracks of My Tears	Смоки Робинсон и The Miracles
+The Message	Grandmaster Flash and the Furious Five
+When Doves Cry	Принс
+When a Man Loves a Woman	Перси Следж	1966	▲ 1	Марлин Грин, Куин Айви
+Louie Louie	The Kingsmen	1963	▲ 1	Кен Чэйс
+Long Tall Sally	Литл Ричард	1956	▲ 1	Роберт Блэкуэлл
+Anarchy in the UK	Sex Pistols
+A Whiter Shade of Pale	Procol Harum
+Billie Jean	Майкл Джексон
+The Times They Are a-Changin’	Боб Дилан
+Let’s Stay Together	Эл Грин
+Whole Lotta Shakin’ Goin’ On	Джерри Ли Льюис
+Bo Diddley	Бо Диддли
+For What It’s Worth	Buffalo Springfield
+She Loves You	The Beatles
+Sunshine of Your Love	Cream
+Redemption Song	Боб Марли и The Wailers
+Jailhouse Rock	Элвис Пресли
+Tangled Up in Blue	Боб Дилан
+Crying	Рой Орбисон
+Walk On By	Дайон Уорвик
+Papa’s Got a Brand New Bag	Джеймс Браун	1966	▲ 1	Джеймс Браун
+California Girls	The Beach Boys
+Superstition	Стиви Уандер	1972	▲ 1	Стиви Уандер, Малкольм Сесил, Роберт Маргулефф
+Summertime Blues	Эдди Кокран
+Whole Lotta Love	Led Zeppelin
+Strawberry Fields Forever	The Beatles
+Mystery Train	Элвис Пресли
+I Got You (I Feel Good)	Джеймс Браун
+Mr. Tambourine Man	The Byrds
+You Really Got Me	The Kinks	1964	▲ 2	Шел Талми
+I Heard It Through the Grapevine	Марвин Гэй
+Blueberry Hill	Фэтс Домино
+Norwegian Wood (This Bird Has Flown)	The Beatles
+Every Breath You Take	The Police
+Crazy	Пэтси Клайн
+Thunder Road	Брюс Спрингстин
+Ring of Fire	Джонни Кэш
+My Girl	The Temptations
+California Dreamin'	The Mamas and The Papas
+In the Still of the Night	The Five Satins
+Suspicious Minds	Элвис Пресли
+Blitzkrieg Bop	Ramones
+I Still Haven’t Found What I’m Looking For	U2
+Good Golly Miss Molly	Литл Ричард
+Blue Suede Shoes	Карл Перкинс
+Great Balls of Fire	Джерри Ли Льюис
+Roll Over Beethoven	Чак Берри
+Love and Happiness	Эл Грин
+Fortunate Son	Creedence Clearwater Revival
+Crazy	Gnarls Barkley
+You Can’t Always Get What You Want	The Rolling Stones
+Voodoo Child (Slight Return)	The Jimi Hendrix Experience
+Be-Bop-A-Lula	Джин Винсент и Blue Caps
+Hot Stuff	Донна Саммер
+Living for the City	Стиви Уандер
+The Boxer	Simon & Garfunkel
+Mr. Tambourine Man	Боб Дилан
+Not Fade Away	Бадди Холли и The Crickets
+Little Red Corvette	Принс
+Brown Eyed Girl	Ван Моррисон
+I’ve Been Loving You Too Long (To Stop Now)	Отис Реддинг
+I’m So Lonesome I Could Cry	Хэнк Уильямс
+That’s All Right	Элвис Пресли
+Up on the Roof	The Drifters
+You Send Me	Сэм Кук
+Honky Tonk Women	The Rolling Stones
+Take Me to the River	Эл Грин
+Crazy in Love	Бейонсе и Jay-Z
+Shout (Parts 1 and 2)	The Isley Brothers
+Go Your Own Way	Fleetwood Mac
+I Want You Back	The Jackson 5
+Stand by Me	Бен Кинг
+House of the Rising Sun	The Animals
+It’s a Man’s Man’s Man’s World	Джеймс Браун
+Jumpin’ Jack Flash	The Rolling Stones
+Will You Love Me Tomorrow	The Shirelles
+Shake, Rattle and Roll	Биг Джо Тернер
+Changes	Дэвид Боуи
+Rock and Roll Music	Чак Берри
+Born to Be Wild	Steppenwolf
+Maggie May	Род Стюарт
+With or Without You	U2
+Who Do You Love?	Бо Диддли
+Won’t Get Fooled Again	The Who
+In the Midnight Hour	Уилсон Пикетт
+While My Guitar Gently Weeps	The Beatles
+Your Song	Элтон Джон
+Eleanor Rigby	The Beatles
+Family Affair	Sly & the Family Stone
+I Saw Her Standing There	The Beatles
+Kashmir	Led Zeppelin
+All I Have to Do Is Dream	The Everly Brothers
+Please, Please, Please	Джеймс Браун и Famous Flames
+Purple Rain	Принс и The Revolution
+I Wanna Be Sedated	The Ramones
+Everyday People	Sly & the Family Stone
+Rock Lobster	The B-52s(сингл), Крис Блэквелл (альбом)
+Me and Bobby McGee	Дженис Джоплин
+Lust for Life	Игги Поп
+Cathy’s Clown	The Everly Brothers
+Eight Miles High	The Byrds
+Earth Angel	The Penguins
+Foxey Lady	The Jimi Hendrix Experience
+A Hard Day’s Night	The Beatles
+Rave On	Бадди Холли и The Crickets
+Proud Mary	Creedence Clearwater Revival
+The Sound of Silence	Simon & Garfunkel
+I Only Have Eyes for You	The Flamingos
+Rock Around the Clock	Билл Хейли и The Comets
+Moment of Surrender	U2
+I’m Waiting for the Man	The Velvet Underground
+Bring the Noise	Public Enemy
+Folsom Prison Blues	Джонни Кэш	1956	▲ 1	Сэм Филлипс
+I Can’t Stop Loving You	Рэй Чарльз
+Nothing Compares 2 U	Шинейд О’Коннор’Коннор
+Bohemian Rhapsody	Queen
+Fast Car	Трэйси Чэпмен
+Let’s Get It On	Марвин Гэй
+Papa Was a Rollin’ Stone	The Temptations
+Losing My Religion	R.E.M.
+Both Sides, Now	Джони Митчелл
+99 Problems	Jay-Z
+Dream On	Aerosmith
+Dancing Queen	ABBA
+God Save the Queen	Sex Pistols
+Paint It Black	The Rolling Stones
+I Fought the Law	The Bobby Fuller Four
+Don’t Worry Baby	The Beach Boys
+Free Fallin’	Том Петти
+September Gurls	Big Star
+Love Will Tear Us Apart	Joy Division
+Hey Ya!	Outkasté 3000
+Green Onions	Booker T and the MG’s
+Save the Last Dance for Me	The Drifters
+The Thrill Is Gone	Би Би Кинг
+Please Please Me	The Beatles
+Desolation Row	Боб Дилан
+Who’ll Stop the Rain	Creedence Clearwater Revival
+I Never Loved a Man (The Way I Love You)	Арета Франклин
+Back in Black	AC/DC
+Stayin’ Alive	Bee Gees
+Knockin’ on Heaven’s Door	Боб Дилан
+Free Bird	Lynyrd Skynyrd
+Rehab	Эми Уайнхаус
+Wichita Lineman	Глен Кэмпбелл
+There Goes My Baby	The Drifters
+Peggy Sue	Бадди Холли
+Sweet Child O' Mine	Guns N’ Roses
+Maybe	The Chantels
+Don’t Be Cruel	Элвис Пресли
+Hey Joe	The Jimi Hendrix Experience
+Flash Light	Parliament
+Loser	Бек
+Bizarre Love Triangle Order	1986 3 Order
+Come Together	The Beatles
+Positively 4th Street	Боб Дилан
+Try a Little Tenderness	Отис Реддинг
+Lean on Me	Билл Уизерс
+Reach Out I’ll Be There	The Four Tops
+Bye Bye Love	The Everly Brothers
+Gloria	Them
+In My Room	The Beach Boys
+96 Tears	Question Mark & the Mysterians
+Caroline, No	The Beach Boys
+215
+Rockin’ in the Free World	Нил Янг
+Your Cheatin’ Heart	Хэнк Уильямс
+Do You Believe in Magic	The Lovin’ Spoonful
+Jolene	Долли Партон
+Boom Boom	Джон Ли Хукер
+Spoonful	Хаулин Вулф
+Walk Away Renée	The Left Banke
+Walk on the Wild Side	Лу Рид
+Oh, Pretty Woman	Рой Орбисон
+Dance to the Music	Sly & the Family Stone
+Hoochie Coochie Man	Мадди Уотерс
+Fire and Rain	Джеймс Тейлор
+Should I Stay or Should I Go	The Clash
+Good Times	Chic
+Mannish Boy	Мадди Уотерс
+Moondance	Ван Моррисон
+Just Like a Woman	Боб Дилан
+Sexual Healing	Марвин Гэй
+Only the Lonely	Рой Орбисон
+We Gotta Get out of This Place	The Animals
+Paper Planes	M.I.A.
+I’ll Feel a Whole Lot Better	The Byrds
+Everyday	Бадди Холли
+I Got a Woman	Рэй Чарльз
+Planet Rock	Afrika Bambaataa & Soulsonic Force
+I Fall to Pieces	Пэтси Клайн
+Son of a Preacher Man	Дасти Спрингфилд
+The Wanderer	Дион
+Stand!	Sly & the Family Stone
+Rocket Man	Элтон Джон
+Love Shack	The B-52s
+Gimme Some Lovin’	The Spencer Davis Group
+(Your Love Keeps Lifting Me) Higher and Higher	Джеки Уилсон
+The Night They Drove Old Dixie Down	The Band
+Hot Fun in the Summertime	Sly & the Family Stone
+Rapper’s Delight	The Sugarhill Gang
+Chain of Fools	Арета Франклин
+Paranoid	Black Sabbath
+Money Honey	The Drifters
+Mack the Knife	Бобби Дарин
+All the Young Dudes	Mott the Hoople
+Paranoid Android	Radiohead
+Highway to Hell	AC/DC
+Heart of Glass	Blondie
+Mississippi	Боб Дилан
+Wild Thing	The Troggs
+I Can See for Miles	The Who
+Oh, What a Night	The Dells
+Hallelujah	Джефф Бакли
+Higher Ground	Стиви Уандер
+Ooo Baby Baby	The Miracles
+He’s a Rebel	The Crystals
+Sail Away	Рэнди Ньюмен
+Walking in the Rain	The Ronettes
+Tighten Up	Archie Bell and the Drells
+Personality Crisis York Dolls
+Sunday Bloody Sunday	U2
+Jesus Walks	Канье Уэст
+Roadrunner	The Modern Lovers
+He Stopped Loving Her Today	Джордж Джонс
+Sloop John B	The Beach Boys
+Sweet Little Sixteen	Чак Берри
+Something	The Beatles
+Somebody to Love	Jefferson Airplane
+Born in the U.S.A.	Брюс Спрингстин
+I’ll Take You There	The Staple Singers
+Ziggy Stardust	Дэвид Боуи
+Pictures of You	The Cure
+Chapel of Love	The Dixie Cups
+Ain’t No Sunshine	Билл Уизерс
+Seven Nation Army	The White Stripes
+You Are the Sunshine of My Life	Стиви Уандер
+Help Me	Джони Митчелл
+Call Me	Blondie
+(What’s So Funny ’Bout) Peace Love and Understanding?	Elvis Costello & the Attractions
+Smokestack Lightning	Хаулин Вулф
+Summer Babe	Pavement
+Walk This Way	Run-DMC и Aerosmith
+Money (That’s What I Want)	Барретт Стронг
+Can’t Buy Me Love	The Beatles
+Stan	Эминем и Дайдо45 King
+She’s Not There	The Zombies
+Train in Vain	The Clash
+Tired of Being Alone	Эл Грин
+Black Dog	Led Zeppelin
+Street Fighting Man	The Rolling Stones
+Get Up, Stand Up	Bob Marley & The Wailers
+Heart of Gold	Нил Янг
+Sign o’ the Times	Принс
+One Way or Another	Blondie
+Like a Prayer	Мадонна
+One More Time	Daft Punk
+Da Ya Think I’m Sexy?	Род Стюарт
+Blue Eyes Crying in the Rain	Вилли Нельсон
+Ruby Tuesday	The Rolling Stones
+With a Little Help from My Friends	The Beatles
+Say It Loud – I’m Black and I’m Proud	Джеймс Браун
+That’s Entertainment	The Jam-Хэвен, The Jam
+Why Do Fools Fall in Love	The Teenagers
+Lonely Teardrops	Джеки Уилсон
+What’s Love Got to Do with It	Тина Тёрнер
+Iron Man	Black Sabbath
+Wake Up Little Susie	The Everly Brothers
+In Dreams	Рой Орбисон
+I Put a Spell on You	Скримин Джей Хокинс
+Comfortably Numb	Pink Floyd
+Don’t Let Me Be Misunderstood	The Animals
+Alison	Элвис Костелло
+Wish You Were Here	Pink Floyd
+Many Rivers to Cross	Джимми Клифф
+School’s Out	Элис Купер
+Take Me Out	Franz Ferdinand
+Heartbreaker	Led Zeppelin
+Cortez the Killer	Нил Янг
+Fight the Power	Public Enemy
+Dancing Barefoot	Patti Smith Group
+Baby Love	The Supremes
+Good Lovin’	The Young Rascals
+Get Up (I Feel Like Being a) Sex Machine	Джеймс Браун
+For Your Precious Love	Джерри Батлер и The Impressions
+The End	The Doors
+That’s the Way of the World	Earth, Wind and Fire
+We Will Rock You	Queen
+I Can’t Make You Love Me	Бонни Рэйтт
+Subterranean Homesick Blues	Боб Дилан
+Spirit in the Sky	Норман Гринбаум
+Sweet Jane	The Velvet Underground
+Wild Horses	The Rolling Stones
+Beat It	Майкл Джексон
+Beautiful Day	U2
+Walk This Way	Aerosmith
+Maybe I’m Amazed	Пол Маккартни
+You Keep Me Hangin’ On	The Supremes
+Baba O’Riley	The Who
+The Harder They Come	Джимми Клифф
+Runaround Sue	Дион
+Jim Dandy	Лаверн Бейкер
+Piece of My Heart	Big Brother and the Holding Company
+La Bamba	Ричи Валенс
+California Love	Dr. Dre и 2Pac
+Candle in the Wind	Элтон Джон
+That Lady (Part 1 and 2)	The Isley Brothers
+Spanish Harlem	Бен Кинг
+The Loco-Motion	Литл Ива
+The Great Pretender	The Platters
+All Shook Up	Элвис Пресли
+Tears in Heaven	Эрик Клэптон
+Watching the Detectives	Элвис Костелло
+Bad Moon Rising	Creedence Clearwater Revival
+Sweet Dreams (Are Made of This)	Eurythmics
+Little Wing	The Jimi Hendrix Experience
+Nowhere to Run	Martha and the Vandellas
+Got My Mojo Working	Мадди Уотерс
+Killing Me Softly with His Song	Роберта Флэк
+All You Need Is Love	The Beatles
+Complete Control	The Clash
+The Letter	The Box Tops
+Highway 61 Revisited	Боб Дилан
+Unchained Melody	The Righteous Brothers
+How Deep Is Your Love	Bee Gees
+White Room	Cream
+Personal Jesus	Depeche Mode
+I’m a Man	Бо Диддли
+The Wind Cries Mary	The Jimi Hendrix Experience
+I Can’t Explain	The Who
+Marquee Moon	Television
+Wonderful World	Сэм Кук
+Brown Eyed Handsome Man	Чак Берри
+Another Brick in the Wall Part 2	Pink Floyd
+Fake Plastic Trees	Radiohead
+Maps	Yeah Yeah Yeahs
+Hit the Road Jack	Рэй Чарльз
+Pride (In the Name of Love)	U2
+Radio Free Europe	R.E.M.
+Goodbye Yellow Brick Road	Элтон Джон
+Tell It Like It Is	Аарон Невилл
+Bitter Sweet Symphony	The Verve«Youth» Гловер, Крис Поттер, The Verve
+Whipping Post	The Allman Brothers Band
+Ticket to Ride	The Beatles
+Ohio	Crosby, Stills, Nash and Young
+I Know You Got Soul	Eric B. & Rakim
+Tiny Dancer	Элтон Джон
+Roxanne	The Police
+Just My Imagination (Running Away with Me)	The Temptations
+Baby I Need Your Loving	The Four Tops
+Summer in the City	The Lovin’ Spoonful
+O-o-h Child	The Five Stairsteps
+Can’t Help Falling in Love	Элвис Пресли
+Remember (Walkin’ in the Sand)	The Shangri-Las
+(Don’t Fear) The Reaper	Blue Oyster Cult
+Thirteen	Big Star
+Sweet Home Alabama	Lynyrd Skynyrd
+Enter Sandman	Metallica
+Tonight’s the Night	The Shirelles
+Thank You (Falettinme Be Mice Elf Agin)	Sly & the Family Stone
+C’mon Everybody	Эдди Кокран
+Umbrella	Рианна и Jay-Z
+Visions of Johanna	Боб Дилан
+We’ve Only Just Begun	The Carpenters
+In Bloom	Nirvana
+Sweet Emotion	Aerosmith
+Monkey Gone to Heaven	Pixies
+I Feel Love	Донна Саммер
+Ode to Billie Joe	Бобби Джентри
+The Girl Can’t Help It	Литл Ричард
+Young Blood	The Coasters
+I Can’t Help Myself (Sugar Pie Honey Bunch)	The Four Tops
+The Boys of Summer	Дон Хенли
+Juicy	The Notorious B.I.G.
+Fuck tha Police	N.W.A.
+Suite: Judy Blue Eyes	Crosby, Stills & Nash
+Nuthin’ But a “G” Thang	Dr. Dre
+It’s Your Thing	The Isley Brothers
+Piano Man	Билли Джоэл
+Blue Suede Shoes	Элвис Пресли
+William, It Was Really Nothing	The Smiths
+American Idiot	Green Day
+Tumbling Dice	The Rolling Stones
+Smoke on the Water	Deep Purple
+Year’s Day	U2
+Everybody Needs Somebody to Love	Соломон Берк
+(White Man) In Hammersmith Palais	The Clash
+Ain’t That a Shame	Фэтс Домино
+Midnight Train to Georgia	Gladys Knight and the Pips
+Ramble On	Led Zeppelin
+Mustang Sally	Уилсон Пикетт
+Alone Again Or	Love
+Beast of Burden	The Rolling Stones
+Love Me Tender	Элвис Пресли
+I Wanna Be Your Dog	The Stooges
+Push It	Salt-N-Pepa
+Pink Houses	John Cougar Mellencamp
+In da Club	50 Cent
+Come Go with Me	The Del-Vikings
+I Shot the Sheriff	Боб Марли и The Wailers
+I Got You Babe	Сонни и Шер
+Come as You Are	Nirvana
+Pressure Drop	Toots and the Maytals
+Leader of the Pack	The Shangri-Las
+Heroin	The Velvet Underground
+Penny Lane	The Beatles
+The Twist	Чабби Чекер
+Cupid	Сэм Кук
+Paradise City	Guns N’ Roses
+My Sweet Lord	Джордж Харрисон
+Sheena Is a Punk Rocker	Ramones
+All Apologies	Nirvana
+Soul Man	Сэм и Дейв
+Kiss	Принс и The Revolution
+Rollin’ Stone	Мадди Уотерс
+Get Ur Freak On	Мисси Эллиотт
+Big Pimpin’	Jay-Z
+Respect Yourself	The Staple Singers
+Rain	The Beatles
+Standing in the Shadows of Love	The Four Tops
+Surrender	Cheap Trick
+Runaway	Дел Шеннон
+Welcome to the Jungle	Guns N’ Roses
+Into the Mystic	Ван Моррисон	1970	▲ 6	Ван Моррисон
+Where Did Our Love Go	The Supremes
+Do Right Woman, Do Right Man	Арета Франклин
+How Soon Is Now?	The Smiths	1985	▲ 9	Джон Портер
+Last Nite	The Strokes
+I Want to Know What Love Is	Foreigner
+Sabotage	Beastie Boys-младший
+Super Freak	Рик Джеймс
+Since U Been Gone	Келли Кларксон
+White Rabbit	Jefferson Airplane
+Cry Me a River	Джастин Тимберлейк
+Lady Marmalade	Labelle
+Young Americans	Дэвид Боуи
+I’m Eighteen	Элис Купер
+Just Like Heaven	The Cure
+Under the Boardwalk	The Drifters
+Clocks	Coldplay
+I Love Rock ’n’ Roll	Joan Jett & the Blackhearts
+I Will Survive	Глория Гейнор
+Time to Pretend	MGMT
+Ignition (Remix)	Ар Келли
+Brown Sugar	The Rolling Stones
+Running on Empty	Джексон Браун
+The Rising	Брюс Спрингстин’Брайан
+Miss You	The Rolling Stones
+Buddy Holly	Weezer
+Shop Around	The Miracles

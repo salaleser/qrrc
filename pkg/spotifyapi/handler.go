@@ -1,10 +1,12 @@
 package spotifyapi
 
 import (
+	"bufio"
 	"fmt"
 	"io/ioutil"
 	"math/rand"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/zmb3/spotify"
@@ -84,19 +86,56 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			"и меняются: жми кнопку и пытайся угадать."})
 		return
 	case "game/next":
-	case "game/show":
-		r, err := client.NewReleases()
+		file, err := os.Open("tracks.txt")
 		if err != nil {
 			loadPage(w, "error", []string{"text"},
-				[]string{fmt.Sprintf(errorFormat, err.Error())})
-			fmt.Printf("error: get track: %v\n", err)
+				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>", err.Error())})
+			fmt.Printf("error: game: next: open file: %v", err)
 			return
 		}
-		var text string
-		for i, v := range r.Albums {
-			text += fmt.Sprintf("%d. %s (%s)<br/>", i, v.Name, v.AlbumGroup)
+		defer file.Close()
+		scanner := bufio.NewScanner(file)
+		var lines []string
+		for scanner.Scan() {
+			lines = append(lines, scanner.Text())
 		}
-		loadPage(w, "game", []string{"text"}, []string{text})
+		err = scanner.Err()
+		if err != nil {
+			loadPage(w, "error", []string{"text"},
+				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
+					err.Error())})
+			fmt.Printf("error: game: next: scan file: %v", err)
+			return
+		}
+		line := strings.Split(lines[rand.Intn(len(lines))], "\t")
+		sr, err := client.Search(fmt.Sprintf("%s %s", line[1], line[0]),
+			spotify.SearchTypeTrack)
+		if err != nil {
+			loadPage(w, "error", []string{"text"},
+				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
+					err.Error())})
+			fmt.Printf("error: game: next: search: %v\n", err)
+			return
+		}
+		err = client.QueueSong(sr.Tracks.Tracks[0].ID)
+		if err != nil {
+			loadPage(w, "error", []string{"text"},
+				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
+					err.Error())})
+			fmt.Printf("error: game: next: queue song: %v\n", err)
+			return
+		}
+		err = client.Next()
+		if err != nil {
+			loadPage(w, "error", []string{"text"},
+				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
+					err.Error())})
+			fmt.Printf("error: game: next: next: %v\n", err)
+			return
+		}
+	case "game/show":
+		loadPage(w, "error", []string{"text"},
+			[]string{"not implemented"})
 	case "settings":
 		loadPage(w, action, []string{}, []string{})
 		return
