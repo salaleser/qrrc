@@ -39,6 +39,11 @@ func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func DefaultHandler(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var togglePlay string
+	var text string
+	action := strings.TrimPrefix(r.URL.Path, "/spotify/")
+
 	if client == nil {
 		loadPage(w, "error", []string{"text"}, []string{fmt.Sprintf("Сорян, "+
 			"братиш (bro), аутентификацию в спотифае (Spotify) владелец"+
@@ -48,7 +53,6 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var err error
 	ps, err := client.PlayerState()
 	if err != nil {
 		loadPage(w, "error", []string{"text"},
@@ -57,9 +61,6 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var togglePlay string
-	var text string
-	action := strings.TrimPrefix(r.URL.Path, "/spotify/")
 	switch action {
 	case "home":
 		if !ps.Playing {
@@ -79,11 +80,9 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		loadPage(w, action, []string{"text", "toggle_play"}, []string{text,
 			togglePlay})
-		return
 	case "game":
 		loadPage(w, action, []string{"text"}, []string{"Правила пока просты " +
 			"и меняются: жми кнопку и пытайся угадать."})
-		return
 	case "game/next":
 		file, err := os.Open("tracks.txt")
 		if err != nil {
@@ -159,11 +158,21 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		loadPage(w, "game", []string{"text"}, []string{text})
 	case "settings":
-		loadPage(w, action, []string{}, []string{})
-		return
+		devices, err := client.PlayerDevices()
+		if err != nil {
+			loadPage(w, "error", []string{"text"},
+				[]string{fmt.Sprintf(errorFormat, err.Error())})
+			fmt.Printf("error: settings: player devices: %v\n", err)
+			return
+		}
+		loadPage(w, action, []string{"text", "option_1"},
+			[]string{"Тут будет (soon) переключение (switch) на режим игры " +
+				"(гейм моуд) в угадывание трека (ugadai melodiyu), " +
+				"переключение на случайную позицию трека, включение полной " +
+				"информации (full information) о треке и другое.",
+				fmt.Sprintf("Devices: %+v", devices)})
 	case "help":
 		loadPage(w, action, []string{}, []string{})
-		return
 	case "play":
 		query := r.URL.Query()
 		artist := query.Get("artist")
