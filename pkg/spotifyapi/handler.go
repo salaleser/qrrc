@@ -172,7 +172,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 					"%s [%s] %d%%<br/>", v.Name, v.Type, v.Volume)
 			}
 			devicesList += fmt.Sprintf(
-				"<a href=/spotify/settings/selectDeviceId=%s>%s [%s] %d%%</a><br/>",
+				"<a href=/spotify/settings/selectDeviceId?deviceId=%s>%s [%s] %d%%</a><br/>",
 				v.ID.String(), v.Name, v.Type, v.Volume)
 		}
 		loadPage(w, action, []string{"text", "option_1"},
@@ -181,6 +181,15 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				"переключение на случайную позицию трека, включение полной " +
 				"информации (full information) о треке и другое.",
 				fmt.Sprintf("Devices: %+v", devices)})
+	case "settings/selectDeviceId":
+		// query := r.URL.Query()
+		// deviceID := query.Get("deviceId")
+		// loadPage(w, action, []string{"text", "option_1"},
+		// 	[]string{"Тут будет (soon) переключение (switch) на режим игры " +
+		// 		"(гейм моуд) в угадывание трека (ugadai melodiyu), " +
+		// 		"переключение на случайную позицию трека, включение полной " +
+		// 		"информации (full information) о треке и другое.",
+		// 		fmt.Sprintf("Devices: %+v", devices)})
 	case "help":
 		loadPage(w, action, []string{}, []string{})
 	case "play":
