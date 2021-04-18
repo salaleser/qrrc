@@ -133,7 +133,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("error: game: next: next: %v\n", err)
 			return
 		}
-		loadPage(w, action, []string{"text"},
+		loadPage(w, "game", []string{"text"},
 			[]string{"Запущен трек, попытайтесь отгадать!"})
 		return
 	case "game/show":
