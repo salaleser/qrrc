@@ -62,8 +62,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 	action := strings.TrimPrefix(r.URL.Path, "/spotify/")
 	switch action {
 	case "home":
-		// __повтор кода__
-		if ps.Playing {
+		if !ps.Playing {
 			togglePlay = "Продолжить воспроизведение"
 			text += "Музыка не играет."
 		} else {
@@ -77,7 +76,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			}
 			text += fmt.Sprintf("Сейчас играет: %s — %s", ft.Artists[0].Name,
 				ps.Item.Name)
-		} // ^^повтор кода^^
+		}
 		loadPage(w, action, []string{"text", "toggle_play"}, []string{text,
 			togglePlay})
 		return
