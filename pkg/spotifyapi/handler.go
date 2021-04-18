@@ -138,8 +138,6 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	case "game/show":
 		if ps.Playing {
-			text += "Музыка не играет."
-		} else {
 			ft, err := client.GetTrack(ps.Item.ID)
 			if err != nil {
 				loadPage(w, "error", []string{"text"},
@@ -149,6 +147,8 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			}
 			text += fmt.Sprintf("Это был: \"%s — %s\"", ft.Artists[0].Name,
 				ps.Item.Name)
+		} else {
+			text += "Музыка не играет."
 		}
 		loadPage(w, "game", []string{"text"}, []string{text})
 	case "settings":
