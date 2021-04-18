@@ -20,7 +20,7 @@ func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		if s := r.FormValue("state"); s != state {
 			http.Error(w, "State mismatch", http.StatusForbidden)
-			fmt.Printf("State mismatch: %s != %s\n", s, state)
+			fmt.Printf("error: state mismatch: %s != %s\n", s, state)
 			return
 		}
 		client := auth.NewClient(token)
@@ -28,13 +28,17 @@ func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	loadPage(w, "home", []string{"text", "toggle_play"},
-		[]string{"Успех! Теперь можешь управлять спотифаем или поиграть в угадаечку.",
-			"Toggle Play/Pause"})
+		[]string{"Успех! Теперь можешь управлять спотифаем или поиграть в " +
+			"угадаечку.", "Toggle Play/Pause"})
 }
 
 func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 	if client == nil {
-		loadPage(w, "auth", []string{"auth_link"}, []string{auth.AuthURL(state)})
+		loadPage(w, "error", []string{"text"}, []string{fmt.Sprintf("Сорян, "+
+			"братиш (bro), аутентификацию в спотифае (Spotify) владелец"+
+			" аккаунта еще не прошел. Если у тебя есть права, то пройди сам "+
+			"(do it yourself) по <a href=%q>этой ссылке</a>. Или попроси "+
+			"того, кто сможет.", auth.AuthURL(state))})
 		return
 	}
 
@@ -50,9 +54,6 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 	var text string
 	action := strings.TrimPrefix(r.URL.Path, "/spotify/")
 	switch action {
-	case "auth":
-		loadPage(w, action, []string{"auth_link"}, []string{auth.AuthURL(state)})
-		return
 	case "home":
 		// __повтор кода__
 		if ps.Playing {
@@ -66,9 +67,11 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				fmt.Printf("error: get track: %v\n", err)
 				return
 			}
-			text += fmt.Sprintf("Сейчас играет: %s — %s", ft.Artists[0].Name, ps.Item.Name)
+			text += fmt.Sprintf("Сейчас играет: %s — %s", ft.Artists[0].Name,
+				ps.Item.Name)
 		} // ^^повтор кода^^
-		loadPage(w, action, []string{"text", "toggle_play"}, []string{text, togglePlay})
+		loadPage(w, action, []string{"text", "toggle_play"}, []string{text,
+			togglePlay})
 		return
 	case "game":
 		loadPage(w, action, []string{"text"},
@@ -120,7 +123,8 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		} else {
-			sr, err := client.Search(fmt.Sprintf("%s %s", artist, album), spotify.SearchTypeAlbum)
+			sr, err := client.Search(fmt.Sprintf("%s %s", artist, album),
+				spotify.SearchTypeAlbum)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				fmt.Printf("error: play: search: %v\n", err)
@@ -134,7 +138,9 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			}
 			err = client.QueueSong(stp.Tracks[rand.Intn(stp.Total)].ID)
 			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
+				loadPage(w, "error", []string{"text"}, []string{"Спотифай" +
+					" выключен! Попроси хозяина запустить его или потыкать " +
+					"в уже включенный, чтобы удалось подцепить его."})
 				fmt.Printf("error: play: queue song: %v\n", err)
 				return
 			}
@@ -156,9 +162,11 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				fmt.Printf("error: get track: %v\n", err)
 				return
 			}
-			text += fmt.Sprintf("Сейчас играет: %s — %s", ft.Artists[0].Name, ps.Item.Name)
+			text += fmt.Sprintf("Сейчас играет: %s — %s", ft.Artists[0].Name,
+				ps.Item.Name)
 		}
-		loadPage(w, "home", []string{"text", "toggle_play"}, []string{text, togglePlay})
+		loadPage(w, "home", []string{"text", "toggle_play"}, []string{text,
+			togglePlay})
 	default:
 		http.NotFound(w, r)
 	}
@@ -172,7 +180,8 @@ func loadPage(w http.ResponseWriter, p string, old []string, new []string) {
 	}
 	w.Header().Set("Content-Type", "text/html")
 	for i := 0; i < len(old); i++ {
-		html = []byte(strings.Replace(string(html), "{{"+old[i]+"}}", new[i], -1))
+		html = []byte(strings.Replace(string(html), "{{"+old[i]+"}}", new[i],
+			-1))
 	}
 	_, err = w.Write(html)
 	if err != nil {
