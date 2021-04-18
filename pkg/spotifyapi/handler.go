@@ -108,6 +108,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		line := strings.Split(lines[rand.Intn(len(lines))], "\t")
+		fmt.Printf("debug: line=%s", strings.Join(line, "-"))
 		sr, err := client.Search(fmt.Sprintf("%s %s", line[1], line[0]),
 			spotify.SearchTypeTrack)
 		if err != nil {
@@ -115,6 +116,13 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
 					err.Error())})
 			fmt.Printf("error: game: next: search: %v\n", err)
+			return
+		}
+		if sr.Tracks.Total == 0 {
+			loadPage(w, "error", []string{"text"},
+				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
+					"Не найдено треков в спотифае")})
+			fmt.Printf("error: game: next: %v\n", "sr.Tracks.Total == 0")
 			return
 		}
 		err = client.QueueSong(sr.Tracks.Tracks[0].ID)
