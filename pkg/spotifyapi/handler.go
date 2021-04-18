@@ -11,7 +11,8 @@ import (
 )
 
 const errorFormat = `Спотифай выключен! Попроси хозяина запустить его или потыкать
-в уже включенный, чтобы удалось подцепить его.<br/>Сообщение об ошибке: %s`
+в уже включенный, чтобы удалось подцепить его.<br/><p class="error">Сообщение об
+ошибке: %s</p>`
 
 func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 	if client == nil {
