@@ -1,0 +1,17 @@
+body {
+    font-size: 24;
+}
+p, a {
+    font-family: "Lucida Console", monospace;
+}
+img {
+    width:100%;
+    height: auto;
+}
+.title {
+    font-size: 200%;
+}
+.error {
+    font-size: 50%;
+    color: #aaaaaa;
+}
