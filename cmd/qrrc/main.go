@@ -17,7 +17,7 @@ func main() {
 	if len(port) == 0 {
 		log.Fatal("No port provided")
 	}
-	err := http.ListenAndServe(":"+port, nil)
+	err := http.ListenAndServe("https:"+os.Getenv("REDIRECT_HOST")+":"+port, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
