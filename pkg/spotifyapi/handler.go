@@ -176,6 +176,13 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				fmt.Printf("error: game: hint: get track: %v\n", err)
 				return
 			}
+			fa, err := client.GetArtist(ft.Artists[0].ID)
+			if err != nil {
+				loadPage(w, "error", []string{"text"},
+					[]string{fmt.Sprintf(errorFormat, err.Error())})
+				fmt.Printf("error: game: hint: get artist: %v\n", err)
+				return
+			}
 
 			hints := make([]string, 0)
 			hints = append(hints, fmt.Sprintf("Первая буква имени исполнителя %q",
@@ -184,6 +191,10 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				ft.Name[0]))
 			hints = append(hints, fmt.Sprintf("Количество слов в названии трека %d",
 				len(strings.Split(ft.Name, " "))))
+			hints = append(hints, fmt.Sprintf("Жанр %q",
+				strings.Join(fa.Genres, ", ")))
+			hints = append(hints, fmt.Sprintf("Фото <img src=%s/>",
+				fa.Images[0].URL))
 			hints = append(hints, fmt.Sprintf("Исполнитель %q", ft.Artists[0].Name))
 
 			if step >= len(hints) {
