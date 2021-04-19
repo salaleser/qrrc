@@ -158,6 +158,28 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			text += "Музыка не играет."
 		}
 		loadPage(w, "game", []string{"text"}, []string{text})
+	case "game/hint":
+		if ps.Playing {
+			ft, err := client.GetTrack(ps.Item.ID)
+			if err != nil {
+				loadPage(w, "error", []string{"text"},
+					[]string{fmt.Sprintf(errorFormat, err.Error())})
+				fmt.Printf("error: get track: %v\n", err)
+				return
+			}
+
+			hints := make([]string, 0)
+			hints = append(hints, fmt.Sprintf("Первая буква имени исполнителя %q",
+				ft.Artists[0].Name[0]))
+			hints = append(hints, fmt.Sprintf("Первая буква названия трека %q",
+				ft.Name[0]))
+			hints = append(hints, fmt.Sprintf("Исполнитель %q", ft.Artists[0].Name))
+
+			text += hints[rand.Intn(len(hints))]
+		} else {
+			text += "Музыка не играет."
+		}
+		loadPage(w, "game", []string{"text"}, []string{text})
 	case "settings":
 		devices, err := client.PlayerDevices()
 		if err != nil {
