@@ -166,6 +166,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("error: settings: player devices: %v\n", err)
 			return
 		}
+		fmt.Printf("ps.Item ## %+v", ps.Item)
 		deviceIDParameter := query.Get("deviceId")
 		for _, v := range devices {
 			if v.ID.String() == deviceIDParameter {
