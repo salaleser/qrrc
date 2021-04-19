@@ -43,6 +43,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 	var togglePlay string
 	var text string
 	action := strings.TrimPrefix(r.URL.Path, "/spotify/")
+	query := r.URL.Query()
 
 	if client == nil {
 		loadPage(w, "error", []string{"text"}, []string{fmt.Sprintf("Сорян, "+
@@ -165,6 +166,13 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("error: settings: player devices: %v\n", err)
 			return
 		}
+		deviceIDParameter := query.Get("deviceId")
+		for _, v := range devices {
+			if v.ID.String() == deviceIDParameter {
+				client.QueueSongOpt(ps.Item.ID,
+					&spotify.PlayOptions{DeviceID: &v.ID})
+			}
+		}
 		var devicesList string
 		for _, v := range devices {
 			if v.Active {
@@ -172,28 +180,14 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 					"%s [%s] %d%%<br/>", v.Name, v.Type, v.Volume)
 			}
 			devicesList += fmt.Sprintf(
-				"<a href=/spotify/settings/selectDeviceId?deviceId=%s>%s [%s] %d%%</a><br/>",
+				"<a href=/spotify/settings?deviceId=%s>%s [%s] %d%%</a><br/>",
 				v.ID.String(), v.Name, v.Type, v.Volume)
 		}
 		loadPage(w, action, []string{"text", "option_1"},
-			[]string{"Тут будет (soon) переключение (switch) на режим игры " +
-				"(гейм моуд) в угадывание трека (ugadai melodiyu), " +
-				"переключение на случайную позицию трека, включение полной " +
-				"информации (full information) о треке и другое.",
-				fmt.Sprintf("Devices: %+v", devices)})
-	case "settings/selectDeviceId":
-		// query := r.URL.Query()
-		// deviceID := query.Get("deviceId")
-		// loadPage(w, action, []string{"text", "option_1"},
-		// 	[]string{"Тут будет (soon) переключение (switch) на режим игры " +
-		// 		"(гейм моуд) в угадывание трека (ugadai melodiyu), " +
-		// 		"переключение на случайную позицию трека, включение полной " +
-		// 		"информации (full information) о треке и другое.",
-		// 		fmt.Sprintf("Devices: %+v", devices)})
+			[]string{"--", devicesList})
 	case "help":
 		loadPage(w, action, []string{}, []string{})
 	case "play":
-		query := r.URL.Query()
 		artist := query.Get("artist")
 		album := query.Get("album")
 		if artist == "" && album == "" {
