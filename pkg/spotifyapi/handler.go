@@ -186,17 +186,21 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 
 			hints := make([]string, 0)
 			hints = append(hints, fmt.Sprintf("Первая буква имени исполнителя %q",
-				strings.TrimLeft(ft.Artists[0].Name, "The ")[0]))
+				strings.TrimLeft(fa.Name, "The ")[0]))
 			hints = append(hints, fmt.Sprintf("Первая буква названия трека %q",
 				ft.Name[0]))
 			hints = append(hints, fmt.Sprintf("Количество слов в названии трека %d",
 				len(strings.Split(ft.Name, " "))))
 			hints = append(hints, fmt.Sprintf("Жанр %q",
 				strings.Join(fa.Genres, ", ")))
-			hints = append(hints, fmt.Sprintf("Фото: <img src=\"%s\">",
+			if ft.Explicit {
+				hints = append(hints, fmt.Sprintf("Без матюков"))
+			} else {
+				hints = append(hints, fmt.Sprintf("Содержит матюки"))
+			}
+			hints = append(hints, fmt.Sprintf("Фото исполнителя: <img src=\"%s\">",
 				fa.Images[0].URL))
-			hints = append(hints, fmt.Sprintf("Исполнитель %q", ft.Artists[0].Name))
-
+			hints = append(hints, fmt.Sprintf("Исполнитель %q", fa.Name))
 			if step >= len(hints) {
 				text += "Подсказок больше нет."
 				step = 0
