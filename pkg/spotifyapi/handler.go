@@ -83,8 +83,8 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		loadPage(w, action, []string{"text", "toggle_play"}, []string{text,
 			togglePlay})
 	case "game":
-		loadPage(w, action, []string{"text"}, []string{"Правила пока просты " +
-			"и меняются: жми кнопку и пытайся угадать."})
+		loadPage(w, action, []string{"text", "step"}, []string{"Правила пока просты " +
+			"и меняются: жми кнопку и пытайся угадать.", "0"})
 	case "game/next":
 		file, err := os.Open("tracks.txt")
 		if err != nil {
