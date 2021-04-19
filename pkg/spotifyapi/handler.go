@@ -179,12 +179,12 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 					"<p>%s [%s] %d%%</p>", v.Name, v.Type, v.Volume)
 			} else {
 				devicesList += fmt.Sprintf(
-					"<a href=/spotify/settings?deviceId=%s>%s [%s] %d%%</a><br/>",
-					v.ID.String(), v.Name, v.Type, v.Volume)
+					"<a href=/spotify/settings?deviceId=%s>%s [%s] %d%%"+
+						"</a><br/>", v.ID.String(), v.Name, v.Type, v.Volume)
 			}
 		}
 		loadPage(w, action, []string{"text", "option_1"},
-			[]string{"--", devicesList})
+			[]string{"Зарегистрированные устройства:", devicesList})
 	case "help":
 		loadPage(w, action, []string{}, []string{})
 	case "play":
