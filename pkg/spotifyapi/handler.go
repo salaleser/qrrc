@@ -183,10 +183,12 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				ft.Name[0]))
 			hints = append(hints, fmt.Sprintf("Исполнитель %q", ft.Artists[0].Name))
 
-			if step < len(hints) {
+			if len(hints)-1 >= step {
+				text += "Подсказок больше нет."
+			} else {
 				step++
+				text += hints[step]
 			}
-			text += hints[step]
 		} else {
 			text += "Музыка не играет."
 		}
