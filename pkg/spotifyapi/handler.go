@@ -161,7 +161,6 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		loadPage(w, "game", []string{"text", "step"}, []string{text, "0"})
 	case "game/hint":
 		step, err := strconv.Atoi(query.Get("step"))
-		step++
 		if err != nil {
 			loadPage(w, "error", []string{"text"},
 				[]string{fmt.Sprintf(errorFormat, err.Error())})
@@ -184,6 +183,9 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				ft.Name[0]))
 			hints = append(hints, fmt.Sprintf("Исполнитель %q", ft.Artists[0].Name))
 
+			if step < len(hints) {
+				step++
+			}
 			text += hints[step]
 		} else {
 			text += "Музыка не играет."
