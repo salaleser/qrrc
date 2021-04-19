@@ -166,12 +166,13 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("error: settings: player devices: %v\n", err)
 			return
 		}
-		fmt.Printf("ps.Item ## %+v", ps.Item)
+		fmt.Printf("ps.Item:: %+v\n", ps.Item)
 		deviceIDParameter := query.Get("deviceId")
-		for _, v := range devices {
+		for i, v := range devices {
+			fmt.Printf("  %d:: %+v\n", i, v)
 			if v.ID.String() == deviceIDParameter {
-				client.QueueSongOpt(ps.Item.ID,
-					&spotify.PlayOptions{DeviceID: &v.ID})
+				// client.QueueSongOpt(ps.Item.ID,
+				// 	&spotify.PlayOptions{DeviceID: &v.ID})
 			}
 		}
 		var devicesList string
