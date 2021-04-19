@@ -185,9 +185,10 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 
 			if step >= len(hints)-1 {
 				text += "Подсказок больше нет."
+				step = 0
 			} else {
-				step++
 				text += hints[step]
+				step++
 			}
 		} else {
 			text += "Музыка не играет."
