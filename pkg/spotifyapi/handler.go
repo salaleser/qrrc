@@ -134,10 +134,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		err = client.Next()
-		println(sr.Tracks.Tracks[0].Duration)
-		position := sr.Tracks.Tracks[0].Duration / 3
-		println(position)
-		client.Seek(position)
+		client.Seek(sr.Tracks.Tracks[0].Duration / 3)
 		if err != nil {
 			loadPage(w, "error", []string{"text"},
 				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
@@ -187,7 +184,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				ft.Name[0]))
 			hints = append(hints, fmt.Sprintf("Исполнитель %q", ft.Artists[0].Name))
 
-			if step >= len(hints)-1 {
+			if step >= len(hints) {
 				text += "Подсказок больше нет."
 				step = 0
 			} else {
