@@ -179,9 +179,11 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 
 			hints := make([]string, 0)
 			hints = append(hints, fmt.Sprintf("Первая буква имени исполнителя %q",
-				ft.Artists[0].Name[0]))
+				strings.TrimLeft(ft.Artists[0].Name, "The ")[0]))
 			hints = append(hints, fmt.Sprintf("Первая буква названия трека %q",
 				ft.Name[0]))
+			hints = append(hints, fmt.Sprintf("Количество слов в названии трека %d",
+				len(strings.Split(ft.Name, " "))))
 			hints = append(hints, fmt.Sprintf("Исполнитель %q", ft.Artists[0].Name))
 
 			if step >= len(hints) {
