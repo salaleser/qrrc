@@ -193,7 +193,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				len(strings.Split(ft.Name, " "))))
 			hints = append(hints, fmt.Sprintf("Жанр %q",
 				strings.Join(fa.Genres, ", ")))
-			hints = append(hints, fmt.Sprintf("Фото <img src=%s/>",
+			hints = append(hints, fmt.Sprintf("Фото: <img src=\"%s\">",
 				fa.Images[0].URL))
 			hints = append(hints, fmt.Sprintf("Исполнитель %q", ft.Artists[0].Name))
 
