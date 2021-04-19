@@ -161,6 +161,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		loadPage(w, "game", []string{"text", "step"}, []string{text, "0"})
 	case "game/hint":
 		step, err := strconv.Atoi(query.Get("step"))
+		step++
 		if err != nil {
 			loadPage(w, "error", []string{"text"},
 				[]string{fmt.Sprintf(errorFormat, err.Error())})
