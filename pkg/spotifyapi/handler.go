@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/zmb3/spotify"
@@ -140,8 +141,8 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("error: game: next: next: %v\n", err)
 			return
 		}
-		loadPage(w, "game", []string{"text"},
-			[]string{"Запущен трек, попытайтесь отгадать!"})
+		loadPage(w, "game", []string{"text", "step"},
+			[]string{"Запущен трек, попытайтесь отгадать!", "0"})
 		return
 	case "game/show":
 		if ps.Playing {
@@ -157,14 +158,21 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		} else {
 			text += "Музыка не играет."
 		}
-		loadPage(w, "game", []string{"text"}, []string{text})
+		loadPage(w, "game", []string{"text", "step"}, []string{text, "0"})
 	case "game/hint":
+		step, err := strconv.Atoi(query.Get("step"))
+		if err != nil {
+			loadPage(w, "error", []string{"text"},
+				[]string{fmt.Sprintf(errorFormat, err.Error())})
+			fmt.Printf("error: game: hint: get parameter: %v\n", err)
+			return
+		}
 		if ps.Playing {
 			ft, err := client.GetTrack(ps.Item.ID)
 			if err != nil {
 				loadPage(w, "error", []string{"text"},
 					[]string{fmt.Sprintf(errorFormat, err.Error())})
-				fmt.Printf("error: get track: %v\n", err)
+				fmt.Printf("error: game: hint: get track: %v\n", err)
 				return
 			}
 
@@ -175,11 +183,12 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				ft.Name[0]))
 			hints = append(hints, fmt.Sprintf("Исполнитель %q", ft.Artists[0].Name))
 
-			text += hints[rand.Intn(len(hints))]
+			text += hints[step]
 		} else {
 			text += "Музыка не играет."
 		}
-		loadPage(w, "game", []string{"text"}, []string{text})
+		loadPage(w, "game", []string{"text", "step"}, []string{text,
+			strconv.Itoa(step)})
 	case "settings":
 		devices, err := client.PlayerDevices()
 		if err != nil {
