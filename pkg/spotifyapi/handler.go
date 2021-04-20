@@ -83,34 +83,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		loadPage(w, action, []string{"text", "toggle_play"}, []string{text,
 			togglePlay})
 	case "game":
-		loadPage(w, action, []string{"text", "step"}, []string{"Правила пока просты " +
-			"и меняются: жми кнопку и пытайся угадать.", "0"})
-	case "game/next":
-		file, err := os.Open("tracks.txt")
-		if err != nil {
-			loadPage(w, "error", []string{"text"},
-				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>", err.Error())})
-			fmt.Printf("error: game: next: open file: %v", err)
-			return
-		}
-		defer file.Close()
-		scanner := bufio.NewScanner(file)
-		var lines []string
-		for scanner.Scan() {
-			lines = append(lines, scanner.Text())
-		}
-		err = scanner.Err()
-		if err != nil {
-			loadPage(w, "error", []string{"text"},
-				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
-					err.Error())})
-			fmt.Printf("error: game: next: scan file: %v", err)
-			return
-		}
-		line := strings.Split(lines[rand.Intn(len(lines))], "\t")
-		fmt.Printf("debug: line=%s", strings.Join(line, "-"))
-		sr, err := client.Search(fmt.Sprintf("%s %s", line[1], line[0]),
-			spotify.SearchTypeTrack)
+		cp, err := client.GetCategories()
 		if err != nil {
 			loadPage(w, "error", []string{"text"},
 				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
@@ -118,21 +91,87 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("error: game: next: search: %v\n", err)
 			return
 		}
-		if sr.Tracks.Total == 0 {
-			loadPage(w, "error", []string{"text"},
-				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
-					"Не найдено треков в спотифае")})
-			fmt.Printf("error: game: next: %v\n", "sr.Tracks.Total == 0")
-			return
+		playlists := cp.Categories[0].Icons[0].URL
+		loadPage(w, action, []string{"text", "step", "playlists"},
+			[]string{"Жми кнопку и пытайся угадать.", "0", playlists})
+	case "game/next":
+		playlist := query.Get("playlist")
+		var sr *spotify.SearchResult
+		var err error
+		var searchQuery string
+		if playlist == "top500" {
+			file, err := os.Open("tracks.txt")
+			if err != nil {
+				loadPage(w, "error", []string{"text"},
+					[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>", err.Error())})
+				fmt.Printf("error: game: next: open file: %v", err)
+				return
+			}
+			defer file.Close()
+			scanner := bufio.NewScanner(file)
+			var lines []string
+			for scanner.Scan() {
+				lines = append(lines, scanner.Text())
+			}
+			err = scanner.Err()
+			if err != nil {
+				loadPage(w, "error", []string{"text"},
+					[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
+						err.Error())})
+				fmt.Printf("error: game: next: scan file: %v", err)
+				return
+			}
+			line := strings.Split(lines[rand.Intn(len(lines))], "\t")
+			searchQuery := fmt.Sprintf("%s %s", line[1], line[0])
+			sr, err = client.Search(searchQuery, spotify.SearchTypeTrack)
+			if err != nil {
+				loadPage(w, "error", []string{"text"},
+					[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
+						err.Error())})
+				fmt.Printf("error: game: next: search: %v\n", err)
+				return
+			}
 		}
-		err = client.QueueSong(sr.Tracks.Tracks[0].ID)
+
+		sr, err = client.Search(searchQuery, spotify.SearchTypePlaylist)
 		if err != nil {
 			loadPage(w, "error", []string{"text"},
 				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
 					err.Error())})
-			fmt.Printf("error: game: next: queue song: %v\n", err)
+			fmt.Printf("error: game: next: search: %v\n", err)
 			return
 		}
+
+		if sr == nil {
+			loadPage(w, "error", []string{"text"},
+				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
+					"Поиск не вернул результат")})
+			fmt.Printf("error: game: next: %v\n", "sr == nil")
+			return
+		}
+
+		if sr.Tracks.Total == 0 {
+			loadPage(w, "error", []string{"text"},
+				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s %q</p>",
+					"Не найдено треков по запросу", searchQuery)})
+			fmt.Printf("error: game: next: %s (%s)\n", "sr.Tracks.Total == 0",
+				searchQuery)
+			return
+		}
+
+		if playlist == "top500" {
+			err = client.QueueSong(sr.Tracks.Tracks[0].ID)
+			if err != nil {
+				loadPage(w, "error", []string{"text"},
+					[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
+						err.Error())})
+				fmt.Printf("error: game: next: queue song: %v\n", err)
+				return
+			}
+		} else {
+
+		}
+
 		err = client.Next()
 		client.Seek(sr.Tracks.Tracks[0].Duration / 3)
 		if err != nil {
@@ -144,7 +183,6 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		loadPage(w, "game", []string{"text", "step"},
 			[]string{"Запущен трек, попытайтесь отгадать!", "0"})
-		return
 	case "game/show":
 		if ps.Playing {
 			ft, err := client.GetTrack(ps.Item.ID)
@@ -194,9 +232,9 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			hints = append(hints, fmt.Sprintf("Жанр %q",
 				strings.Join(fa.Genres, ", ")))
 			if ft.Explicit {
-				hints = append(hints, fmt.Sprintf("Без матюков"))
-			} else {
 				hints = append(hints, fmt.Sprintf("Содержит матюки"))
+			} else {
+				hints = append(hints, fmt.Sprintf("Без матюков"))
 			}
 			hints = append(hints, fmt.Sprintf("Фото исполнителя: <img src=\"%s\">",
 				fa.Images[0].URL))
@@ -205,7 +243,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				text += "Подсказок больше нет."
 				step = 0
 			} else {
-				text += hints[step]
+				text += fmt.Sprintf("Подсказка #%d: %s", step+1, hints[step])
 				step++
 			}
 		} else {
