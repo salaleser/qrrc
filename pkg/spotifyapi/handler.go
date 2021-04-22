@@ -356,7 +356,7 @@ func loadPage(w http.ResponseWriter, p string, old []string, new []string) {
 	}
 }
 
-func activateFirstDevice() error {
+func activateFirstDevice(w http.ResponseWriter) error {
 	devices, err := client.PlayerDevices()
 	if err != nil {
 		return errors.Wrap(err, "player devices")
@@ -371,6 +371,9 @@ func activateFirstDevice() error {
 		return errors.Wrap(err, "play with options")
 	}
 
+	loadPage(w, "home", []string{"text", "toggle_play"},
+		[]string{fmt.Sprintf("Device %s (%s) activated",
+			devices[0].Name, devices[0].Type), "Toggle Play"})
 	fmt.Printf("device %q activated", devices[0].Name)
 
 	return nil
@@ -378,7 +381,7 @@ func activateFirstDevice() error {
 
 func handleError(w http.ResponseWriter, err error, message string) {
 	if err.Error() == ErrNoActiveDeviceFound {
-		err := activateFirstDevice()
+		err := activateFirstDevice(w)
 		if err != nil {
 			handleError(w, err, message)
 		}
