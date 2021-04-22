@@ -14,7 +14,7 @@ import (
 	"github.com/zmb3/spotify"
 )
 
-const ErrNoActiveDeviceFound = "Player command failed: No active device foun"
+const ErrNoActiveDeviceFound = "Player command failed: No active device found"
 
 func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 	if client == nil {
