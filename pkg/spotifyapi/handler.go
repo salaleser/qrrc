@@ -83,7 +83,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			loadPage(w, "error", []string{"text"},
 				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
 					err.Error())})
-			fmt.Printf("error: game: next: search: %v\n", err)
+			fmt.Printf("error: TEST: search: %v\n", err)
 			return
 		}
 		playlists := fmt.Sprintf("<img src=%s>", cp.Categories[0].Icons[0].URL)
@@ -93,7 +93,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		playlist := query.Get("playlist")
 		var sr *spotify.SearchResult
 		var err error
-		var searchQuery string
+		fmt.Printf("### %q\n", playlist)
 		if playlist == "top500" {
 			file, err := os.Open("tracks.txt")
 			if err != nil {
@@ -128,7 +128,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		sr, err = client.Search(searchQuery, spotify.SearchTypePlaylist)
+		sr, err = client.Search(playlist, spotify.SearchTypePlaylist)
 		if err != nil {
 			loadPage(w, "error", []string{"text"},
 				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
@@ -148,9 +148,9 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		if sr.Tracks.Total == 0 {
 			loadPage(w, "error", []string{"text"},
 				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s %q</p>",
-					"Не найдено треков по запросу", searchQuery)})
+					"Не найдено треков по запросу", playlist)})
 			fmt.Printf("error: game: next: %s (%s)\n", "sr.Tracks.Total == 0",
-				searchQuery)
+				playlist)
 			return
 		}
 
