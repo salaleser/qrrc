@@ -78,17 +78,8 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		loadPage(w, action, []string{"text", "toggle_play"}, []string{text,
 			togglePlay})
 	case "game":
-		cp, err := client.GetCategories()
-		if err != nil {
-			loadPage(w, "error", []string{"text"},
-				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
-					err.Error())})
-			fmt.Printf("error: TEST: search: %v\n", err)
-			return
-		}
-		playlists := fmt.Sprintf("<img src=%s>", cp.Categories[0].Icons[0].URL)
-		loadPage(w, action, []string{"text", "step", "playlists"},
-			[]string{"Жми кнопку и пытайся угадать.", "0", playlists})
+		loadPage(w, action, []string{"text", "step"},
+			[]string{"Жми кнопку и пытайся угадать.", "0"})
 	case "game/next":
 		playlist := query.Get("playlist")
 		var sr *spotify.SearchResult
@@ -190,30 +181,22 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 
 		err = client.QueueSong(track.ID)
 		if err != nil {
-			loadPage(w, "error", []string{"text"},
-				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
-					err.Error())})
-			fmt.Printf("error: game: next: queue song: %v\n", err)
+			handleError(w, err, "game: game: next: queue song")
 			return
 		}
 
 		err = client.Next()
 		if err != nil {
-			loadPage(w, "error", []string{"text"},
-				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
-					err.Error())})
-			fmt.Printf("error: game: next: next: %v\n", err)
+			handleError(w, err, "game: game: next: next")
 			return
 		}
 
-		client.Seek(track.Duration/4 + rand.Intn(track.Duration/4))
+		err = client.Seek(track.Duration/4 + rand.Intn(track.Duration/4))
 		if err != nil {
-			loadPage(w, "error", []string{"text"},
-				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
-					err.Error())})
-			fmt.Printf("error: game: next: next: %v\n", err)
+			handleError(w, err, "game: game: next: seek")
 			return
 		}
+
 		loadPage(w, "game", []string{"text", "step"},
 			[]string{"Запущен трек, попытайтесь отгадать!", "0"})
 	case "game/show":
