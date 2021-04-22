@@ -361,10 +361,17 @@ func activateFirstDevice() error {
 	if err != nil {
 		return errors.Wrap(err, "player devices")
 	}
-	if len(devices) > 0 {
-		client.PlayOpt(&spotify.PlayOptions{DeviceID: &devices[0].ID})
-		fmt.Printf("device %q activated", devices[0].Name)
+
+	if len(devices) == 0 {
+		return errors.Wrap(err, "no devices found")
 	}
+
+	err = client.PlayOpt(&spotify.PlayOptions{DeviceID: &devices[0].ID})
+	if err != nil {
+		return errors.Wrap(err, "play with options")
+	}
+
+	fmt.Printf("device %q activated", devices[0].Name)
 
 	return nil
 }
