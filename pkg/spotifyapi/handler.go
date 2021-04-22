@@ -10,12 +10,11 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/pkg/errors"
 	"github.com/zmb3/spotify"
 )
 
-const errorFormat = `Спотифай выключен! Попроси хозяина запустить его или потыкать
-в уже включенный, чтобы удалось подцепить его.<br/><p class="error">Сообщение об
-ошибке: %s</p>`
+const ErrNoActiveDeviceFound = "No active device found"
 
 func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 	if client == nil {
@@ -57,9 +56,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 
 	ps, err := client.PlayerState()
 	if err != nil {
-		loadPage(w, "error", []string{"text"},
-			[]string{fmt.Sprintf(errorFormat, err.Error())})
-		fmt.Printf("error: player state: %v\n", err)
+		handleError(w, err, "player state")
 		return
 	}
 
@@ -72,9 +69,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			togglePlay = "Остановить воспроизведение"
 			ft, err := client.GetTrack(ps.Item.ID)
 			if err != nil {
-				loadPage(w, "error", []string{"text"},
-					[]string{fmt.Sprintf(errorFormat, err.Error())})
-				fmt.Printf("error: get track: %v\n", err)
+				handleError(w, err, "get track")
 				return
 			}
 			text += fmt.Sprintf("Сейчас играет: %s — %s", ft.Artists[0].Name,
@@ -91,7 +86,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("error: game: next: search: %v\n", err)
 			return
 		}
-		playlists := cp.Categories[0].Icons[0].URL
+		playlists := fmt.Sprintf("<img src=%s>", cp.Categories[0].Icons[0].URL)
 		loadPage(w, action, []string{"text", "step", "playlists"},
 			[]string{"Жми кнопку и пытайся угадать.", "0", playlists})
 	case "game/next":
@@ -169,10 +164,18 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 		} else {
-
+			//
 		}
 
 		err = client.Next()
+		if err != nil {
+			loadPage(w, "error", []string{"text"},
+				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
+					err.Error())})
+			fmt.Printf("error: game: next: next: %v\n", err)
+			return
+		}
+
 		client.Seek(sr.Tracks.Tracks[0].Duration / 3)
 		if err != nil {
 			loadPage(w, "error", []string{"text"},
@@ -187,9 +190,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		if ps.Playing {
 			ft, err := client.GetTrack(ps.Item.ID)
 			if err != nil {
-				loadPage(w, "error", []string{"text"},
-					[]string{fmt.Sprintf(errorFormat, err.Error())})
-				fmt.Printf("error: get track: %v\n", err)
+				handleError(w, err, "game: show: get track")
 				return
 			}
 			text += fmt.Sprintf("Это был: \"%s — %s\"", ft.Artists[0].Name,
@@ -201,24 +202,18 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 	case "game/hint":
 		step, err := strconv.Atoi(query.Get("step"))
 		if err != nil {
-			loadPage(w, "error", []string{"text"},
-				[]string{fmt.Sprintf(errorFormat, err.Error())})
-			fmt.Printf("error: game: hint: get parameter: %v\n", err)
+			handleError(w, err, "game: hint: get parameter")
 			return
 		}
 		if ps.Playing {
 			ft, err := client.GetTrack(ps.Item.ID)
 			if err != nil {
-				loadPage(w, "error", []string{"text"},
-					[]string{fmt.Sprintf(errorFormat, err.Error())})
-				fmt.Printf("error: game: hint: get track: %v\n", err)
+				handleError(w, err, "game: hint: get track")
 				return
 			}
 			fa, err := client.GetArtist(ft.Artists[0].ID)
 			if err != nil {
-				loadPage(w, "error", []string{"text"},
-					[]string{fmt.Sprintf(errorFormat, err.Error())})
-				fmt.Printf("error: game: hint: get artist: %v\n", err)
+				handleError(w, err, "game: hint: get artist")
 				return
 			}
 
@@ -254,9 +249,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 	case "settings":
 		devices, err := client.PlayerDevices()
 		if err != nil {
-			loadPage(w, "error", []string{"text"},
-				[]string{fmt.Sprintf(errorFormat, err.Error())})
-			fmt.Printf("error: settings: player devices: %v\n", err)
+			handleError(w, err, "settings: player devices")
 			return
 		}
 		deviceIDParameter := query.Get("deviceId")
@@ -286,25 +279,19 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		if artist == "" && album == "" {
 			ps, err := client.PlayerState()
 			if err != nil {
-				loadPage(w, "error", []string{"text"},
-					[]string{fmt.Sprintf(errorFormat, err.Error())})
-				fmt.Printf("error: play: get player state: %v\n", err)
+				handleError(w, err, "play: get player state")
 				return
 			}
 			if ps.Playing {
 				err = client.Pause()
 				if err != nil {
-					loadPage(w, "error", []string{"text"},
-						[]string{fmt.Sprintf(errorFormat, err.Error())})
-					fmt.Printf("error: play: toggle to pause: %v\n", err)
+					handleError(w, err, "play: toggle to pause")
 					return
 				}
 			} else {
 				err = client.Play()
 				if err != nil {
-					loadPage(w, "error", []string{"text"},
-						[]string{fmt.Sprintf(errorFormat, err.Error())})
-					fmt.Printf("error: play: toggle to play: %v\n", err)
+					handleError(w, err, "play: toggle to play")
 					return
 				}
 			}
@@ -312,30 +299,22 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			sr, err := client.Search(fmt.Sprintf("%s %s", artist, album),
 				spotify.SearchTypeAlbum)
 			if err != nil {
-				loadPage(w, "error", []string{"text"},
-					[]string{fmt.Sprintf(errorFormat, err.Error())})
-				fmt.Printf("error: play: search: %v\n", err)
+				handleError(w, err, "play: search")
 				return
 			}
 			stp, err := client.GetAlbumTracks(sr.Albums.Albums[0].ID)
 			if err != nil {
-				loadPage(w, "error", []string{"text"},
-					[]string{fmt.Sprintf(errorFormat, err.Error())})
-				fmt.Printf("error: play: get album tracks: %v\n", err)
+				handleError(w, err, "play: get album tracks")
 				return
 			}
 			err = client.QueueSong(stp.Tracks[rand.Intn(stp.Total)].ID)
 			if err != nil {
-				loadPage(w, "error", []string{"text"},
-					[]string{fmt.Sprintf(errorFormat, err.Error())})
-				fmt.Printf("error: play: queue song: %v\n", err)
+				handleError(w, err, "play: queue song")
 				return
 			}
 			err = client.Next()
 			if err != nil {
-				loadPage(w, "error", []string{"text"},
-					[]string{fmt.Sprintf(errorFormat, err.Error())})
-				fmt.Printf("error: play: next: %v\n", err)
+				handleError(w, err, "play: next")
 				return
 			}
 		}
@@ -346,9 +325,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			togglePlay = "Остановить воспроизведение"
 			ft, err := client.GetTrack(ps.Item.ID)
 			if err != nil {
-				loadPage(w, "error", []string{"text"},
-					[]string{fmt.Sprintf(errorFormat, err.Error())})
-				fmt.Printf("error: get track: %v\n", err)
+				handleError(w, err, "get track")
 				return
 			}
 			text += fmt.Sprintf("Сейчас играет: %s — %s", ft.Artists[0].Name,
@@ -376,5 +353,32 @@ func loadPage(w http.ResponseWriter, p string, old []string, new []string) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		fmt.Printf("error: load page replace: %v", err)
+	}
+}
+
+func activateFirstDevice() error {
+	devices, err := client.PlayerDevices()
+	if err != nil {
+		return errors.Wrap(err, "player devices")
+	}
+	if len(devices) > 0 {
+		client.PlayOpt(&spotify.PlayOptions{DeviceID: &devices[0].ID})
+	}
+
+	return nil
+}
+
+func handleError(w http.ResponseWriter, err error, message string) {
+	if err.Error() == ErrNoActiveDeviceFound {
+		err := activateFirstDevice()
+		handleError(w, err, message)
+	} else {
+		loadPage(w, "error", []string{"text"},
+			[]string{fmt.Sprintf("Спотифай выключен! Попроси хозяина "+
+				"запустить его или потыкать в уже включенный, чтобы удалось "+
+				"подцепить его.<br/><p class=error>Сообщение об ошибке: %s"+
+				"</p>", err.Error())})
+		fmt.Printf("error: %s: %v\n", message, err)
+		return
 	}
 }
