@@ -93,7 +93,6 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		playlist := query.Get("playlist")
 		var sr *spotify.SearchResult
 		var err error
-		fmt.Printf("### %q\n", playlist)
 		if playlist == "top500" {
 			file, err := os.Open("tracks.txt")
 			if err != nil {
@@ -126,15 +125,15 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				fmt.Printf("error: game: next: search: %v\n", err)
 				return
 			}
-		}
-
-		sr, err = client.Search(playlist, spotify.SearchTypePlaylist)
-		if err != nil {
-			loadPage(w, "error", []string{"text"},
-				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
-					err.Error())})
-			fmt.Printf("error: game: next: search: %v\n", err)
-			return
+		} else {
+			sr, err = client.Search(playlist, spotify.SearchTypePlaylist)
+			if err != nil {
+				loadPage(w, "error", []string{"text"},
+					[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
+						err.Error())})
+				fmt.Printf("error: game: next: search: %v\n", err)
+				return
+			}
 		}
 
 		if sr == nil {
@@ -145,26 +144,57 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		if sr.Tracks.Total == 0 {
-			loadPage(w, "error", []string{"text"},
-				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s %q</p>",
-					"Не найдено треков по запросу", playlist)})
-			fmt.Printf("error: game: next: %s (%s)\n", "sr.Tracks.Total == 0",
-				playlist)
-			return
-		}
-
+		var track spotify.FullTrack
 		if playlist == "top500" {
-			err = client.QueueSong(sr.Tracks.Tracks[0].ID)
-			if err != nil {
+			if sr.Tracks.Total == 0 {
 				loadPage(w, "error", []string{"text"},
-					[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
-						err.Error())})
-				fmt.Printf("error: game: next: queue song: %v\n", err)
+					[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s %q</p>",
+						"Не найдено треков по запросу", playlist)})
+				fmt.Printf("error: game: next: %s (%s)\n", "sr.Tracks.Total == 0",
+					playlist)
 				return
 			}
+
+			track = sr.Tracks.Tracks[0]
 		} else {
-			//
+			if sr.Playlists.Total == 0 {
+				loadPage(w, "error", []string{"text"},
+					[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s %q</p>",
+						"Не найдено треков по запросу", playlist)})
+				fmt.Printf("error: game: next: %s (%s)\n", "sr.Playlists.Total == 0",
+					playlist)
+				return
+			}
+
+			ptp, err := client.GetPlaylistTracks(sr.Playlists.Playlists[0].ID)
+			if err != nil {
+				loadPage(w, "error", []string{"text"},
+					[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s %q</p>",
+						err.Error(), playlist)})
+				fmt.Printf("error: game: next: get playlist tracks: %v\n", err)
+				return
+			}
+
+			if ptp.Total == 0 {
+				loadPage(w, "error", []string{"text"},
+					[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s %q</p>",
+						"Не найдено треков в плейлисте",
+						sr.Playlists.Playlists[0].Name)})
+				fmt.Printf("error: game: next: %s (%s)\n", "ptp.Total == 0",
+					playlist)
+				return
+			}
+
+			track = ptp.Tracks[rand.Intn(ptp.Total)].Track
+		}
+
+		err = client.QueueSong(track.ID)
+		if err != nil {
+			loadPage(w, "error", []string{"text"},
+				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
+					err.Error())})
+			fmt.Printf("error: game: next: queue song: %v\n", err)
+			return
 		}
 
 		err = client.Next()
@@ -176,7 +206,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		client.Seek(sr.Tracks.Tracks[0].Duration / 3)
+		client.Seek(track.Duration/4 + rand.Intn(track.Duration/4))
 		if err != nil {
 			loadPage(w, "error", []string{"text"},
 				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
