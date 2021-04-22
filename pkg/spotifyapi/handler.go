@@ -363,6 +363,7 @@ func activateFirstDevice() error {
 	}
 	if len(devices) > 0 {
 		client.PlayOpt(&spotify.PlayOptions{DeviceID: &devices[0].ID})
+		fmt.Printf("device %q activated", devices[0].Name)
 	}
 
 	return nil
@@ -371,12 +372,13 @@ func activateFirstDevice() error {
 func handleError(w http.ResponseWriter, err error, message string) {
 	if err.Error() == ErrNoActiveDeviceFound {
 		err := activateFirstDevice()
-		handleError(w, err, message)
+		if err != nil {
+			handleError(w, err, message)
+		}
 	} else {
 		loadPage(w, "error", []string{"text"},
 			[]string{fmt.Sprintf("Спотифай выключен! Попроси хозяина "+
-				"запустить его или потыкать в уже включенный, чтобы удалось "+
-				"подцепить его.<br/><p class=error>Сообщение об ошибке: %s"+
+				"запустить его.<br/><p class=error>Сообщение об ошибке: %s"+
 				"</p>", err.Error())})
 		fmt.Printf("error: %s: %v\n", message, err)
 		return
