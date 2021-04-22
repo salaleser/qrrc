@@ -372,7 +372,7 @@ func activateFirstDevice(w http.ResponseWriter) error {
 	}
 
 	loadPage(w, "home", []string{"text", "toggle_play"},
-		[]string{fmt.Sprintf("Device %s (%s) activated",
+		[]string{fmt.Sprintf("Устройство %q (%s) активировано.",
 			devices[0].Name, devices[0].Type), "Toggle Play"})
 	fmt.Printf("device %q activated", devices[0].Name)
 
