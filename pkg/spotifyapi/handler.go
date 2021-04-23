@@ -48,7 +48,7 @@ func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 		ch <- &client
 	}
 
-	loadPage(w, "home", []string{"text", "toggle_play"},
+	loadPage(w, "home/play", []string{"text", "toggle_play"},
 		[]string{"Успех! Теперь можешь управлять спотифаем или поиграть в " +
 			"угадаечку.", "Toggle Play/Pause"})
 }
