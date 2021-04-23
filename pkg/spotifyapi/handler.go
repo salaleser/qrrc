@@ -95,7 +95,22 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 	case "game":
 		playlists := ""
 		for _, v := range gamePlaylists {
-			playlists += fmt.Sprintf("<img class=playlist src=%s alt=%s>", "-", v)
+			sr, err := client.Search(v, spotify.SearchTypePlaylist)
+			if err != nil {
+				handleError(w, err, "game search")
+				return
+			}
+			p := sr.Playlists.Playlists[0]
+			//ptp, err := client.GetPlaylistTracks(p.ID)
+			//if err != nil {
+			//	loadPage(w, "error", []string{"text"},
+			//		[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s %q</p>",
+			//			err.Error(), v)})
+			//	fmt.Printf("error: game: next: get playlist tracks: %v\n", err)
+			//	return
+			//}
+
+			playlists += fmt.Sprintf("<img class=playlist src=%s alt=%s>", p.Images[0].URL, p.Name)
 		}
 		loadPage(w, action, []string{"text", "step", "playlists"},
 			[]string{"Жми кнопку и пытайся угадать.", "0", playlists})
