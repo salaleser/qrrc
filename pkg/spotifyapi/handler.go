@@ -56,6 +56,7 @@ func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 	var err error
 	var togglePlay string
+	var togglePlayImage string
 	var text string
 	action := strings.TrimPrefix(r.URL.Path, "/spotify/")
 	query := r.URL.Query()
@@ -78,10 +79,12 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 	switch action {
 	case "home":
 		if !ps.Playing {
-			togglePlay = "Продолжить воспроизведение"
+			togglePlay = "Play"
+			togglePlayImage = "https://i.imgur.com/DJbZhLN.png"
 			text += "Музыка не играет."
 		} else {
-			togglePlay = "Остановить воспроизведение"
+			togglePlay = "Pause"
+			togglePlayImage = "https://i.imgur.com/doV24uc.png"
 			ft, err := client.GetTrack(ps.Item.ID)
 			if err != nil {
 				handleError(w, err, "get track")
@@ -380,10 +383,12 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 		if ps.Playing {
-			togglePlay = "Продолжить воспроизведение"
+			togglePlay = "Play"
+			togglePlayImage = "https://i.imgur.com/DJbZhLN.png"
 			text += "Музыка не играет."
 		} else {
-			togglePlay = "Остановить воспроизведение"
+			togglePlay = "Pause"
+			togglePlayImage = "https://i.imgur.com/doV24uc.png"
 			ft, err := client.GetTrack(ps.Item.ID)
 			if err != nil {
 				handleError(w, err, "get track")
@@ -393,7 +398,8 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				ps.Item.Name)
 		}
 		loadPage(w, "home", []string{"text", "toggle_play"}, []string{text,
-			fmt.Sprintf("<img class=button alt=%q>", togglePlay)})
+			fmt.Sprintf("<img class=button alt=%q src=%s>", togglePlay,
+				togglePlayImage)})
 	default:
 		http.NotFound(w, r)
 	}
