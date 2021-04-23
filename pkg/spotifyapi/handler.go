@@ -95,7 +95,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 	case "game":
 		playlists := ""
 		for _, v := range gamePlaylists {
-			playlists += fmt.Sprintf("<img src=%s alt=%s>", "-", v)
+			playlists += fmt.Sprintf("<img class=playlist src=%s alt=%s>", "-", v)
 		}
 		loadPage(w, action, []string{"text", "step", "playlists"},
 			[]string{"Жми кнопку и пытайся угадать.", "0", playlists})
