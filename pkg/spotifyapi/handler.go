@@ -307,9 +307,9 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		deviceIDParameter := query.Get("deviceId")
 		for _, v := range devices {
 			if v.ID.String() == deviceIDParameter {
-				err := client.PlayOpt(&spotify.PlayOptions{DeviceID: &v.ID})
+				err := client.PauseOpt(&spotify.PlayOptions{DeviceID: &v.ID})
 				if err != nil {
-					handleError(w, err, "settings: play with options")
+					handleError(w, err, "settings: pause with options")
 					return
 				}
 			}
