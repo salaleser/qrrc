@@ -48,6 +48,12 @@ func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 		ch <- &client
 	}
 
+	err := activateFirstDevice(w)
+	if err != nil {
+		handleError(w, err, "get track")
+		return
+	}
+
 	loadPage(w, "home", []string{"text", "toggle_play"},
 		[]string{"Успех! Теперь можешь управлять спотифаем или поиграть в " +
 			"угадаечку.", "Toggle Play/Pause"})
