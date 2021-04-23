@@ -93,8 +93,9 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			text += fmt.Sprintf("Сейчас играет: %s — %s", ft.Artists[0].Name,
 				ps.Item.Name)
 		}
-		loadPage(w, action, []string{"text", "toggle_play"}, []string{text,
-			fmt.Sprintf("<img class=button alt=%q>", togglePlay)})
+		loadPage(w, "home", []string{"text", "toggle_play"}, []string{text,
+			fmt.Sprintf("<img class=button alt=%q src=%s>", togglePlay,
+				togglePlayImage)})
 	case "game":
 		playlists := ""
 		for _, v := range gamePlaylists {
