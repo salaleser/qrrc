@@ -307,9 +307,14 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		deviceIDParameter := query.Get("deviceId")
 		for _, v := range devices {
 			if v.ID.String() == deviceIDParameter {
-				err := client.PauseOpt(&spotify.PlayOptions{DeviceID: &v.ID})
+				err := client.PlayOpt(&spotify.PlayOptions{DeviceID: &v.ID})
 				if err != nil {
-					handleError(w, err, "settings: pause with options")
+					handleError(w, err, "settings: play with options")
+					return
+				}
+				err = client.Pause()
+				if err != nil {
+					handleError(w, err, "settings: pause")
 					return
 				}
 			}
@@ -423,9 +428,14 @@ func activateFirstDevice(w http.ResponseWriter) error {
 	}
 
 	device := devices[0]
-	err = client.PauseOpt(&spotify.PlayOptions{DeviceID: &device.ID})
+	err = client.PlayOpt(&spotify.PlayOptions{DeviceID: &device.ID})
 	if err != nil {
-		return errors.Wrap(err, "pause with options")
+		return errors.Wrap(err, "play with options")
+	}
+	err = client.Pause()
+	if err != nil {
+		handleError(w, err, "settings: pause")
+		return errors.Wrap(err, "pause")
 	}
 
 	loadPage(w, "home", []string{"text", "toggle_play"},
