@@ -91,7 +91,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				ps.Item.Name)
 		}
 		loadPage(w, action, []string{"text", "toggle_play"}, []string{text,
-			togglePlay})
+			fmt.Sprintf("<img class=button alt=%q>", togglePlay)})
 	case "game":
 		playlists := ""
 		for _, v := range gamePlaylists {
@@ -393,7 +393,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				ps.Item.Name)
 		}
 		loadPage(w, "home", []string{"text", "toggle_play"}, []string{text,
-			togglePlay})
+			fmt.Sprintf("<img class=button alt=%q>", togglePlay)})
 	default:
 		http.NotFound(w, r)
 	}
@@ -440,7 +440,7 @@ func activateFirstDevice(w http.ResponseWriter) error {
 
 	loadPage(w, "home", []string{"text", "toggle_play"},
 		[]string{fmt.Sprintf("Устройство %q (%s) активировано.",
-			device.Name, device.Type), "Toggle Play"})
+			device.Name, device.Type), "<img class=button alt=\"Toggle Play\">"})
 	fmt.Printf("device %q activated\n", device.Name)
 
 	return nil
