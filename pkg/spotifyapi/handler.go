@@ -16,6 +16,21 @@ import (
 
 const ErrNoActiveDeviceFound = "Player command failed: No active device found"
 
+var gamePlaylists = []string{
+	"metalcore",
+	"hip-hop",
+	"classic+punk",
+	"emo+2007",
+	"2000s+russian+pop",
+	"top500",
+	"best+of+rock+1970",
+	"best+of+rock+1980",
+	"best+of+rock+1990",
+	"best+of+rock+2000",
+	"best+of+rock+2007",
+	"best+of+rock+2010",
+}
+
 func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 	if client == nil {
 		token, err := auth.Token(state, r)
@@ -78,8 +93,12 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		loadPage(w, action, []string{"text", "toggle_play"}, []string{text,
 			togglePlay})
 	case "game":
-		loadPage(w, action, []string{"text", "step"},
-			[]string{"Жми кнопку и пытайся угадать.", "0"})
+		playlists := ""
+		for _, v := range gamePlaylists {
+			playlists += fmt.Sprintf("<img src=%s alt=%s>", "-", v)
+		}
+		loadPage(w, action, []string{"text", "step", "playlists"},
+			[]string{"Жми кнопку и пытайся угадать.", "0", playlists})
 	case "game/next":
 		playlist := query.Get("playlist")
 		var sr *spotify.SearchResult
@@ -199,25 +218,13 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 
 		loadPage(w, "game", []string{"text", "step"},
 			[]string{"Запущен трек, попытайтесь отгадать!", "0"})
-	case "game/show":
-		if ps.Playing {
-			ft, err := client.GetTrack(ps.Item.ID)
-			if err != nil {
-				handleError(w, err, "game: show: get track")
-				return
-			}
-			text += fmt.Sprintf("Это был: \"%s — %s\"", ft.Artists[0].Name,
-				ps.Item.Name)
-		} else {
-			text += "Музыка не играет."
-		}
-		loadPage(w, "game", []string{"text", "step"}, []string{text, "0"})
 	case "game/hint":
 		step, err := strconv.Atoi(query.Get("step"))
 		if err != nil {
 			handleError(w, err, "game: hint: get parameter")
 			return
 		}
+
 		if ps.Playing {
 			ft, err := client.GetTrack(ps.Item.ID)
 			if err != nil {
@@ -247,11 +254,18 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			hints = append(hints, fmt.Sprintf("Фото исполнителя: <img src=\"%s\">",
 				fa.Images[0].URL))
 			hints = append(hints, fmt.Sprintf("Исполнитель %q", fa.Name))
+
 			if step >= len(hints) {
-				text += "Подсказок больше нет."
+				text += fmt.Sprintf("Это был: \"%s — %s\"", ft.Artists[0].Name,
+					ps.Item.Name)
+				if err := client.Pause(); err != nil {
+					handleError(w, err, "game: hint: pause")
+					return
+				}
 				step = 0
 			} else {
-				text += fmt.Sprintf("Подсказка #%d: %s", step+1, hints[step])
+				text += fmt.Sprintf("Подсказка #%d/%d: %s", step+1, len(hints),
+					hints[step])
 				step++
 			}
 		} else {
@@ -268,7 +282,11 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		deviceIDParameter := query.Get("deviceId")
 		for _, v := range devices {
 			if v.ID.String() == deviceIDParameter {
-				client.PlayOpt(&spotify.PlayOptions{DeviceID: &v.ID})
+				err := client.PlayOpt(&spotify.PlayOptions{DeviceID: &v.ID})
+				if err != nil {
+					handleError(w, err, "settings: play with options")
+					return
+				}
 			}
 		}
 		var devicesList string
