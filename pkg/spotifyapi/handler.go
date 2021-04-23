@@ -95,17 +95,22 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 	case "game":
 		playlists := ""
 		for _, v := range gamePlaylists {
-			sr, err := client.Search(v, spotify.SearchTypePlaylist)
-			if err != nil {
-				handleError(w, err, "game search")
-				return
-			}
-			p := sr.Playlists.Playlists[0]
+			if v == "top500" {
+				playlists += fmt.Sprintf("<a href=game/next?playlist=top500>" +
+					"<img class=playlist alt=\"Top 500\"></a>")
+			} else {
+				sr, err := client.Search(v, spotify.SearchTypePlaylist)
+				if err != nil {
+					handleError(w, err, "game search")
+					return
+				}
+				p := sr.Playlists.Playlists[0]
 
-			playlists += fmt.Sprintf(
-				"<a href=game/next?playlist=%s>%s</a>", v,
-				fmt.Sprintf("<img class=playlist src=%s alt=%s>",
-					p.Images[0].URL, p.Name))
+				playlists += fmt.Sprintf(
+					"<a href=game/next?playlist=%s>%s</a>", v,
+					fmt.Sprintf("<img class=playlist src=%s alt=%s>",
+						p.Images[0].URL, p.Name))
+			}
 		}
 		loadPage(w, action, []string{"text", "step", "playlists"},
 			[]string{"Жми кнопку и пытайся угадать.", "0", playlists})
@@ -417,15 +422,16 @@ func activateFirstDevice(w http.ResponseWriter) error {
 		return errors.Wrap(err, "no devices found")
 	}
 
-	err = client.PlayOpt(&spotify.PlayOptions{DeviceID: &devices[0].ID})
+	device := devices[0]
+	err = client.PauseOpt(&spotify.PlayOptions{DeviceID: &device.ID})
 	if err != nil {
-		return errors.Wrap(err, "play with options")
+		return errors.Wrap(err, "pause with options")
 	}
 
 	loadPage(w, "home", []string{"text", "toggle_play"},
 		[]string{fmt.Sprintf("Устройство %q (%s) активировано.",
-			devices[0].Name, devices[0].Type), "Toggle Play"})
-	fmt.Printf("device %q activated\n", devices[0].Name)
+			device.Name, device.Type), "Toggle Play"})
+	fmt.Printf("device %q activated\n", device.Name)
 
 	return nil
 }
