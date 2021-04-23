@@ -101,16 +101,11 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			p := sr.Playlists.Playlists[0]
-			//ptp, err := client.GetPlaylistTracks(p.ID)
-			//if err != nil {
-			//	loadPage(w, "error", []string{"text"},
-			//		[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s %q</p>",
-			//			err.Error(), v)})
-			//	fmt.Printf("error: game: next: get playlist tracks: %v\n", err)
-			//	return
-			//}
 
-			playlists += fmt.Sprintf("<img class=playlist src=%s alt=%s>", p.Images[0].URL, p.Name)
+			playlists += fmt.Sprintf(
+				"<a href=game/next?playlist=%s>%s</a>", v,
+				fmt.Sprintf("<img class=playlist src=%s alt=%s>",
+					p.Images[0].URL, p.Name))
 		}
 		loadPage(w, action, []string{"text", "step", "playlists"},
 			[]string{"Жми кнопку и пытайся угадать.", "0", playlists})
@@ -122,13 +117,23 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			file, err := os.Open("tracks.txt")
 			if err != nil {
 				loadPage(w, "error", []string{"text"},
-					[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>", err.Error())})
+					[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
+						err.Error())})
 				fmt.Printf("error: game: next: open file: %v", err)
 				return
 			}
-			defer file.Close()
+			defer func() {
+				err := file.Close()
+				if err != nil {
+					loadPage(w, "error", []string{"text"},
+						[]string{fmt.Sprintf(
+							"<p class=\"error\">Ошибка: %s</p>", err.Error())})
+					fmt.Printf("error: game: next: close file: %v", err)
+					return
+				}
+			}()
 			scanner := bufio.NewScanner(file)
-			var lines []string
+			lines := make([]string, 0)
 			for scanner.Scan() {
 				lines = append(lines, scanner.Text())
 			}
