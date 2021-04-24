@@ -106,8 +106,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		p := make([]string, 0)
 		for k, v := range gamePlaylistsImages {
 			if k == "top500" {
-				p = append(p, fmt.Sprintf("<a href=game/next?playlist=%q>%s</a>",
-					"top500",
+				p = append(p, fmt.Sprintf("<a href=game/next?playlist=top500>%s</a>",
 					fmt.Sprintf("<img class=playlist src=%q alt=%q>", "-", k)))
 			} else {
 				p = append(p, fmt.Sprintf("<a href=game/next?playlist=%q>%s</a>", k,
@@ -248,8 +247,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		p := make([]string, 0)
 		for k, v := range gamePlaylistsImages {
 			if k == "top500" {
-				p = append(p, fmt.Sprintf("<a href=next?playlist=%q>%s</a>",
-					"top500",
+				p = append(p, fmt.Sprintf("<a href=next?playlist=top500>%s</a>",
 					fmt.Sprintf("<img class=playlist src=%q alt=%q>", "-", k)))
 			} else {
 				p = append(p, fmt.Sprintf("<a href=next?playlist=%q>%s</a>", k,
@@ -317,8 +315,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		p := make([]string, 0)
 		for k, v := range gamePlaylistsImages {
 			if k == "top500" {
-				p = append(p, fmt.Sprintf("<a href=next?playlist=%q>%s</a>",
-					"top500",
+				p = append(p, fmt.Sprintf("<a href=next?playlist=top500>%s</a>",
 					fmt.Sprintf("<img class=playlist src=%q alt=%q>", "-", k)))
 			} else {
 				p = append(p, fmt.Sprintf("<a href=next?playlist=%q>%s</a>", k,
