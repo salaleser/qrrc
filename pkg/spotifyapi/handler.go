@@ -472,17 +472,18 @@ func loadPage(w http.ResponseWriter, p string, old []string, new []string) {
 func activateFirstDevice(w http.ResponseWriter) error {
 	devices, err := client.PlayerDevices()
 	if err != nil {
+		fmt.Printf("DEBUG 1")
 		return errors.Wrap(err, "player devices")
 	}
 
 	if len(devices) == 0 {
-		fmt.Printf("DEBUG 0d")
 		return errors.Wrap(err, "no devices found")
 	}
 
 	device := devices[0]
 	err = client.PlayOpt(&spotify.PlayOptions{DeviceID: &device.ID})
 	if err != nil {
+		fmt.Printf("DEBUG 2")
 		return errors.Wrap(err, "play with options")
 	}
 
