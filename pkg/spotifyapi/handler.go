@@ -477,7 +477,7 @@ func activateFirstDevice() (*spotify.PlayerDevice, error) {
 
 	var device *spotify.PlayerDevice
 	for _, v := range devices {
-		if v.Active {
+		if device == nil && v.Active {
 			device = &v
 		}
 	}
