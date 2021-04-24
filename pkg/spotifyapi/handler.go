@@ -475,24 +475,23 @@ func activateFirstDevice() (*spotify.PlayerDevice, error) {
 		return nil, errors.Wrap(err, "player devices")
 	}
 
-	c := 0
+	var device *spotify.PlayerDevice
 	for _, v := range devices {
 		if v.Active {
-			c++
+			device = &v
 		}
 	}
 
-	if c == 0 {
+	if device == nil {
 		return nil, errors.Wrap(err, "no active devices found")
 	}
 
-	device := devices[0]
 	err = client.PlayOpt(&spotify.PlayOptions{DeviceID: &device.ID})
 	if err != nil {
 		return nil, errors.Wrap(err, "play with options")
 	}
 
-	return &device, nil
+	return device, nil
 }
 
 func handleError(w http.ResponseWriter, err error, message string) {
