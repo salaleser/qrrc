@@ -481,7 +481,7 @@ func initGamePlaylistsImagesCache() {
 
 	gamePlaylistsImages = make(map[string]string)
 	for _, v := range gamePlaylistsList {
-		fmt.Printf("$$%q$$", v)
+		fmt.Printf("$$%q$$\n", v)
 		sr, err := client.Search(v, spotify.SearchTypePlaylist)
 		if err != nil {
 			continue
