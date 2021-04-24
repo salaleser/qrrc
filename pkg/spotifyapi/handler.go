@@ -105,8 +105,14 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 	case "game":
 		p := make([]string, 0)
 		for k, v := range gamePlaylistsImages {
-			p = append(p, fmt.Sprintf("<a href=game/next?playlist=%q>%s</a>", k,
-				fmt.Sprintf("<img class=playlist src=%q alt=%q>", v, k)))
+			if k == "top500" {
+				p = append(p, fmt.Sprintf("<a href=game/next?playlist=%q>%s</a>",
+					"top500",
+					fmt.Sprintf("<img class=playlist src=%q alt=%q>", "-", k)))
+			} else {
+				p = append(p, fmt.Sprintf("<a href=game/next?playlist=%q>%s</a>", k,
+					fmt.Sprintf("<img class=playlist src=%q alt=%q>", v, k)))
+			}
 		}
 		sort.Strings(p)
 		loadPage(w, action, []string{"text", "step", "playlists"},
@@ -241,8 +247,14 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 
 		p := make([]string, 0)
 		for k, v := range gamePlaylistsImages {
-			p = append(p, fmt.Sprintf("<a href=next?playlist=%q>%s</a>", k,
-				fmt.Sprintf("<img class=playlist src=%q alt=%q>", v, k)))
+			if k == "top500" {
+				p = append(p, fmt.Sprintf("<a href=next?playlist=%q>%s</a>",
+					"top500",
+					fmt.Sprintf("<img class=playlist src=%q alt=%q>", "-", k)))
+			} else {
+				p = append(p, fmt.Sprintf("<a href=next?playlist=%q>%s</a>", k,
+					fmt.Sprintf("<img class=playlist src=%q alt=%q>", v, k)))
+			}
 		}
 		sort.Strings(p)
 		loadPage(w, "game", []string{"text", "step", "playlists"},
@@ -304,8 +316,14 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 
 		p := make([]string, 0)
 		for k, v := range gamePlaylistsImages {
-			p = append(p, fmt.Sprintf("<a href=next?playlist=%q>%s</a>", k,
-				fmt.Sprintf("<img class=playlist src=%q alt=%q>", v, k)))
+			if k == "top500" {
+				p = append(p, fmt.Sprintf("<a href=next?playlist=%q>%s</a>",
+					"top500",
+					fmt.Sprintf("<img class=playlist src=%q alt=%q>", "-", k)))
+			} else {
+				p = append(p, fmt.Sprintf("<a href=next?playlist=%q>%s</a>", k,
+					fmt.Sprintf("<img class=playlist src=%q alt=%q>", v, k)))
+			}
 		}
 		sort.Strings(p)
 		loadPage(w, "game", []string{"text", "step", "playlists"},
