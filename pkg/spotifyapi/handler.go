@@ -102,14 +102,14 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Sprintf("<img class=button alt=%q src=%s>", togglePlay,
 				togglePlayImage)})
 	case "game":
-		gamePlaylistsHTML := ""
+		p := ""
 		for k, v := range gamePlaylistsImages {
-			gamePlaylistsHTML += fmt.Sprintf(
+			p += fmt.Sprintf(
 				"<a href=game/next?playlist=%s>%s</a>", k,
 				fmt.Sprintf("<img class=playlist src=%s alt=%s>", v, k))
 		}
 		loadPage(w, action, []string{"text", "step", "playlists"},
-			[]string{"Жми кнопку и пытайся угадать.", "0", gamePlaylistsHTML})
+			[]string{"Жми кнопку и пытайся угадать.", "0", p})
 	case "game/next":
 		playlist := query.Get("playlist")
 		var sr *spotify.SearchResult
@@ -237,8 +237,14 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		p := ""
+		for k, v := range gamePlaylistsImages {
+			p += fmt.Sprintf(
+				"<a href=game/next?playlist=%s>%s</a>", k,
+				fmt.Sprintf("<img class=playlist src=%s alt=%s>", v, k))
+		}
 		loadPage(w, "game", []string{"text", "step", "playlists"},
-			[]string{"Запущен трек, попытайтесь отгадать!", "0", "—"})
+			[]string{"Запущен трек, попытайтесь отгадать!", "0", p})
 	case "game/hint":
 		step, err := strconv.Atoi(query.Get("step"))
 		if err != nil {
@@ -293,14 +299,14 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			text += "Музыка не играет."
 		}
 
-		gamePlaylistsHTML := ""
+		p := ""
 		for k, v := range gamePlaylistsImages {
-			gamePlaylistsHTML += fmt.Sprintf(
+			p += fmt.Sprintf(
 				"<a href=next?playlist=%s>%s</a>", k,
 				fmt.Sprintf("<img class=playlist src=%s alt=%s>", v, k))
 		}
-		loadPage(w, "game", []string{"text", "step", "playlists"}, []string{text,
-			strconv.Itoa(step), gamePlaylistsHTML})
+		loadPage(w, "game", []string{"text", "step", "playlists"},
+			[]string{text, strconv.Itoa(step), p})
 	case "settings":
 		devices, err := client.PlayerDevices()
 		if err != nil {
