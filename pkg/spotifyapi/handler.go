@@ -505,7 +505,6 @@ func handleError(w http.ResponseWriter, err error, message string) {
 				"запустить его.<br/><p class=error>Сообщение об ошибке: %s"+
 				"</p>", err.Error())})
 		fmt.Printf("error: %s: %v\n", message, err)
-		return
 	}
 }
 
