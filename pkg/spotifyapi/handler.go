@@ -291,9 +291,11 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			} else {
 				hints = append(hints, fmt.Sprintf("Без матюков"))
 			}
-			hints = append(hints, fmt.Sprintf("Фото исполнителя: <img src=\"%s\">",
+			hints = append(hints, fmt.Sprintf("Фото исполнителя: <img src=%q>",
 				fa.Images[0].URL))
 			hints = append(hints, fmt.Sprintf("Исполнитель %q", fa.Name))
+			hints = append(hints, fmt.Sprintf("Обложка альбома: <img src=%q>",
+				ft.Album.Images[0].URL))
 
 			if step >= len(hints) {
 				text += fmt.Sprintf("Это был: \"%s — %s\"", ft.Artists[0].Name,
