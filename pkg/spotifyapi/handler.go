@@ -298,13 +298,6 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 					len(strings.Split(ft.Name, " "))))
 			hints = append(hints, fmt.Sprintf("Жанры: %s",
 				strings.Join(fa.Genres, ", ")))
-			if ft.Explicit {
-				hints = append(hints,
-					fmt.Sprintf("Содержит матюки"))
-			} else {
-				hints = append(hints,
-					fmt.Sprintf("Без матюков"))
-			}
 			hints = append(hints,
 				fmt.Sprintf("Фото исполнителя:<img src=%q>",
 					fa.Images[0].URL))
