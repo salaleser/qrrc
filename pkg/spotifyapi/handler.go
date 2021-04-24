@@ -148,7 +148,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				fmt.Printf("error: game: next: scan file: %v", err)
 				return
 			}
-			line := strings.Split(lines[rand.Intn(len(lines))], "\t")
+			line := strings.Split(lines[rand.Intn(len(lines)-1)], "\t")
 			searchQuery := fmt.Sprintf("%s %s", line[1], line[0])
 			sr, err = client.Search(searchQuery, spotify.SearchTypeTrack)
 			if err != nil {
@@ -218,7 +218,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			track = ptp.Tracks[rand.Intn(ptp.Total)].Track
+			track = ptp.Tracks[rand.Intn(ptp.Total-1)].Track
 		}
 
 		err = client.QueueSong(track.ID)
@@ -380,7 +380,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				handleError(w, err, "play: get album tracks")
 				return
 			}
-			err = client.QueueSong(stp.Tracks[rand.Intn(stp.Total)].ID)
+			err = client.QueueSong(stp.Tracks[rand.Intn(stp.Total-1)].ID)
 			if err != nil {
 				handleError(w, err, "play: queue song")
 				return
