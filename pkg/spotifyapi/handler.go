@@ -16,20 +16,24 @@ import (
 
 const ErrNoActiveDeviceFound = "Player command failed: No active device found"
 
-var gamePlaylists = []string{
-	"metalcore",
-	"hip-hop",
-	"classic+punk",
-	"emo+2007",
-	"2000s+russian+pop",
-	"top500",
-	"best+of+rock+1970",
-	"best+of+rock+1980",
-	"best+of+rock+1990",
-	"best+of+rock+2000",
-	"best+of+rock+2007",
-	"best+of+rock+2010",
-}
+var (
+	gamePlaylistsCache map[string]string
+	gamePlaylistsList  = []string{
+		"metalcore",
+		"hip-hop",
+		"classic+punk",
+		"emo+2007",
+		"2000s+russian+pop",
+		"top500",
+		"best+of+rock+1970",
+		"best+of+rock+1980",
+		"best+of+rock+1990",
+		"best+of+rock+2000",
+		"best+of+rock+2007",
+		"best+of+rock+2010",
+	}
+	gamePlaylistsHTML string
+)
 
 func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 	if client == nil {
@@ -76,6 +80,11 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if err := initGamePlaylists(); err != nil {
+		handleError(w, err, "init game playlists")
+		return
+	}
+
 	switch action {
 	case "home":
 		if !ps.Playing {
@@ -97,27 +106,8 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Sprintf("<img class=button alt=%q src=%s>", togglePlay,
 				togglePlayImage)})
 	case "game":
-		playlists := ""
-		for _, v := range gamePlaylists {
-			if v == "top500" {
-				playlists += fmt.Sprintf("<a href=game/next?playlist=top500>" +
-					"<img class=playlist alt=\"Top 500\"></a>")
-			} else {
-				sr, err := client.Search(v, spotify.SearchTypePlaylist)
-				if err != nil {
-					handleError(w, err, "game search")
-					return
-				}
-				p := sr.Playlists.Playlists[0]
-
-				playlists += fmt.Sprintf(
-					"<a href=game/next?playlist=%s>%s</a>", v,
-					fmt.Sprintf("<img class=playlist src=%s alt=%s>",
-						p.Images[0].URL, p.Name))
-			}
-		}
 		loadPage(w, action, []string{"text", "step", "playlists"},
-			[]string{"Жми кнопку и пытайся угадать.", "0", playlists})
+			[]string{"Жми кнопку и пытайся угадать.", "0", gamePlaylistsHTML})
 	case "game/next":
 		playlist := query.Get("playlist")
 		var sr *spotify.SearchResult
@@ -254,26 +244,6 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		playlists := ""
-		for _, v := range gamePlaylists {
-			if v == "top500" {
-				playlists += fmt.Sprintf("<a href=game/next?playlist=top500>" +
-					"<img class=playlist alt=\"Top 500\"></a>")
-			} else {
-				sr, err := client.Search(v, spotify.SearchTypePlaylist)
-				if err != nil {
-					handleError(w, err, "game search")
-					return
-				}
-				p := sr.Playlists.Playlists[0]
-
-				playlists += fmt.Sprintf(
-					"<a href=game/next?playlist=%s>%s</a>", v,
-					fmt.Sprintf("<img class=playlist src=%s alt=%s>",
-						p.Images[0].URL, p.Name))
-			}
-		}
-
 		if ps.Playing {
 			ft, err := client.GetTrack(ps.Item.ID)
 			if err != nil {
@@ -321,7 +291,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			text += "Музыка не играет."
 		}
 		loadPage(w, "game", []string{"text", "step", "playlists"}, []string{text,
-			strconv.Itoa(step), playlists})
+			strconv.Itoa(step), gamePlaylistsHTML})
 	case "settings":
 		devices, err := client.PlayerDevices()
 		if err != nil {
@@ -487,4 +457,31 @@ func handleError(w http.ResponseWriter, err error, message string) {
 		fmt.Printf("error: %s: %v\n", message, err)
 		return
 	}
+}
+
+func initGamePlaylists() error {
+	if gamePlaylistsCache != nil {
+		return nil
+	}
+
+	for _, v := range gamePlaylistsList {
+		if v == "top500" {
+			gamePlaylistsHTML += fmt.Sprintf(
+				"<a href=game/next?playlist=top500>" +
+					"<img class=playlist alt=\"Top 500\"></a>")
+		} else {
+			sr, err := client.Search(v, spotify.SearchTypePlaylist)
+			if err != nil {
+				return errors.Wrap(err, "search")
+			}
+			p := sr.Playlists.Playlists[0]
+
+			gamePlaylistsHTML += fmt.Sprintf(
+				"<a href=game/next?playlist=%s>%s</a>", v,
+				fmt.Sprintf("<img class=playlist src=%s alt=%s>",
+					p.Images[0].URL, p.Name))
+		}
+	}
+
+	return nil
 }
