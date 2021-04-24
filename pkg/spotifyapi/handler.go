@@ -241,7 +241,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 
 		p := make([]string, 0)
 		for k, v := range gamePlaylistsImages {
-			p = append(p, fmt.Sprintf("<a href=game/next?playlist=%q>%s</a>", k,
+			p = append(p, fmt.Sprintf("<a href=next?playlist=%q>%s</a>", k,
 				fmt.Sprintf("<img class=playlist src=%q alt=%q>", v, k)))
 		}
 		sort.Strings(p)
