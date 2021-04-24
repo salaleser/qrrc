@@ -99,14 +99,14 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				ps.Item.Name)
 		}
 		loadPage(w, "home", []string{"text", "toggle_play"}, []string{text,
-			fmt.Sprintf("<img class=button alt=%q src=%s>", togglePlay,
+			fmt.Sprintf("<img class=button alt=%q src=%q>", togglePlay,
 				togglePlayImage)})
 	case "game":
 		p := ""
 		for k, v := range gamePlaylistsImages {
 			p += fmt.Sprintf(
-				"<a href=game/next?playlist=%s>%s</a>", k,
-				fmt.Sprintf("<img class=playlist src=%s alt=%s>", v, k))
+				"<a href=game/next?playlist=%q>%s</a>", k,
+				fmt.Sprintf("<img class=playlist src=%q alt=%q>", v, k))
 		}
 		loadPage(w, action, []string{"text", "step", "playlists"},
 			[]string{"Жми кнопку и пытайся угадать.", "0", p})
@@ -167,7 +167,6 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		println(1)
 		if sr == nil {
 			loadPage(w, "error", []string{"text"},
 				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
@@ -241,8 +240,8 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		p := ""
 		for k, v := range gamePlaylistsImages {
 			p += fmt.Sprintf(
-				"<a href=game/next?playlist=%s>%s</a>", k,
-				fmt.Sprintf("<img class=playlist src=%s alt=%s>", v, k))
+				"<a href=game/next?playlist=%q>%s</a>", k,
+				fmt.Sprintf("<img class=playlist src=%q alt=%q>", v, k))
 		}
 		loadPage(w, "game", []string{"text", "step", "playlists"},
 			[]string{"Запущен трек, попытайтесь отгадать!", "0", p})
@@ -303,8 +302,8 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		p := ""
 		for k, v := range gamePlaylistsImages {
 			p += fmt.Sprintf(
-				"<a href=next?playlist=%s>%s</a>", k,
-				fmt.Sprintf("<img class=playlist src=%s alt=%s>", v, k))
+				"<a href=next?playlist=%q>%s</a>", k,
+				fmt.Sprintf("<img class=playlist src=%q alt=%q>", v, k))
 		}
 		loadPage(w, "game", []string{"text", "step", "playlists"},
 			[]string{text, strconv.Itoa(step), p})
