@@ -444,11 +444,6 @@ func activateFirstDevice(w http.ResponseWriter) error {
 	if err != nil {
 		return errors.Wrap(err, "play with options")
 	}
-	err = client.Pause()
-	if err != nil {
-		handleError(w, err, "settings: pause")
-		return errors.Wrap(err, "pause")
-	}
 
 	loadPage(w, "home", []string{"text", "toggle_play"},
 		[]string{fmt.Sprintf("Устройство %q (%s) активировано.",
@@ -486,7 +481,6 @@ func initGamePlaylistsImagesCache() {
 			fmt.Printf("error: init game playlists images cache: search %q", v)
 			continue
 		}
-		fmt.Printf("$$%q$$%q$$\n", v, sr.Playlists.Playlists[0].Images[0].URL)
 
 		gamePlaylistsImages[v] = sr.Playlists.Playlists[0].Images[0].URL
 	}
