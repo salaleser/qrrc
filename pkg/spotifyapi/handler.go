@@ -296,7 +296,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			hints = append(hints,
 				fmt.Sprintf("Количество слов в названии трека %d",
 					len(strings.Split(ft.Name, " "))))
-			hints = append(hints, fmt.Sprintf("Жанр %q",
+			hints = append(hints, fmt.Sprintf("Жанры: %s",
 				strings.Join(fa.Genres, ", ")))
 			if ft.Explicit {
 				hints = append(hints,
@@ -435,7 +435,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		} else {
 			togglePlay = "Pause"
 			togglePlayImage = "https://i.imgur.com/doV24uc.png"
-			ft, err := client.GetTrack(ps.Item.ID)
+			ft, err := client.GetTrack(ps.CurrentlyPlaying.Item.ID)
 			if err != nil {
 				handleError(w, err, "get track")
 				return
