@@ -17,8 +17,8 @@ import (
 const ErrNoActiveDeviceFound = "Player command failed: No active device found"
 
 var (
-	gamePlaylistsCache map[string]string
-	gamePlaylistsList  = []string{
+	gamePlaylistsImages map[string]string
+	gamePlaylistsList   = []string{
 		"metalcore",
 		"hip-hop",
 		"classic+punk",
@@ -32,7 +32,6 @@ var (
 		"best+of+rock+2007",
 		"best+of+rock+2010",
 	}
-	gamePlaylistsHTML string
 )
 
 func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
@@ -80,10 +79,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := initGamePlaylists(); err != nil {
-		handleError(w, err, "init game playlists")
-		return
-	}
+	initGamePlaylistsImagesCache()
 
 	switch action {
 	case "home":
@@ -106,6 +102,12 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Sprintf("<img class=button alt=%q src=%s>", togglePlay,
 				togglePlayImage)})
 	case "game":
+		gamePlaylistsHTML := ""
+		for k, v := range gamePlaylistsImages {
+			gamePlaylistsHTML += fmt.Sprintf(
+				"<a href=game/next?playlist=%s>%s</a>", k,
+				fmt.Sprintf("<img class=playlist src=%s alt=%s>", v, k))
+		}
 		loadPage(w, action, []string{"text", "step", "playlists"},
 			[]string{"Жми кнопку и пытайся угадать.", "0", gamePlaylistsHTML})
 	case "game/next":
@@ -290,6 +292,13 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		} else {
 			text += "Музыка не играет."
 		}
+
+		gamePlaylistsHTML := ""
+		for k, v := range gamePlaylistsImages {
+			gamePlaylistsHTML += fmt.Sprintf(
+				"<a href=next?playlist=%s>%s</a>", k,
+				fmt.Sprintf("<img class=playlist src=%s alt=%s>", v, k))
+		}
 		loadPage(w, "game", []string{"text", "step", "playlists"}, []string{text,
 			strconv.Itoa(step), gamePlaylistsHTML})
 	case "settings":
@@ -459,29 +468,19 @@ func handleError(w http.ResponseWriter, err error, message string) {
 	}
 }
 
-func initGamePlaylists() error {
-	if gamePlaylistsCache != nil {
-		return nil
+func initGamePlaylistsImagesCache() {
+	if gamePlaylistsImages != nil {
+		return
 	}
 
+	gamePlaylistsImages = make(map[string]string)
 	for _, v := range gamePlaylistsList {
-		if v == "top500" {
-			gamePlaylistsHTML += fmt.Sprintf(
-				"<a href=game/next?playlist=top500>" +
-					"<img class=playlist alt=\"Top 500\"></a>")
-		} else {
-			sr, err := client.Search(v, spotify.SearchTypePlaylist)
-			if err != nil {
-				return errors.Wrap(err, "search")
-			}
-			p := sr.Playlists.Playlists[0]
-
-			gamePlaylistsHTML += fmt.Sprintf(
-				"<a href=game/next?playlist=%s>%s</a>", v,
-				fmt.Sprintf("<img class=playlist src=%s alt=%s>",
-					p.Images[0].URL, p.Name))
+		sr, err := client.Search(v, spotify.SearchTypePlaylist)
+		if err != nil {
+			continue
 		}
-	}
+		p := sr.Playlists.Playlists[0]
 
-	return nil
+		gamePlaylistsImages[v] = p.Images[0].URL
+	}
 }
