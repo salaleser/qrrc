@@ -469,36 +469,36 @@ func loadPage(w http.ResponseWriter, p string, old []string, new []string) {
 	}
 }
 
-func activateFirstDevice(w http.ResponseWriter) error {
+func activateFirstDevice() (*spotify.PlayerDevice, error) {
 	devices, err := client.PlayerDevices()
 	if err != nil {
-		return errors.Wrap(err, "player devices")
+		return nil, errors.Wrap(err, "player devices")
 	}
 
 	if len(devices) == 0 {
-		return errors.Wrap(err, "no devices found")
+		return nil, errors.Wrap(err, "no devices found")
 	}
 
 	device := devices[0]
 	err = client.PlayOpt(&spotify.PlayOptions{DeviceID: &device.ID})
 	if err != nil {
-		return errors.Wrap(err, "play with options")
+		return nil, errors.Wrap(err, "play with options")
 	}
 
-	loadPage(w, "home", []string{"text", "toggle_play"},
-		[]string{fmt.Sprintf("Устройство %q (%s) активировано.",
-			device.Name, device.Type), "<img class=button alt=\"Toggle Play\">"})
-	fmt.Printf("device %q activated\n", device.Name)
-
-	return nil
+	return &device, nil
 }
 
 func handleError(w http.ResponseWriter, err error, message string) {
 	if err.Error() == ErrNoActiveDeviceFound {
-		err = activateFirstDevice(w)
+		device, err := activateFirstDevice()
 		if err != nil {
 			handleError(w, err, message)
 		}
+
+		loadPage(w, "home", []string{"text", "toggle_play"},
+			[]string{fmt.Sprintf("Устройство %q (%s) активировано.",
+				device.Name, device.Type), "<img class=button alt=\"Toggle Play\">"})
+		fmt.Printf("device %q activated\n", device.Name)
 	} else {
 		loadPage(w, "error", []string{"text"},
 			[]string{fmt.Sprintf("Спотифай выключен! Попроси хозяина "+
