@@ -167,6 +167,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
+		println(1)
 		if sr == nil {
 			loadPage(w, "error", []string{"text"},
 				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
