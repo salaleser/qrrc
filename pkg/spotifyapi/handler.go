@@ -475,8 +475,15 @@ func activateFirstDevice() (*spotify.PlayerDevice, error) {
 		return nil, errors.Wrap(err, "player devices")
 	}
 
-	if len(devices) == 0 {
-		return nil, errors.Wrap(err, "no devices found")
+	c := 0
+	for _, v := range devices {
+		if v.Active {
+			c++
+		}
+	}
+
+	if c == 0 {
+		return nil, errors.Wrap(err, "no active devices found")
 	}
 
 	device := devices[0]
