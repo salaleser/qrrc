@@ -481,12 +481,12 @@ func initGamePlaylistsImagesCache() {
 
 	gamePlaylistsImages = make(map[string]string)
 	for _, v := range gamePlaylistsList {
+		fmt.Printf("$$%q$$", v)
 		sr, err := client.Search(v, spotify.SearchTypePlaylist)
 		if err != nil {
 			continue
 		}
-		p := sr.Playlists.Playlists[0]
 
-		gamePlaylistsImages[v] = p.Images[0].URL
+		gamePlaylistsImages[v] = sr.Playlists.Playlists[0].Images[0].URL
 	}
 }
