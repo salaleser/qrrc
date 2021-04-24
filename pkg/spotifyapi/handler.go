@@ -492,7 +492,11 @@ func handleError(w http.ResponseWriter, err error, message string) {
 	if err.Error() == ErrNoActiveDeviceFound {
 		device, err := activateFirstDevice()
 		if err != nil {
-			handleError(w, err, message)
+			loadPage(w, "error", []string{"text"},
+				[]string{fmt.Sprintf("Спотифай выключен! Попроси хозяина "+
+					"запустить его.<br/><p class=error>Сообщение об ошибке: %s"+
+					"</p>", err.Error())})
+			fmt.Printf("error: %s: %v\n", message, err)
 		}
 
 		loadPage(w, "home", []string{"text", "toggle_play"},
