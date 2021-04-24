@@ -276,26 +276,46 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				handleError(w, err, "game: hint: get artist")
 				return
 			}
+			stp, err := client.GetAlbumTracks(ft.Album.ID)
+			if err != nil {
+				handleError(w, err, "game: hint: get album tracks")
+				return
+			}
+			trackList := "<ul>"
+			for _, v := range stp.Tracks {
+				trackList += fmt.Sprintf("<li>%v</li>", v.Name)
+			}
 
 			hints := make([]string, 0)
-			hints = append(hints, fmt.Sprintf("Первая буква имени исполнителя %q",
-				strings.TrimLeft(fa.Name, "The ")[0]))
-			hints = append(hints, fmt.Sprintf("Первая буква названия трека %q",
-				ft.Name[0]))
-			hints = append(hints, fmt.Sprintf("Количество слов в названии трека %d",
-				len(strings.Split(ft.Name, " "))))
+			hints = append(hints,
+				fmt.Sprintf("Первая буква имени исполнителя %q",
+					strings.TrimLeft(fa.Name, "The ")[0]))
+			hints = append(hints,
+				fmt.Sprintf("Первая буква названия трека %q",
+					ft.Name[0]))
+			hints = append(hints,
+				fmt.Sprintf("Количество слов в названии трека %d",
+					len(strings.Split(ft.Name, " "))))
 			hints = append(hints, fmt.Sprintf("Жанр %q",
 				strings.Join(fa.Genres, ", ")))
 			if ft.Explicit {
-				hints = append(hints, fmt.Sprintf("Содержит матюки"))
+				hints = append(hints,
+					fmt.Sprintf("Содержит матюки"))
 			} else {
-				hints = append(hints, fmt.Sprintf("Без матюков"))
+				hints = append(hints,
+					fmt.Sprintf("Без матюков"))
 			}
-			hints = append(hints, fmt.Sprintf("Фото исполнителя: <img src=%q>",
-				fa.Images[0].URL))
-			hints = append(hints, fmt.Sprintf("Исполнитель %q", fa.Name))
-			hints = append(hints, fmt.Sprintf("Обложка альбома: <img src=%q>",
-				ft.Album.Images[0].URL))
+			hints = append(hints,
+				fmt.Sprintf("Фото исполнителя:<img src=%q>",
+					fa.Images[0].URL))
+			hints = append(hints,
+				fmt.Sprintf("Исполнитель %q", fa.Name))
+			hints = append(hints,
+				fmt.Sprintf("Обложка альбома:<img src=%q>",
+					ft.Album.Images[0].URL))
+			hints = append(hints,
+				fmt.Sprintf("Список треков с альбома:<br/>%s",
+					trackList+"</ul>"))
 
 			if step >= len(hints) {
 				text += fmt.Sprintf("Это был: \"%s — %s\"", ft.Artists[0].Name,
