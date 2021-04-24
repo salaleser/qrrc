@@ -476,6 +476,7 @@ func activateFirstDevice(w http.ResponseWriter) error {
 	}
 
 	if len(devices) == 0 {
+		fmt.Printf("DEBUG 0d")
 		return errors.Wrap(err, "no devices found")
 	}
 
