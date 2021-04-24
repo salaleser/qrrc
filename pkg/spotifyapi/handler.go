@@ -495,9 +495,7 @@ func activateFirstDevice(w http.ResponseWriter) error {
 
 func handleError(w http.ResponseWriter, err error, message string) {
 	if err.Error() == ErrNoActiveDeviceFound {
-		fmt.Printf("2error: %s: %v\n", message, err)
-		err := activateFirstDevice(w)
-		fmt.Printf("1error: %s: %v\n", message, err)
+		err = activateFirstDevice(w)
 		if err != nil {
 			handleError(w, err, message)
 		}
