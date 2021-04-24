@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -102,14 +103,15 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Sprintf("<img class=button alt=%q src=%q>", togglePlay,
 				togglePlayImage)})
 	case "game":
-		p := ""
+		p := make([]string, 0)
 		for k, v := range gamePlaylistsImages {
-			p += fmt.Sprintf(
-				"<a href=game/next?playlist=%q>%s</a>", k,
-				fmt.Sprintf("<img class=playlist src=%q alt=%q>", v, k))
+			p = append(p, fmt.Sprintf("<a href=game/next?playlist=%q>%s</a>", k,
+				fmt.Sprintf("<img class=playlist src=%q alt=%q>", v, k)))
 		}
+		sort.Strings(p)
 		loadPage(w, action, []string{"text", "step", "playlists"},
-			[]string{"Жми кнопку и пытайся угадать.", "0", p})
+			[]string{"Жми кнопку и пытайся угадать.", "0",
+				strings.Join(p, " ")})
 	case "game/next":
 		playlist := query.Get("playlist")
 		var sr *spotify.SearchResult
@@ -237,14 +239,15 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		p := ""
+		p := make([]string, 0)
 		for k, v := range gamePlaylistsImages {
-			p += fmt.Sprintf(
-				"<a href=game/next?playlist=%q>%s</a>", k,
-				fmt.Sprintf("<img class=playlist src=%q alt=%q>", v, k))
+			p = append(p, fmt.Sprintf("<a href=game/next?playlist=%q>%s</a>", k,
+				fmt.Sprintf("<img class=playlist src=%q alt=%q>", v, k)))
 		}
+		sort.Strings(p)
 		loadPage(w, "game", []string{"text", "step", "playlists"},
-			[]string{"Запущен трек, попытайтесь отгадать!", "0", p})
+			[]string{"Запущен трек, попытайтесь отгадать!", "0",
+				strings.Join(p, " ")})
 	case "game/hint":
 		step, err := strconv.Atoi(query.Get("step"))
 		if err != nil {
@@ -299,14 +302,14 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			text += "Музыка не играет."
 		}
 
-		p := ""
+		p := make([]string, 0)
 		for k, v := range gamePlaylistsImages {
-			p += fmt.Sprintf(
-				"<a href=next?playlist=%q>%s</a>", k,
-				fmt.Sprintf("<img class=playlist src=%q alt=%q>", v, k))
+			p = append(p, fmt.Sprintf("<a href=next?playlist=%q>%s</a>", k,
+				fmt.Sprintf("<img class=playlist src=%q alt=%q>", v, k)))
 		}
+		sort.Strings(p)
 		loadPage(w, "game", []string{"text", "step", "playlists"},
-			[]string{text, strconv.Itoa(step), p})
+			[]string{text, strconv.Itoa(step), strings.Join(p, " ")})
 	case "settings":
 		devices, err := client.PlayerDevices()
 		if err != nil {
