@@ -10,6 +10,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"unicode/utf8"
 
 	"github.com/pkg/errors"
 	"github.com/zmb3/spotify"
@@ -19,20 +20,6 @@ const ErrNoActiveDeviceFound = "Player command failed: No active device found"
 
 var (
 	gamePlaylistsImages map[string]string
-	gamePlaylistsList   = []string{
-		"metalcore",
-		"hip-hop",
-		"classic+punk",
-		"emo+2007",
-		"2000s+russian+pop",
-		"top500",
-		"best+of+rock+1970",
-		"best+of+rock+1980",
-		"best+of+rock+1990",
-		"best+of+rock+2000",
-		"best+of+rock+2007",
-		"best+of+rock+2010",
-	}
 )
 
 func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
@@ -167,8 +154,8 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			sr, err = client.Search(playlist, spotify.SearchTypePlaylist)
 			if err != nil {
 				loadPage(w, "error", []string{"text"},
-					[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
-						err.Error())})
+					[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %v</p>",
+						err)})
 				fmt.Printf("error: game: next: search: %v\n", err)
 				return
 			}
@@ -178,7 +165,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			loadPage(w, "error", []string{"text"},
 				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
 					"Поиск не вернул результат")})
-			fmt.Printf("error: game: next: %v\n", "sr == nil")
+			fmt.Print("error: game: next: sr == nil\n")
 			return
 		}
 
@@ -188,11 +175,10 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				loadPage(w, "error", []string{"text"},
 					[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s %q</p>",
 						"Не найдено треков по запросу", playlist)})
-				fmt.Printf("error: game: next: %s (%s)\n", "sr.Tracks.Total == 0",
+				fmt.Printf("error: game: next: sr.Tracks.Total == 0 (%s)\n",
 					playlist)
 				return
 			}
-
 			track = sr.Tracks.Tracks[0]
 		} else {
 			if sr.Playlists.Total == 0 {
@@ -207,8 +193,8 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			ptp, err := client.GetPlaylistTracks(sr.Playlists.Playlists[0].ID)
 			if err != nil {
 				loadPage(w, "error", []string{"text"},
-					[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s %q</p>",
-						err.Error(), playlist)})
+					[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %v %q</p>",
+						err, playlist)})
 				fmt.Printf("error: game: next: get playlist tracks: %v\n", err)
 				return
 			}
@@ -218,12 +204,12 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 					[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s %q</p>",
 						"Не найдено треков в плейлисте",
 						sr.Playlists.Playlists[0].Name)})
-				fmt.Printf("error: game: next: %s (%s)\n", "ptp.Total == 0",
+				fmt.Printf("error: game: next: ptp.Total == 0 (%s)\n",
 					playlist)
 				return
 			}
 
-			track = ptp.Tracks[rand.Intn(ptp.Total-1)].Track
+			track = ptp.Tracks[rand.Intn(len(ptp.Tracks)-1)].Track
 		}
 
 		err = client.QueueSong(track.ID)
@@ -286,13 +272,16 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 				trackList += fmt.Sprintf("<li>%v</li>", v.Name)
 			}
 
+			faName := strings.TrimLeft(fa.Name, "The ")
+			_, faw := utf8.DecodeRuneInString(faName)
+			_, ftw := utf8.DecodeRuneInString(ft.Name)
 			hints := make([]string, 0)
 			hints = append(hints,
 				fmt.Sprintf("Первая буква имени исполнителя %q",
-					strings.TrimLeft(fa.Name, "The ")[0]))
+					faName[:faw]))
 			hints = append(hints,
 				fmt.Sprintf("Первая буква названия трека %q",
-					ft.Name[0]))
+					ft.Name[:ftw]))
 			hints = append(hints,
 				fmt.Sprintf("Количество слов в названии трека %d",
 					len(strings.Split(ft.Name, " "))))
@@ -469,9 +458,12 @@ func activateFirstDevice() (*spotify.PlayerDevice, error) {
 	}
 
 	var device *spotify.PlayerDevice
-	for _, v := range devices {
+	for i, v := range devices {
+		fmt.Printf("%d: %v\n", i, v)
 		if v.Active {
 			device = &v
+			fmt.Printf("$q is activated\n", v.Name)
+			return device, nil
 		}
 	}
 
@@ -494,9 +486,16 @@ func handleError(w http.ResponseWriter, err error, message string) {
 			// FIXME
 			loadPage(w, "error", []string{"text"},
 				[]string{fmt.Sprintf("Спотифай выключен! Попроси хозяина "+
-					"запустить его.<br/><p class=error>Сообщение об ошибке: %s"+
-					"</p>", err.Error())})
+					"запустить его.<br/><p class=error>Сообщение об ошибке: %v"+
+					"</p>", err)})
 			fmt.Printf("error: %s: %v\n", message, err)
+			return
+		}
+
+		if device == nil {
+			fmt.Println("DEBUG device is nil")
+			loadPage(w, "home", []string{"text", "toggle_play"},
+				[]string{"device is nil", "<img class=button alt=\"Toggle Play\">"})
 			return
 		}
 
@@ -518,14 +517,34 @@ func initGamePlaylistsImagesCache() {
 		return
 	}
 
+	playlistsFile, err := os.Open("playlists.txt")
+	if err != nil {
+		fmt.Printf("error: init: load playlists: %v", err)
+		return
+	}
+	defer playlistsFile.Close()
+	scanner := bufio.NewScanner(playlistsFile)
+	playlists := make([]string, 0)
+	for scanner.Scan() {
+		playlists = append(playlists, scanner.Text())
+	}
+	err = scanner.Err()
+	if err != nil {
+		fmt.Printf("error: init: scan playlists file: %v", err)
+		return
+	}
+
 	gamePlaylistsImages = make(map[string]string)
-	for _, v := range gamePlaylistsList {
+	for _, v := range playlists {
 		sr, err := client.Search(v, spotify.SearchTypePlaylist)
 		if err != nil {
 			fmt.Printf("error: init game playlists images cache: search %q", v)
 			continue
 		}
 
-		gamePlaylistsImages[v] = sr.Playlists.Playlists[0].Images[0].URL
+		if len(sr.Playlists.Playlists) > 0 &&
+			len(sr.Playlists.Playlists[0].Images) > 0 {
+				gamePlaylistsImages[v] = sr.Playlists.Playlists[0].Images[0].URL
+		}
 	}
 }

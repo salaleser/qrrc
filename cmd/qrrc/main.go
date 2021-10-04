@@ -24,11 +24,8 @@ func main() {
 
 	spotifyapi.Start()
 
-	port := os.Getenv("PORT")
-	if len(port) == 0 {
-		log.Fatal("No port provided")
-	}
-	err := http.ListenAndServe(":"+port, nil)
+	err := http.ListenAndServeTLS(":443",
+		os.Getenv("QRRC_CERT_PATH"), os.Getenv("QRRC_KEY_PATH"), nil)
 	if err != nil {
 		log.Fatal(err)
 	}

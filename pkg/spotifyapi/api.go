@@ -7,12 +7,13 @@ import (
 	"github.com/zmb3/spotify"
 )
 
-var client *spotify.Client
-var state string
+
+const state = "pidor777"
 
 var (
+	client *spotify.Client
 	auth = spotify.NewAuthenticator(
-		fmt.Sprintf("https://%s/spotify/callback", os.Getenv("REDIRECT_HOST")),
+		fmt.Sprintf("https://%s/spotify/callback", os.Getenv("QRRC_REDIRECT_HOST")),
 		spotify.ScopeUserReadCurrentlyPlaying,
 		spotify.ScopeUserReadPlaybackState,
 		spotify.ScopeUserModifyPlaybackState,
@@ -21,7 +22,6 @@ var (
 )
 
 func Start() {
-	state = os.Getenv("SPOTIFY_STATE")
 	go func() {
 		client = <-ch
 
