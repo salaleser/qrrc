@@ -3,16 +3,17 @@ package spotifyapi
 import (
 	"fmt"
 	"os"
+	"qrrc/internal/pkg/webhelper"
 
 	"github.com/zmb3/spotify"
 )
 
-
 const state = "pidor777"
 
 var (
+	web    *webhelper.WebHelper
 	client *spotify.Client
-	auth = spotify.NewAuthenticator(
+	auth   = spotify.NewAuthenticator(
 		fmt.Sprintf("https://%s/spotify/callback", os.Getenv("QRRC_REDIRECT_HOST")),
 		spotify.ScopeUserReadCurrentlyPlaying,
 		spotify.ScopeUserReadPlaybackState,

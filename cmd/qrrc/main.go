@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"qrrc/internal/pkg/router"
 	"qrrc/pkg/spotifyapi"
 )
 
@@ -17,8 +18,9 @@ func main() {
 			fmt.Printf("error: root handler: read file: %v", err)
 		}
 		w.Header().Set("Content-Type", "text/html")
-		_, err = w.Write(html)
+		_, _ = w.Write(html)
 	})
+	http.HandleFunc("/spotify/nonamegamego/", router.NonaMegaMegoHandler)
 	http.HandleFunc("/spotify/", spotifyapi.DefaultHandler)
 	http.HandleFunc("/spotify/callback", spotifyapi.CompleteAuthHandler)
 

@@ -3,10 +3,10 @@ package spotifyapi
 import (
 	"bufio"
 	"fmt"
-	"io/ioutil"
 	"math/rand"
 	"net/http"
 	"os"
+	"qrrc/internal/pkg/webhelper"
 	"sort"
 	"strconv"
 	"strings"
@@ -23,6 +23,8 @@ var (
 )
 
 func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
+	web = webhelper.New(w)
+
 	if client == nil {
 		token, err := auth.Token(state, r)
 		if err != nil {
@@ -39,12 +41,14 @@ func CompleteAuthHandler(w http.ResponseWriter, r *http.Request) {
 		ch <- &client
 	}
 
-	loadPage(w, "home", []string{"text", "toggle_play"},
+	web.LoadPage("home", []string{"text", "toggle_play"},
 		[]string{"Успех! Теперь можешь управлять спотифаем или поиграть в " +
 			"угадаечку.", "Toggle Play/Pause"})
 }
 
 func DefaultHandler(w http.ResponseWriter, r *http.Request) {
+	web = webhelper.New(w)
+
 	var err error
 	var togglePlay string
 	var togglePlayImage string
@@ -53,7 +57,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 
 	if client == nil {
-		loadPage(w, "error", []string{"text"}, []string{fmt.Sprintf("Сорян, "+
+		web.LoadPage("error", []string{"text"}, []string{fmt.Sprintf("Сорян, "+
 			"братиш (bro), аутентификацию в спотифае (Spotify) владелец"+
 			" аккаунта еще не прошел. Если у тебя есть права, то пройди сам "+
 			"(do it yourself) по <a href=%q>этой ссылке</a>. Или попроси "+
@@ -86,7 +90,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			text += fmt.Sprintf("Сейчас играет: %s — %s", ft.Artists[0].Name,
 				ps.Item.Name)
 		}
-		loadPage(w, "home", []string{"text", "toggle_play"}, []string{text,
+		web.LoadPage("home", []string{"text", "toggle_play"}, []string{text,
 			fmt.Sprintf("<img class=button alt=%q src=%q>", togglePlay,
 				togglePlayImage)})
 	case "game":
@@ -101,7 +105,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 		sort.Strings(p)
-		loadPage(w, action, []string{"text", "step", "playlists"},
+		web.LoadPage(action, []string{"text", "step", "playlists"},
 			[]string{"Жми кнопку и пытайся угадать.", "0",
 				strings.Join(p, " ")})
 	case "game/next":
@@ -111,7 +115,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		if playlist == "top500" {
 			file, err := os.Open("tracks.txt")
 			if err != nil {
-				loadPage(w, "error", []string{"text"},
+				web.LoadPage("error", []string{"text"},
 					[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
 						err.Error())})
 				fmt.Printf("error: game: next: open file: %v", err)
@@ -120,7 +124,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			defer func() {
 				err := file.Close()
 				if err != nil {
-					loadPage(w, "error", []string{"text"},
+					web.LoadPage("error", []string{"text"},
 						[]string{fmt.Sprintf(
 							"<p class=\"error\">Ошибка: %s</p>", err.Error())})
 					fmt.Printf("error: game: next: close file: %v", err)
@@ -134,7 +138,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			}
 			err = scanner.Err()
 			if err != nil {
-				loadPage(w, "error", []string{"text"},
+				web.LoadPage("error", []string{"text"},
 					[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
 						err.Error())})
 				fmt.Printf("error: game: next: scan file: %v", err)
@@ -144,7 +148,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			searchQuery := fmt.Sprintf("%s %s", line[1], line[0])
 			sr, err = client.Search(searchQuery, spotify.SearchTypeTrack)
 			if err != nil {
-				loadPage(w, "error", []string{"text"},
+				web.LoadPage("error", []string{"text"},
 					[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
 						err.Error())})
 				fmt.Printf("error: game: next: search: %v\n", err)
@@ -153,7 +157,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		} else {
 			sr, err = client.Search(playlist, spotify.SearchTypePlaylist)
 			if err != nil {
-				loadPage(w, "error", []string{"text"},
+				web.LoadPage("error", []string{"text"},
 					[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %v</p>",
 						err)})
 				fmt.Printf("error: game: next: search: %v\n", err)
@@ -162,7 +166,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if sr == nil {
-			loadPage(w, "error", []string{"text"},
+			web.LoadPage("error", []string{"text"},
 				[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s</p>",
 					"Поиск не вернул результат")})
 			fmt.Print("error: game: next: sr == nil\n")
@@ -172,7 +176,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 		var track spotify.FullTrack
 		if playlist == "top500" {
 			if sr.Tracks.Total == 0 {
-				loadPage(w, "error", []string{"text"},
+				web.LoadPage("error", []string{"text"},
 					[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s %q</p>",
 						"Не найдено треков по запросу", playlist)})
 				fmt.Printf("error: game: next: sr.Tracks.Total == 0 (%s)\n",
@@ -182,7 +186,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			track = sr.Tracks.Tracks[0]
 		} else {
 			if sr.Playlists.Total == 0 {
-				loadPage(w, "error", []string{"text"},
+				web.LoadPage("error", []string{"text"},
 					[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s %q</p>",
 						"Не найдено треков по запросу", playlist)})
 				fmt.Printf("error: game: next: %s (%s)\n", "sr.Playlists.Total == 0",
@@ -192,7 +196,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 
 			ptp, err := client.GetPlaylistTracks(sr.Playlists.Playlists[0].ID)
 			if err != nil {
-				loadPage(w, "error", []string{"text"},
+				web.LoadPage("error", []string{"text"},
 					[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %v %q</p>",
 						err, playlist)})
 				fmt.Printf("error: game: next: get playlist tracks: %v\n", err)
@@ -200,7 +204,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			}
 
 			if ptp.Total == 0 {
-				loadPage(w, "error", []string{"text"},
+				web.LoadPage("error", []string{"text"},
 					[]string{fmt.Sprintf("<p class=\"error\">Ошибка: %s %q</p>",
 						"Не найдено треков в плейлисте",
 						sr.Playlists.Playlists[0].Name)})
@@ -241,7 +245,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 		sort.Strings(p)
-		loadPage(w, "game", []string{"text", "step", "playlists"},
+		web.LoadPage("game", []string{"text", "step", "playlists"},
 			[]string{"Запущен трек, попытайтесь отгадать!", "0",
 				strings.Join(p, " ")})
 	case "game/hint":
@@ -327,7 +331,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 		sort.Strings(p)
-		loadPage(w, "game", []string{"text", "step", "playlists"},
+		web.LoadPage("game", []string{"text", "step", "playlists"},
 			[]string{text, strconv.Itoa(step), strings.Join(p, " ")})
 	case "settings":
 		devices, err := client.PlayerDevices()
@@ -361,10 +365,10 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 						"</a><br/>", v.ID.String(), v.Name, v.Type, v.Volume)
 			}
 		}
-		loadPage(w, action, []string{"text", "option_1"},
+		web.LoadPage(action, []string{"text", "option_1"},
 			[]string{"Зарегистрированные устройства:", devicesList})
 	case "help":
-		loadPage(w, action, []string{}, []string{})
+		web.LoadPage(action, []string{}, []string{})
 	case "play":
 		artist := query.Get("artist")
 		album := query.Get("album")
@@ -425,29 +429,11 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			text += fmt.Sprintf("Сейчас играет: %s — %s", ft.Artists[0].Name,
 				ps.Item.Name)
 		}
-		loadPage(w, "home", []string{"text", "toggle_play"}, []string{text,
+		web.LoadPage("home", []string{"text", "toggle_play"}, []string{text,
 			fmt.Sprintf("<img class=button alt=%q src=%s>", togglePlay,
 				togglePlayImage)})
 	default:
 		http.NotFound(w, r)
-	}
-}
-
-func loadPage(w http.ResponseWriter, p string, old []string, new []string) {
-	html, err := ioutil.ReadFile(fmt.Sprintf("template/%s.html", p))
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		fmt.Printf("error: load page replace: read file: %v", err)
-	}
-	w.Header().Set("Content-Type", "text/html")
-	for i := 0; i < len(old); i++ {
-		html = []byte(strings.Replace(string(html), "{{"+old[i]+"}}", new[i],
-			-1))
-	}
-	_, err = w.Write(html)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		fmt.Printf("error: load page replace: %v", err)
 	}
 }
 
@@ -462,7 +448,7 @@ func activateFirstDevice() (*spotify.PlayerDevice, error) {
 		fmt.Printf("%d: %v\n", i, v)
 		if v.Active {
 			device = &v
-			fmt.Printf("$q is activated\n", v.Name)
+			fmt.Printf("%q is activated\n", v.Name)
 			return device, nil
 		}
 	}
@@ -484,7 +470,7 @@ func handleError(w http.ResponseWriter, err error, message string) {
 		device, err := activateFirstDevice()
 		if err != nil {
 			// FIXME
-			loadPage(w, "error", []string{"text"},
+			web.LoadPage("error", []string{"text"},
 				[]string{fmt.Sprintf("Спотифай выключен! Попроси хозяина "+
 					"запустить его.<br/><p class=error>Сообщение об ошибке: %v"+
 					"</p>", err)})
@@ -493,18 +479,19 @@ func handleError(w http.ResponseWriter, err error, message string) {
 		}
 
 		if device == nil {
-			fmt.Println("DEBUG device is nil")
-			loadPage(w, "home", []string{"text", "toggle_play"},
-				[]string{"device is nil", "<img class=button alt=\"Toggle Play\">"})
+			web.LoadPage("home", []string{"text", "toggle_play"},
+				[]string{"Не удалось автоматически активировать устройство, " +
+					"выберите устройство вручную в настройках",
+					"<img class=button alt=\"Toggle Play\">"})
 			return
 		}
 
-		loadPage(w, "home", []string{"text", "toggle_play"},
+		web.LoadPage("home", []string{"text", "toggle_play"},
 			[]string{fmt.Sprintf("Устройство %q (%s) активировано.",
 				device.Name, device.Type), "<img class=button alt=\"Toggle Play\">"})
 		fmt.Printf("device %q activated\n", device.Name)
 	} else {
-		loadPage(w, "error", []string{"text"},
+		web.LoadPage("error", []string{"text"},
 			[]string{fmt.Sprintf("Спотифай выключен! Попроси хозяина "+
 				"запустить его.<br/><p class=error>Сообщение об ошибке: %s"+
 				"</p>", err.Error())})
@@ -544,7 +531,7 @@ func initGamePlaylistsImagesCache() {
 
 		if len(sr.Playlists.Playlists) > 0 &&
 			len(sr.Playlists.Playlists[0].Images) > 0 {
-				gamePlaylistsImages[v] = sr.Playlists.Playlists[0].Images[0].URL
+			gamePlaylistsImages[v] = sr.Playlists.Playlists[0].Images[0].URL
 		}
 	}
 }
