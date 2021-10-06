@@ -66,9 +66,10 @@ type Track struct {
 }
 
 type Album struct {
-	ID     spotify.ID
-	Title  string
-	Artist Artist
+	ID          spotify.ID
+	Title       string
+	ReleaseDate string
+	ImageURL    string
 }
 
 type Artist struct {
@@ -98,8 +99,10 @@ func (s *SpotifyHelper) SearchTrack(query string) (Track, error) {
 		Title:    ft.Name,
 		Duration: ft.Duration,
 		Album: Album{
-			ID:    ft.Album.ID,
-			Title: ft.Album.Name,
+			ID:          ft.Album.ID,
+			Title:       ft.Album.Name,
+			ReleaseDate: ft.Album.ReleaseDate,
+			ImageURL:    ft.Album.Images[0].URL,
 		},
 		Artist: Artist{
 			ID:    ft.Artists[0].ID,
@@ -108,14 +111,34 @@ func (s *SpotifyHelper) SearchTrack(query string) (Track, error) {
 	}, nil
 }
 
-func (s *SpotifyHelper) CurrentTrack() (string, error) {
+func (s *SpotifyHelper) GetCurrentTrack() (Track, error) {
 	ps, err := s.client.PlayerState()
 	if err != nil {
-		return "", errors.Wrap(err, "player state")
+		return Track{}, errors.Wrap(err, "player state")
 	}
-	item := ps.CurrentlyPlaying.Item
-	return fmt.Sprintf("%s — %s | %q (%s)", item.Artists[0].Name,
-		item.Name, item.Album.Name, item.Album.ReleaseDate), nil
+
+	i := ps.CurrentlyPlaying.Item
+
+	return Track{
+		ID:       i.ID,
+		Title:    i.Name,
+		Duration: i.Duration,
+		Album: Album{
+			ID:          i.Album.ID,
+			Title:       i.Album.Name,
+			ReleaseDate: i.Album.ReleaseDate,
+			ImageURL:    i.Album.Images[0].URL,
+		},
+		Artist: Artist{
+			ID:    i.Artists[0].ID,
+			Title: i.Artists[0].Name,
+		},
+	}, nil
+}
+
+func (t *Track) String() string {
+	return fmt.Sprintf("%s — %s | %q (%s)", t.Artist.Title,
+		t.Title, t.Album.Title, t.Album.ReleaseDate)
 }
 
 func (s *SpotifyHelper) Pause() error {

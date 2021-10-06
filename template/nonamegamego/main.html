@@ -32,6 +32,13 @@
         font-size: 32px;
         font-weight: bold;
     }
+    .hint {
+        font-family: "Lucida Console", monospace;
+        font-size: 24px;
+        color: #244a24;
+        width: 33%;
+        height: auto;
+    }
     .error {
         font-size: 80%;
         color: #aaaaaa;
@@ -41,13 +48,15 @@
     <p class="title"><b><u>Игра</u></b></p>
     <p class="round">{{round}}</p>
     <p class="stats">{{stats}}</p>
-    {{hint}}
+    <p class="hint">{{hint}}</p>
     <p>{{text}}</p>
     {{buttons}}
-    <br/>
+    <br>
+    <br>
+    <br>
     <a href="/spotify/nonamegamego/answer">Ответить!</a>
-    <br/>
-    <br/>
+    <br>
+    <br>
     <a href="/spotify/home">Выйти</a>
 </body>
 </html>

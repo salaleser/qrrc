@@ -173,11 +173,12 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 					trackList+"</ul>"))
 
 			if step >= len(hints) {
-				text, err = Instance.CurrentTrack()
+				t, err := Instance.GetCurrentTrack()
 				if err != nil {
 					Instance.web.LoadErrorPage("", err)
 					return
 				}
+				text = t.String()
 				step = 0
 			} else {
 				text = fmt.Sprintf("Подсказка #%d/%d: %s", step+1, len(hints),

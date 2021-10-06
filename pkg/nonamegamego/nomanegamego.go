@@ -98,7 +98,7 @@ func (n *NonaMegaMego) handleSetup(params url.Values) error {
 
 	n.stats = NewStats(n.settings.playersCount)
 
-	options := []string{"1", "2", "3", "4", "5"}
+	options := []string{"1", "2", "3", "4", "5", "6", "7", "8", "9"}
 	buttons := make(Buttons, len(options))
 	for i, v := range options {
 		buttons[i] = Button{
@@ -109,17 +109,10 @@ func (n *NonaMegaMego) handleSetup(params url.Values) error {
 			},
 		}
 	}
-	buttons = append(buttons, Button{
-		Link: "main",
-		Text: "Начать игру",
-		Params: url.Values{
-			"start": {"true"},
-		},
-	})
 
 	n.web.LoadSetupPage(
 		fmt.Sprintf("Выберите количество участников: (%d)", n.settings.playersCount),
-		buttons.Join("<br>"),
+		buttons.Join(" | "),
 	)
 
 	return nil
@@ -133,7 +126,7 @@ func (n *NonaMegaMego) handleMain(params url.Values) error {
 			number: 1,
 			turn: turn{
 				hint:  []string{},
-				hints: updateHints(),
+				hints: n.updateHints(),
 			},
 		}
 		if err := n.s.StartRandomPlaylist(n.playlist.ID); err != nil {
@@ -150,7 +143,8 @@ func (n *NonaMegaMego) handleMain(params url.Values) error {
 			return errors.New("Нет подсказки с таким ID")
 		}
 		delete(n.round.turn.hints, hintID)
-		n.round.turn.hint = append(n.round.turn.hint, hint.f())
+		n.round.turn.hint = append(n.round.turn.hint,
+			fmt.Sprintf("%s: <b>%s</b>", hint.text, hint.f()))
 		n.stats.ActivePlayer().AddScore(-hint.value)
 	} else {
 		if err := n.s.StartRandomPlaylist(n.playlist.ID); err != nil {
@@ -184,18 +178,19 @@ func (n *NonaMegaMego) handleMain(params url.Values) error {
 }
 
 func (n *NonaMegaMego) handleAnswer(params url.Values) error {
-	a, err := n.s.CurrentTrack()
+	t, err := n.s.GetCurrentTrack()
 	if err != nil {
 		return err
 	}
 
 	n.round.turn = turn{
 		hint:  []string{},
-		hints: updateHints(),
+		hints: n.updateHints(),
 	}
 
 	n.web.LoadAnswerPage(
-		fmt.Sprintf("Правильный ответ: <b>%s</b>", a),
+		fmt.Sprintf("Правильный ответ: <b>%s</b><br>"+
+			"<img src=%q>", t.String(), t.Album.ImageURL),
 	)
 
 	return nil

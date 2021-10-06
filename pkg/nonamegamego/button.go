@@ -29,5 +29,6 @@ func (b *Buttons) Join(sep string) string {
 		builder.WriteString(v.String())
 		builder.WriteString(sep)
 	}
-	return builder.String()
+	result := builder.String()
+	return strings.TrimRight(result, sep)
 }
