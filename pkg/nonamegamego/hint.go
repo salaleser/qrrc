@@ -16,7 +16,7 @@ type hint struct {
 type hintHandler func() string
 
 func (h *hint) String() string {
-	return fmt.Sprintf("%s > %d", h.text, h.value)
+	return fmt.Sprintf("%s (%d)", h.text, h.value)
 }
 
 func (n *NonaMegaMego) updateHints() map[int]hint {
@@ -69,6 +69,12 @@ func (n *NonaMegaMego) updateHints() map[int]hint {
 			value: 24,
 			f:     n.hintAlbumImage,
 		},
+		9: {
+			id:    9,
+			text:  "Последняя буква наименования артиста",
+			value: 9,
+			f:     n.hintArtistTitleLastLetter,
+		},
 	}
 }
 
@@ -79,6 +85,23 @@ func (n *NonaMegaMego) hintArtistTitleFirstLetter() string {
 	}
 	_, c := utf8.DecodeRuneInString(t.Artist.Title)
 	return t.Artist.Title[:c]
+}
+
+func (n *NonaMegaMego) hintArtistTitleLastLetter() string {
+	t, err := n.s.GetCurrentTrack()
+	if err != nil {
+		return err.Error()
+	}
+
+	a := []rune{}
+	b := []byte(t.Artist.Title)
+	i := 0
+	for i < len(b) {
+		r, size := utf8.DecodeRune(b[i:])
+		a = append(a, r)
+		i += size
+	}
+	return string(a[len(a)-1])
 }
 
 func (n *NonaMegaMego) hintAlbumTitleFirstLetter() string {

@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"qrrc/internal/pkg/webhelper"
+	"time"
 
 	"github.com/pkg/errors"
 	"github.com/zmb3/spotify"
@@ -152,21 +153,23 @@ func (s *SpotifyHelper) Pause() error {
 func (s *SpotifyHelper) StartRandomPlaylist(id spotify.ID) error {
 	tracks, err := Instance.GetPlaylistTracks(id)
 	if err != nil {
-		return err
+		return errors.Wrapf(err, "get playlist tracks (%s)", id)
 	}
+
+	rand.Seed(time.Now().UnixNano())
 	track := tracks[rand.Intn(len(tracks)-1)]
 
 	if err := Instance.client.QueueSong(track.ID); err != nil {
-		return err
+		return errors.Wrapf(err, "queue song (%s)", track.ID)
 	}
 
 	if err := Instance.client.Next(); err != nil {
-		return err
+		return errors.Wrap(err, "next")
 	}
 
 	d := track.Duration
 	if err := Instance.client.Seek(d/4 + rand.Intn(d/4)); err != nil {
-		return err
+		return errors.Wrapf(err, "seek (%d)", d)
 	}
 
 	return nil
@@ -201,7 +204,7 @@ func (s *SpotifyHelper) GetPlaylistTracks(id spotify.ID) ([]Track, error) {
 		return []Track{}, err
 	}
 
-	result := make([]Track, ptp.Total)
+	result := make([]Track, len(ptp.Tracks))
 	for i, v := range ptp.Tracks {
 		result[i] = Track{
 			ID:       v.Track.ID,
