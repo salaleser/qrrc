@@ -9,7 +9,7 @@ type Player struct {
 }
 
 func (p *Player) String() string {
-	s := "    "
+	s := "...."
 	if p.active {
 		s = " (!)"
 	}

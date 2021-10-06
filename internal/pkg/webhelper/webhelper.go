@@ -25,11 +25,11 @@ func (h *WebHelper) LoadErrorPage(text string, err error) {
 	)
 }
 
-func (h *WebHelper) LoadMainPage(round, stats, text, buttons string) {
+func (h *WebHelper) LoadMainPage(round, stats, hint, text, buttons string) {
 	h.LoadPage(
 		"nonamegamego/main",
-		[]string{"round", "stats", "text", "buttons"},
-		[]string{round, stats, text, buttons},
+		[]string{"round", "stats", "hint", "text", "buttons"},
+		[]string{round, stats, hint, text, buttons},
 	)
 }
 

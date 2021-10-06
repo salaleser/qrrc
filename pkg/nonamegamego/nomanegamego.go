@@ -6,18 +6,10 @@ import (
 	"qrrc/internal/pkg/webhelper"
 	"qrrc/pkg/spotifyhelper"
 	"strconv"
+	"strings"
 
 	"github.com/pkg/errors"
 )
-
-var defaultHints = []string{
-	"Первая буква наименования артиста",
-	"Первая буква наименования альбома",
-	"Первая буква наименования трека",
-	"Количество букв в наименовании артиста",
-	"Количество букв в наименовании альбома",
-	"Количество букв в наименовании трека",
-}
 
 type NonaMegaMego struct {
 	web      *webhelper.WebHelper
@@ -34,7 +26,12 @@ type settings struct {
 
 type round struct {
 	number int
-	hints  []string
+	turn   turn
+}
+
+type turn struct {
+	hint  []string
+	hints map[int]hint
 }
 
 type handler func(params url.Values) error
@@ -45,10 +42,6 @@ func New(web *webhelper.WebHelper, s *spotifyhelper.SpotifyHelper) *NonaMegaMego
 	n := &NonaMegaMego{
 		web: web,
 		s:   s,
-		round: round{
-			number: 1,
-			hints:  defaultHints,
-		},
 		settings: settings{
 			playersCount: 2,
 		},
@@ -105,8 +98,9 @@ func (n *NonaMegaMego) handleSetup(params url.Values) error {
 
 	n.stats = NewStats(n.settings.playersCount)
 
-	buttons := make(Buttons, len(n.round.hints))
-	for i, v := range []string{"1", "2", "3", "4", "5"} {
+	options := []string{"1", "2", "3", "4", "5"}
+	buttons := make(Buttons, len(options))
+	for i, v := range options {
 		buttons[i] = Button{
 			Link: "setup",
 			Text: v,
@@ -135,42 +129,53 @@ func (n *NonaMegaMego) handleMain(params url.Values) error {
 	startParam := params.Get("start")
 	hintParam := params.Get("hint")
 	if startParam == "true" {
+		n.round = round{
+			number: 1,
+			turn: turn{
+				hint:  []string{},
+				hints: updateHints(),
+			},
+		}
 		if err := n.s.StartRandomPlaylist(n.playlist.ID); err != nil {
 			return errors.Wrap(err, "play random")
 		}
 	} else if hintParam != "" {
-		hintNumber, err := strconv.Atoi(hintParam)
+		hintID, err := strconv.Atoi(hintParam)
 		if err != nil {
 			return errors.Wrap(err, "parse hint")
 		}
-		n.round.hints[hintNumber] = "************"
-		n.stats.ActivePlayer().AddScore(-10)
+
+		hint, ok := n.round.turn.hints[hintID]
+		if !ok {
+			return errors.New("Нет подсказки с таким ID")
+		}
+		delete(n.round.turn.hints, hintID)
+		n.round.turn.hint = append(n.round.turn.hint, hint.f())
+		n.stats.ActivePlayer().AddScore(-hint.value)
 	} else {
 		if err := n.s.StartRandomPlaylist(n.playlist.ID); err != nil {
 			return errors.Wrap(err, "play random")
 		}
 		if n.stats.SetActiveNext() {
-			n.round = round{
-				number: n.round.number + 1,
-				hints:  defaultHints,
-			}
+			n.round.number = n.round.number + 1
 		}
 	}
 
-	buttons := make(Buttons, len(n.round.hints))
-	for i, v := range n.round.hints {
-		buttons[i] = Button{
+	buttons := make(Buttons, 0)
+	for _, v := range n.round.turn.hints {
+		buttons = append(buttons, Button{
 			Link: "main",
-			Text: v,
+			Text: v.String(),
 			Params: url.Values{
-				"hint": {strconv.Itoa(i)},
+				"hint": {strconv.Itoa(v.id)},
 			},
-		}
+		})
 	}
 
 	n.web.LoadMainPage(
 		fmt.Sprintf("Раунд: %d", n.round.number),
 		n.stats.String(),
+		strings.Join(n.round.turn.hint, "<br>"),
 		fmt.Sprintf("Ходит <b>%s</b>", n.stats.ActivePlayer().name),
 		buttons.Join("<br>"),
 	)
@@ -184,8 +189,13 @@ func (n *NonaMegaMego) handleAnswer(params url.Values) error {
 		return err
 	}
 
+	n.round.turn = turn{
+		hint:  []string{},
+		hints: updateHints(),
+	}
+
 	n.web.LoadAnswerPage(
-		fmt.Sprintf("Правильный ответ: %s", a),
+		fmt.Sprintf("Правильный ответ: <b>%s</b>", a),
 	)
 
 	return nil
