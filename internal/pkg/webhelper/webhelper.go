@@ -17,11 +17,11 @@ func New(w http.ResponseWriter) *WebHelper {
 	}
 }
 
-func (h *WebHelper) LoadErrorPage(text string) {
+func (h *WebHelper) LoadErrorPage(text string, err error) {
 	h.LoadPage(
 		"error",
-		[]string{"text"},
-		[]string{text},
+		[]string{"text", "error"},
+		[]string{text, err.Error()},
 	)
 }
 
@@ -38,6 +38,22 @@ func (h *WebHelper) LoadStartPage() {
 		"nonamegamego/start",
 		[]string{},
 		[]string{},
+	)
+}
+
+func (h *WebHelper) LoadAnswerPage(text string) {
+	h.LoadPage(
+		"nonamegamego/answer",
+		[]string{"text"},
+		[]string{text},
+	)
+}
+
+func (h *WebHelper) LoadSetupPage(text, buttons string) {
+	h.LoadPage(
+		"nonamegamego/setup",
+		[]string{"text", "buttons"},
+		[]string{text, buttons},
 	)
 }
 

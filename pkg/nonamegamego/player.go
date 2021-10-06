@@ -16,6 +16,10 @@ func (p *Player) String() string {
 	return fmt.Sprintf("%q [%d]%s", p.name, p.score, s)
 }
 
+func (p *Player) AddScore(n int) {
+	p.score += n
+}
+
 func (p *Player) SetActive(active bool) {
 	p.active = active
 }

@@ -24,7 +24,7 @@ func NonaMegaMegoHandler(w http.ResponseWriter, r *http.Request) {
 	params := r.URL.Query()
 
 	if err := instance.Route(action, params); err != nil {
-		web.LoadErrorPage(fmt.Sprintf("handle %q: %v", action, err))
+		web.LoadErrorPage(fmt.Sprintf("handle %q", action), err)
 		return
 	}
 }
