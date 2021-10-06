@@ -15,8 +15,12 @@ type Button struct {
 type Buttons []Button
 
 func (b *Button) String() string {
-	return fmt.Sprintf("<a href=/spotify/nonamegamego/%s?%s>%s</a>",
-		b.Link, b.Params.Encode(), b.Text)
+	var params string
+	if b.Params != nil {
+		params = "?" + b.Params.Encode()
+	}
+	return fmt.Sprintf("<a href=/spotify/nonamegamego/%s%s>%s</a>",
+		b.Link, params, b.Text)
 }
 
 func (b *Buttons) Join(sep string) string {

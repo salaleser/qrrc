@@ -18,7 +18,7 @@ func New(w http.ResponseWriter) *WebHelper {
 }
 
 func (h *WebHelper) LoadErrorPage(text string) {
-	h.loadPage(
+	h.LoadPage(
 		"error",
 		[]string{"text"},
 		[]string{text},
@@ -26,7 +26,7 @@ func (h *WebHelper) LoadErrorPage(text string) {
 }
 
 func (h *WebHelper) LoadMainPage(round, stats, text, buttons string) {
-	h.loadPage(
+	h.LoadPage(
 		"nonamegamego/main",
 		[]string{"round", "stats", "text", "buttons"},
 		[]string{round, stats, text, buttons},
@@ -34,22 +34,14 @@ func (h *WebHelper) LoadMainPage(round, stats, text, buttons string) {
 }
 
 func (h *WebHelper) LoadStartPage() {
-	h.loadPage(
+	h.LoadPage(
 		"nonamegamego/start",
 		[]string{},
 		[]string{},
 	)
 }
 
-func (h *WebHelper) LoadRoundPage(text string) {
-	h.loadPage(
-		"nonamegamego/round",
-		[]string{"text"},
-		[]string{text},
-	)
-}
-
-func (web *WebHelper) loadPage(p string, old []string, new []string) {
+func (web *WebHelper) LoadPage(p string, old []string, new []string) {
 	html, err := ioutil.ReadFile(fmt.Sprintf("template/%s.html", p))
 	if err != nil {
 		http.Error(web.w, err.Error(), http.StatusInternalServerError)

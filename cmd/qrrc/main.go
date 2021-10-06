@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 	"qrrc/internal/pkg/router"
-	"qrrc/pkg/spotifyapi"
+	"qrrc/pkg/spotifyhelper"
 )
 
 func main() {
@@ -21,10 +21,10 @@ func main() {
 		_, _ = w.Write(html)
 	})
 	http.HandleFunc("/spotify/nonamegamego/", router.NonaMegaMegoHandler)
-	http.HandleFunc("/spotify/", spotifyapi.DefaultHandler)
-	http.HandleFunc("/spotify/callback", spotifyapi.CompleteAuthHandler)
+	http.HandleFunc("/spotify/", spotifyhelper.DefaultHandler)
+	http.HandleFunc("/spotify/callback", spotifyhelper.CompleteAuthHandler)
 
-	spotifyapi.Start()
+	spotifyhelper.Start()
 
 	err := http.ListenAndServeTLS(":443",
 		os.Getenv("QRRC_CERT_PATH"), os.Getenv("QRRC_KEY_PATH"), nil)

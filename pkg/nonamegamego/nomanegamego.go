@@ -4,24 +4,28 @@ import (
 	"fmt"
 	"net/url"
 	"qrrc/internal/pkg/webhelper"
+	"qrrc/pkg/spotifyhelper"
 	"strconv"
 
 	"github.com/pkg/errors"
 )
 
 type NonaMegaMego struct {
-	web   *webhelper.WebHelper
-	stats *Stats
-	round int
+	web      *webhelper.WebHelper
+	s        *spotifyhelper.SpotifyHelper
+	stats    *Stats
+	playlist string
+	round    int
 }
 
 type handler func(params url.Values) error
 
 var handlers map[string]handler
 
-func New(web *webhelper.WebHelper) *NonaMegaMego {
+func New(web *webhelper.WebHelper, s *spotifyhelper.SpotifyHelper) *NonaMegaMego {
 	n := &NonaMegaMego{
 		web:   web,
+		s:     s,
 		round: 1,
 	}
 
@@ -32,6 +36,10 @@ func New(web *webhelper.WebHelper) *NonaMegaMego {
 	}
 
 	return n
+}
+
+func (n *NonaMegaMego) Update(web *webhelper.WebHelper) {
+	n.web = web
 }
 
 func (n *NonaMegaMego) Route(action string, params url.Values) error {
@@ -49,6 +57,8 @@ func (n *NonaMegaMego) Route(action string, params url.Values) error {
 
 func (n *NonaMegaMego) handleStart(params url.Values) error {
 	n.web.LoadStartPage()
+	n.playlist = "beatles"
+
 	return nil
 }
 
@@ -64,16 +74,13 @@ func (n *NonaMegaMego) handleMain(params url.Values) error {
 		{
 			Link: "round",
 			Text: "Крутить рулетку",
-			Params: url.Values{
-				"n": {strconv.Itoa(n.round)},
-			},
 		},
 	})
 
 	n.web.LoadMainPage(
 		fmt.Sprintf("Раунд: %d", n.round),
 		n.stats.String(),
-		fmt.Sprintf("Ходит %s", n.stats.Active().name),
+		fmt.Sprintf("Ходит %s", n.stats.ActivePlayer().name),
 		buttons.Join("<br>"),
 	)
 
@@ -81,6 +88,23 @@ func (n *NonaMegaMego) handleMain(params url.Values) error {
 }
 
 func (n *NonaMegaMego) handleRound(params url.Values) error {
-	n.web.LoadRoundPage("test")
+	if n.stats.SetActiveNext() {
+		n.round++
+	}
+
+	buttons := Buttons([]Button{
+		{
+			Link: "round",
+			Text: "Крутить рулетку",
+		},
+	})
+
+	n.web.LoadMainPage(
+		fmt.Sprintf("Раунд: %d", n.round),
+		n.stats.String(),
+		fmt.Sprintf("Ходит %s", n.stats.ActivePlayer().name),
+		buttons.Join("<br>"),
+	)
+
 	return nil
 }

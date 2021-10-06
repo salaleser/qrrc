@@ -30,13 +30,35 @@ func (s *Stats) SetActive(num int) {
 	}
 }
 
-func (s *Stats) Active() *Player {
+func (s *Stats) SetActiveNext() (last bool) {
+	n := s.ActivePlayerNumber()
+	n++
+	if n >= len(s.players) {
+		n = 0
+		last = true
+	}
+	for i, p := range s.players {
+		p.SetActive(i == n)
+	}
+	return
+}
+
+func (s *Stats) ActivePlayer() *Player {
 	for _, p := range s.players {
 		if p.active {
 			return p
 		}
 	}
 	return nil
+}
+
+func (s *Stats) ActivePlayerNumber() int {
+	for i, p := range s.players {
+		if p.active {
+			return i
+		}
+	}
+	return 0
 }
 
 func (s *Stats) String() string {
