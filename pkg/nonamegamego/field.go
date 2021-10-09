@@ -1,6 +1,7 @@
 package nonamegamego
 
 import (
+	"fmt"
 	"strings"
 )
 
@@ -11,7 +12,7 @@ type Field struct {
 type Fields []Field
 
 func (f *Field) String() string {
-	return `<input class="name" type="text">`
+	return fmt.Sprintf(`<input class="name" type="text" value="%s">`, f.Text)
 }
 
 func (f *Fields) Join(sep string) string {

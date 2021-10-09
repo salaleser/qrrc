@@ -111,9 +111,9 @@ func (n *NonaMegaMego) handleSetup(params url.Values) error {
 	playersCountOptions := []string{
 		"1", "2", "3", "4", "5", "6", "7", "8", "9",
 	}
-	playersCountButtons := make(Buttons, len(playersCountOptions))
+	playersCount := make(Buttons, len(playersCountOptions))
 	for i, v := range playersCountOptions {
-		playersCountButtons[i] = Button{
+		playersCount[i] = Button{
 			Link: "setup",
 			Text: v,
 			Params: url.Values{
@@ -122,9 +122,11 @@ func (n *NonaMegaMego) handleSetup(params url.Values) error {
 		}
 	}
 
-	playerNamesFields := make(Fields, n.settings.playersCount)
+	playerNames := make(Fields, n.settings.playersCount)
 	for i := 0; i < n.settings.playersCount; i++ {
-		playerNamesFields[i] = Field{}
+		playerNames[i] = Field{
+			Text: fmt.Sprintf("Игрок %d", i+1),
+		}
 	}
 
 	playlistOptions := []struct {
@@ -137,9 +139,9 @@ func (n *NonaMegaMego) handleSetup(params url.Values) error {
 		{"Best of Rock (1970)", "best+of+rock+1970"},
 		{"(использовать текущий плейлист)", "-"},
 	}
-	playlistButtons := make(Buttons, len(playlistOptions))
+	playlists := make(Buttons, len(playlistOptions))
 	for i, v := range playlistOptions {
-		playlistButtons[i] = Button{
+		playlists[i] = Button{
 			Link: "setup",
 			Text: v.text,
 			Params: url.Values{
@@ -154,9 +156,9 @@ func (n *NonaMegaMego) handleSetup(params url.Values) error {
 			n.settings.playersCount,
 			n.settings.playlist,
 		),
-		playersCountButtons.Join(" "),
-		playerNamesFields.Join("<br>"),
-		playlistButtons.Join("<br>"),
+		playersCount.Join(" "),
+		playerNames.Join("<br>"),
+		playlists.Join("<br>"),
 	)
 
 	return nil

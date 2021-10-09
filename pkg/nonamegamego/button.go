@@ -19,7 +19,7 @@ func (b *Button) String() string {
 	if b.Params != nil {
 		params = "?" + b.Params.Encode()
 	}
-	return fmt.Sprintf("<a href=/spotify/nonamegamego/%s%s>%s</a>",
+	return fmt.Sprintf(`<a href="/spotify/nonamegamego/%s%s">%s</a>`,
 		b.Link, params, b.Text)
 }
 
