@@ -15,13 +15,16 @@ type NonaMegaMego struct {
 	web      *webhelper.WebHelper
 	s        *spotifyhelper.SpotifyHelper
 	stats    *Stats
-	playlist spotifyhelper.Playlist
 	settings settings
 	round    round
 }
 
 type settings struct {
-	playersCount int
+	playersCount           int
+	playlist               *spotifyhelper.Playlist
+	answerCorrectAll       int
+	answerCorrectPartially int
+	answerIncorrect        int
 }
 
 type round struct {
@@ -75,44 +78,85 @@ func (n *NonaMegaMego) Route(action string, params url.Values) error {
 }
 
 func (n *NonaMegaMego) handleStart(params url.Values) error {
-	playlistParam := params.Get("playlist")
-	var err error
-	n.playlist, err = n.s.SearchPlaylist(playlistParam)
-	if err != nil {
-		return errors.Wrap(err, "get playlist")
-	}
-
 	n.web.LoadStartPage()
 
 	return nil
 }
 
 func (n *NonaMegaMego) handleSetup(params url.Values) error {
-	playersParam := params.Get("players")
-	if playersParam != "" {
-		var err error
-		if n.settings.playersCount, err = strconv.Atoi(playersParam); err != nil {
+	var err error
+
+	playersCountParam := params.Get("players_count")
+	if playersCountParam != "" {
+		n.settings.playersCount, err = strconv.Atoi(playersCountParam)
+		if err != nil {
 			return errors.Wrap(err, "не удалось спарсить число участников")
 		}
 	}
 
-	n.stats = NewStats(n.settings.playersCount)
+	playlistParam := params.Get("playlist")
+	if playlistParam == "-" {
+		n.settings.playlist = nil
+	} else if playlistParam != "" {
+		n.settings.playlist, err = n.s.SearchPlaylist(playlistParam)
+		if err != nil {
+			return errors.Wrap(err, "search playlist")
+		}
+	}
 
-	options := []string{"1", "2", "3", "4", "5", "6", "7", "8", "9"}
-	buttons := make(Buttons, len(options))
-	for i, v := range options {
-		buttons[i] = Button{
+	n.settings.answerCorrectAll = 100
+	n.settings.answerCorrectPartially = 50
+	n.settings.answerIncorrect = -50
+
+	playersCountOptions := []string{
+		"1", "2", "3", "4", "5", "6", "7", "8", "9",
+	}
+	playersCountButtons := make(Buttons, len(playersCountOptions))
+	for i, v := range playersCountOptions {
+		playersCountButtons[i] = Button{
 			Link: "setup",
 			Text: v,
 			Params: url.Values{
-				"players": {strconv.Itoa(i + 1)},
+				"players_count": {v},
+			},
+		}
+	}
+
+	playerNamesFields := make(Fields, n.settings.playersCount)
+	for i := 0; i < n.settings.playersCount; i++ {
+		playerNamesFields[i] = Field{}
+	}
+
+	playlistOptions := []struct {
+		text string
+		code string
+	}{
+		{"BALDEJ", "BALDEJ"},
+		{"Русский рок", "русский+рок"},
+		{"Russian Pop (1980)", "russian+pop+1980"},
+		{"Best of Rock (1970)", "best+of+rock+1970"},
+		{"(использовать текущий плейлист)", "-"},
+	}
+	playlistButtons := make(Buttons, len(playlistOptions))
+	for i, v := range playlistOptions {
+		playlistButtons[i] = Button{
+			Link: "setup",
+			Text: v.text,
+			Params: url.Values{
+				"playlist": {v.code},
 			},
 		}
 	}
 
 	n.web.LoadSetupPage(
-		fmt.Sprintf("Выберите количество участников: (%d)", n.settings.playersCount),
-		buttons.Join(" | "),
+		fmt.Sprintf(
+			"Количество игроков: %d<br>Плейлист: %s",
+			n.settings.playersCount,
+			n.settings.playlist,
+		),
+		playersCountButtons.Join(" "),
+		playerNamesFields.Join("<br>"),
+		playlistButtons.Join("<br>"),
 	)
 
 	return nil
@@ -121,7 +165,12 @@ func (n *NonaMegaMego) handleSetup(params url.Values) error {
 func (n *NonaMegaMego) handleMain(params url.Values) error {
 	startParam := params.Get("start")
 	hintParam := params.Get("hint")
+
 	if startParam == "true" {
+		playerNamesParam := params.Get("player_names")
+		playerNames := strings.Split(playerNamesParam, ",")
+		n.settings.playersCount = len(playerNames)
+		n.stats = NewStats(playerNames)
 		n.round = round{
 			number: 1,
 			turn: turn{
@@ -129,8 +178,16 @@ func (n *NonaMegaMego) handleMain(params url.Values) error {
 				hints: n.updateHints(),
 			},
 		}
-		if err := n.s.StartRandomPlaylist(n.playlist.ID); err != nil {
-			return errors.Wrap(err, "play random")
+		if n.settings.playlist != nil {
+			err := n.s.PlayRandomTrack(n.settings.playlist)
+			if err != nil {
+				return errors.Wrap(err, "start random playlist")
+			}
+		} else {
+			err := n.s.PlayNextTrack()
+			if err != nil {
+				return errors.Wrap(err, "play next track")
+			}
 		}
 	} else if hintParam != "" {
 		hintID, err := strconv.Atoi(hintParam)
@@ -138,30 +195,44 @@ func (n *NonaMegaMego) handleMain(params url.Values) error {
 			return errors.Wrap(err, "parse hint")
 		}
 
-		hint, ok := n.round.turn.hints[hintID]
-		if !ok {
-			return errors.New("Нет подсказки с таким ID")
+		if hint, ok := n.round.turn.hints[hintID]; ok {
+			delete(n.round.turn.hints, hintID)
+			n.round.turn.hint = append(n.round.turn.hint,
+				fmt.Sprintf("%s: <b>%s</b>", hint.text, hint.f()))
+			n.stats.ActivePlayer().AddScore(-hint.value)
 		}
-		delete(n.round.turn.hints, hintID)
-		n.round.turn.hint = append(n.round.turn.hint,
-			fmt.Sprintf("%s: <b>%s</b>", hint.text, hint.f()))
-		n.stats.ActivePlayer().AddScore(-hint.value)
 	} else {
-		if err := n.s.StartRandomPlaylist(n.playlist.ID); err != nil {
-			return errors.Wrap(err, "play random")
+		if n.settings.playlist != nil {
+			err := n.s.PlayRandomTrack(n.settings.playlist)
+			if err != nil {
+				return errors.Wrap(err, "start random playlist")
+			}
+		} else {
+			err := n.s.PlayNextTrack()
+			if err != nil {
+				return errors.Wrap(err, "play next track")
+			}
 		}
+
+		correctParam := params.Get("correct")
+		correct, err := strconv.Atoi(correctParam)
+		if err != nil {
+			return errors.Wrap(err, "parse correct")
+		}
+		n.stats.ActivePlayer().AddScore(correct)
+
 		if n.stats.SetActiveNext() {
 			n.round.number = n.round.number + 1
 		}
 	}
 
 	buttons := make(Buttons, 0)
-	for _, v := range n.round.turn.hints {
+	for k, v := range n.round.turn.hints {
 		buttons = append(buttons, Button{
 			Link: "main",
 			Text: v.String(),
 			Params: url.Values{
-				"hint": {strconv.Itoa(v.id)},
+				"hint": {strconv.Itoa(k)},
 			},
 		})
 	}
@@ -188,9 +259,28 @@ func (n *NonaMegaMego) handleAnswer(params url.Values) error {
 		hints: n.updateHints(),
 	}
 
+	options := []struct {
+		text  string
+		value int
+	}{
+		{"Правильно все", n.settings.answerCorrectAll},
+		{"Правильно частично", n.settings.answerCorrectPartially},
+		{"Неправильно", n.settings.answerIncorrect},
+	}
+	buttons := make(Buttons, len(options))
+	for i, v := range options {
+		buttons[i] = Button{
+			Link: "main",
+			Text: v.text,
+			Params: url.Values{
+				"correct": {strconv.Itoa(v.value)},
+			},
+		}
+	}
+
 	n.web.LoadAnswerPage(
-		fmt.Sprintf("Правильный ответ: <b>%s</b><br>"+
-			"<img src=%q>", t.String(), t.Album.ImageURL),
+		fmt.Sprintf("%s<br><img src=%q>", t.String(), t.Album.ImageURL),
+		buttons.Join("<br>"),
 	)
 
 	return nil

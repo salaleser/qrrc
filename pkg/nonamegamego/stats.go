@@ -9,13 +9,13 @@ type Stats struct {
 	players []*Player
 }
 
-func NewStats(num int) *Stats {
+func NewStats(playerNames []string) *Stats {
 	s := Stats{}
 
-	s.players = make([]*Player, num)
-	for i := 0; i < num; i++ {
+	s.players = make([]*Player, len(playerNames))
+	for i, v := range playerNames {
 		s.players[i] = &Player{
-			name:   fmt.Sprintf("Игрок-%d", i+1),
+			name:   v,
 			score:  100,
 			active: func() bool { return i == 0 }(),
 		}

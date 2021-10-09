@@ -4,9 +4,9 @@ import (
 	"bufio"
 	"fmt"
 	"math/rand"
-	"net/http"
 	"os"
 	"qrrc/internal/pkg/webhelper"
+	"strings"
 	"time"
 
 	"github.com/pkg/errors"
@@ -45,11 +45,11 @@ func Start() {
 func (s *SpotifyHelper) start() {
 	s.client = <-s.ch
 
-	user, err := s.client.CurrentUser()
+	u, err := s.client.CurrentUser()
 	if err != nil {
 		fmt.Printf("error: get current user: %v\n", err)
 	}
-	fmt.Println("Logged in as:", user.ID)
+	fmt.Println("Logged in as:", u.ID)
 
 	ps, err := s.client.PlayerState()
 	if err != nil {
@@ -82,6 +82,58 @@ type Playlist struct {
 	ID       spotify.ID
 	Title    string
 	ImageURL string
+}
+
+func (p *Playlist) String() string {
+	if p == nil {
+		return "-"
+	}
+	return fmt.Sprintf("%q", p.Title)
+}
+
+type Device struct {
+	ID     spotify.ID
+	Title  string
+	Active bool
+	Type   string
+}
+
+type Devices []Device
+
+func (d *Device) String() string {
+	if d.Active {
+		return fmt.Sprintf("%s (%s) *", d.Title, d.Type)
+	}
+	return fmt.Sprintf("<a href=/spotify/settings?device_id=%s>%s (%s)",
+		d.ID, d.Title, d.Type)
+}
+
+func (d *Devices) Join(sep string) string {
+	var builder strings.Builder
+	for _, v := range *d {
+		builder.WriteString(v.String())
+		builder.WriteString(sep)
+	}
+	result := builder.String()
+	return strings.TrimRight(result, sep)
+}
+
+func (s *SpotifyHelper) GetDevices() (*Devices, error) {
+	d, err := Instance.client.PlayerDevices()
+	if err != nil {
+		return nil, errors.Wrap(err, "player devices")
+	}
+
+	devices := make(Devices, len(d))
+	for i, v := range d {
+		devices[i] = Device{
+			ID:     v.ID,
+			Title:  v.Name,
+			Active: v.Active,
+			Type:   v.Type,
+		}
+	}
+	return &devices, nil
 }
 
 func (s *SpotifyHelper) SearchTrack(query string) (Track, error) {
@@ -138,7 +190,7 @@ func (s *SpotifyHelper) GetCurrentTrack() (Track, error) {
 }
 
 func (t *Track) String() string {
-	return fmt.Sprintf("%s — %s | %q (%s)", t.Artist.Title,
+	return fmt.Sprintf("<b>%s — %s</b><br>%q (%s)", t.Artist.Title,
 		t.Title, t.Album.Title, t.Album.ReleaseDate)
 }
 
@@ -150,39 +202,63 @@ func (s *SpotifyHelper) Pause() error {
 	return nil
 }
 
-func (s *SpotifyHelper) StartRandomPlaylist(id spotify.ID) error {
-	tracks, err := Instance.GetPlaylistTracks(id)
+func (s *SpotifyHelper) PlayRandomTrack(p *Playlist) error {
+	tracks, err := Instance.GetPlaylistTracks(p.ID)
 	if err != nil {
-		return errors.Wrapf(err, "get playlist tracks (%s)", id)
+		return errors.Wrapf(err, "get playlist tracks (%s)", p.ID)
 	}
 
 	rand.Seed(time.Now().UnixNano())
 	track := tracks[rand.Intn(len(tracks)-1)]
 
-	if err := Instance.client.QueueSong(track.ID); err != nil {
+	err = Instance.client.QueueSong(track.ID)
+	if err != nil {
 		return errors.Wrapf(err, "queue song (%s)", track.ID)
 	}
 
-	if err := Instance.client.Next(); err != nil {
+	err = Instance.client.Next()
+	if err != nil {
 		return errors.Wrap(err, "next")
 	}
 
 	d := track.Duration
-	if err := Instance.client.Seek(d/4 + rand.Intn(d/4)); err != nil {
+	err = Instance.client.Seek(d/4 + rand.Intn(d/4))
+	if err != nil {
 		return errors.Wrapf(err, "seek (%d)", d)
 	}
 
 	return nil
 }
 
-func (s *SpotifyHelper) SearchPlaylist(playlistTitle string) (Playlist, error) {
+func (s *SpotifyHelper) PlayNextTrack() error {
+	err := Instance.client.Next()
+	if err != nil {
+		return errors.Wrap(err, "next")
+	}
+
+	track, err := s.GetCurrentTrack()
+	if err != nil {
+		return errors.Wrap(err, "get current track")
+	}
+
+	d := track.Duration
+	rand.Seed(time.Now().UnixNano())
+	err = Instance.client.Seek(d/4 + rand.Intn(d/4))
+	if err != nil {
+		return errors.Wrapf(err, "seek (%d)", d)
+	}
+
+	return nil
+}
+
+func (s *SpotifyHelper) SearchPlaylist(playlistTitle string) (*Playlist, error) {
 	sr, err := Instance.client.Search(playlistTitle, spotify.SearchTypePlaylist)
 	if err != nil {
-		return Playlist{}, errors.Wrap(err, "search playlist")
+		return nil, errors.Wrap(err, "search playlist")
 	}
 	sps := sr.Playlists.Playlists
 	if len(sps) == 0 {
-		return Playlist{}, errors.New("no such playlists")
+		return nil, errors.New("no such playlists")
 	}
 	sp := sps[0]
 
@@ -191,7 +267,7 @@ func (s *SpotifyHelper) SearchPlaylist(playlistTitle string) (Playlist, error) {
 		imageURL = sp.Images[0].URL
 	}
 
-	return Playlist{
+	return &Playlist{
 		ID:       sp.ID,
 		Title:    sp.Name,
 		ImageURL: imageURL,
@@ -213,61 +289,6 @@ func (s *SpotifyHelper) GetPlaylistTracks(id spotify.ID) ([]Track, error) {
 		}
 	}
 	return result, nil
-}
-
-func activateFirstDevice() (*spotify.PlayerDevice, error) {
-	devices, err := Instance.client.PlayerDevices()
-	if err != nil {
-		return nil, errors.Wrap(err, "player devices")
-	}
-
-	var device *spotify.PlayerDevice
-	for i, v := range devices {
-		fmt.Printf("%d: %v\n", i, v)
-		if v.Active {
-			device = &v
-			fmt.Printf("%q is activated\n", v.Name)
-			return device, nil
-		}
-	}
-
-	if device == nil {
-		return nil, errors.Wrap(err, "no active devices found")
-	}
-
-	err = Instance.client.PlayOpt(&spotify.PlayOptions{DeviceID: &device.ID})
-	if err != nil {
-		return nil, errors.Wrap(err, "play with options")
-	}
-
-	return device, nil
-}
-
-func handleError(w http.ResponseWriter, err error, message string) {
-	if err.Error() == ErrNoActiveDeviceFound {
-		device, err := activateFirstDevice()
-		if err != nil {
-			Instance.web.LoadErrorPage("Спотифай выключен! Попроси хозяина "+
-				"запустить его", err)
-			return
-		}
-
-		if device == nil {
-			Instance.web.LoadPage("home", []string{"text", "toggle_play"},
-				[]string{"Не удалось автоматически активировать устройство, " +
-					"выберите устройство вручную в настройках",
-					"<img class=button alt=\"Toggle Play\">"})
-			return
-		}
-
-		Instance.web.LoadPage("home", []string{"text", "toggle_play"},
-			[]string{fmt.Sprintf("Устройство %q (%s) активировано.",
-				device.Name, device.Type), "<img class=button alt=\"Toggle Play\">"})
-	} else {
-		Instance.web.LoadErrorPage("Спотифай выключен! Попроси хозяина "+
-			"запустить его", err)
-		return
-	}
 }
 
 func initGamePlaylistsImagesCache() error {

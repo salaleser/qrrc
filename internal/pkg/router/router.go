@@ -1,7 +1,6 @@
 package router
 
 import (
-	"fmt"
 	"net/http"
 	"qrrc/internal/pkg/webhelper"
 	"qrrc/pkg/nonamegamego"
@@ -24,7 +23,7 @@ func NonaMegaMegoHandler(w http.ResponseWriter, r *http.Request) {
 	params := r.URL.Query()
 
 	if err := instance.Route(action, params); err != nil {
-		web.LoadErrorPage(fmt.Sprintf("handle %q", action), err)
+		web.LoadErrorPage(action, err)
 		return
 	}
 }

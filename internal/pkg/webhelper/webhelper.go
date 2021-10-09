@@ -25,6 +25,20 @@ func (h *WebHelper) LoadErrorPage(text string, err error) {
 	)
 }
 
+func (h *WebHelper) LoadSettingsPage(
+	devices string,
+) {
+	h.LoadPage(
+		"settings",
+		[]string{
+			"devices",
+		},
+		[]string{
+			devices,
+		},
+	)
+}
+
 func (h *WebHelper) LoadMainPage(round, stats, hint, text, buttons string) {
 	h.LoadPage(
 		"nonamegamego/main",
@@ -41,19 +55,34 @@ func (h *WebHelper) LoadStartPage() {
 	)
 }
 
-func (h *WebHelper) LoadAnswerPage(text string) {
+func (h *WebHelper) LoadAnswerPage(text, buttons string) {
 	h.LoadPage(
 		"nonamegamego/answer",
-		[]string{"text"},
-		[]string{text},
+		[]string{"text", "buttons"},
+		[]string{text, buttons},
 	)
 }
 
-func (h *WebHelper) LoadSetupPage(text, buttons string) {
+func (h *WebHelper) LoadSetupPage(
+	text string,
+	playersCount string,
+	playerNames string,
+	playlists string,
+) {
 	h.LoadPage(
 		"nonamegamego/setup",
-		[]string{"text", "buttons"},
-		[]string{text, buttons},
+		[]string{
+			"text",
+			"players-count",
+			"player-names",
+			"playlists",
+		},
+		[]string{
+			text,
+			playersCount,
+			playerNames,
+			playlists,
+		},
 	)
 }
 
