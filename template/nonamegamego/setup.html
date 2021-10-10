@@ -3,55 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>NonaMegaMego: Настройки</title>
-    <!-- <link rel="stylesheet" href="../static/styles/style.css"> -->
-</head>
-<style>
-    body, input {
-        font-size: 48px;
-    }
-    p, a, ul, label, input {
-        font-family: "Lucida Console", monospace;
-    }
-    img {
-        width: 100%;
-        height: auto;
-    }
-    .title {
-        font-size: 200%;
-    }
-    .playlist {
-        width: 24%;
-        height: auto;
-    }
-    .error {
-        font-size: 80%;
-        color: #f3e9e9;
-    }
-</style>
-<body>
+    <link rel="stylesheet" href="/styles">
+</head><body>
     <p class="title"><b><u>Настройки</u></b></p>
-    <p><b>Настройки: </b><br>{{settings}}</p>
-    <p><b>Выберите количество игроков: </b>{{players-count}}</p>
-    <p><b>Укажите имена: </b><br>{{player-names}}</p>
-    <p><b>Выберите плейлист: </b><br>{{playlists}}</p>
-    <p><a href="/spotify/nonamegamego/main?start=true&player_names=Лёша,Катя" style="font-size: 250%;">Начать игру</a></p>
-    <!-- <p><input type="button" value="Начать игру" onclick="start()"></p> -->
-    <p><a href="/spotify/home">Выйти</a></p>
+    <p><b>Плейлист: </b>{{settings-playlist}}</p>
+    <hr>
+    <p><b>Укажите имена игроков: </b><br>{{player-names}}</p>
+    <p><b>Укажите плейлист: </b><br><input type="text" class="playlist" id="playlist" onchange="setPlaylist()"></p>
+    <p><input type="button" class="main styled" value="Начать игру" onclick="start()" accesskey="enter"></p>
+    <p><input type="button" class="exit styled" value="Выйти" onclick="exit()" accesskey="esc"></p>
 </body>
-<script>
-    function start() {
-        const names = []
-        const c = document.getElementsByClassName('name')
-        for (let i = 0; i < c.length; i++) {
-            const v = c.item(i).value
-            if (v === '') {
-                alert('Укажите имена')
-                return
-            }
-            names.push(v)
-        }
-
-        document.location.href = "/spotify/nonamegamego/main?start=true&player_names=" + names.join(',')
-    }
-</script>
+<script src="/scripts"></script>
 </html>

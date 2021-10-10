@@ -80,13 +80,13 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			text = t.String()
 		}
 		Instance.web.LoadPage("home", []string{"text", "toggle_play"}, []string{text,
-			fmt.Sprintf("<img class=button alt=%q src=%q>", togglePlay,
+			fmt.Sprintf(`<img class="toggle-play" alt=%q src=%q>`, togglePlay,
 				togglePlayImage)})
 	case "game":
 		p := make([]string, 0)
 		for k, v := range gamePlaylistsImages {
-			p = append(p, fmt.Sprintf("<a href=game/next?playlist=%q>%s</a>", k,
-				fmt.Sprintf("<img class=playlist src=%q alt=%q>", v, k)))
+			p = append(p, fmt.Sprintf(`<a href="game/next?playlist=%s">%s</a>`, k,
+				fmt.Sprintf(`<img class="playlist" src=%q alt=%q>`, v, k)))
 		}
 		sort.Strings(p)
 		Instance.web.LoadPage(action, []string{"text", "step", "playlists"},
@@ -287,7 +287,7 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 			text = t.String()
 		}
 		Instance.web.LoadPage("home", []string{"text", "toggle_play"}, []string{text,
-			fmt.Sprintf("<img class=button alt=%q src=%s>", togglePlay,
+			fmt.Sprintf(`<img class="toggle-play" alt=%q src=%s>`, togglePlay,
 				togglePlayImage)})
 	default:
 		http.NotFound(w, r)

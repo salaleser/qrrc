@@ -3,39 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>NonaMegaMego: Главная</title>
-    <!-- <link rel="stylesheet" href="../static/styles/style.css"> -->
+    <link rel="stylesheet" href="/styles">
 </head>
-<style>
-    body {
-        font-size: 48px;
-    }
-    p, a, ul {
-        font-family: "Lucida Console", monospace;
-    }
-    img {
-        width: 40%;
-        height: auto;
-        filter: blur(20px);
-    }
-    .title {
-        font-size: 200%;
-    }
-    .hint {
-        color: #244a24;
-    }
-    .error {
-        font-size: 80%;
-        color: #aaaaaa;
-    }
-</style>
 <body>
     <p class="title"><b><u>Игра</u></b></p>
     <p class="round"><b>Раунд: </b>{{round}}</p>
     <p class="stats">{{stats}}</p>
     <p class="hint"><b>Использованные подсказки: </b><br>{{hint}}</p>
     <p><b>Ходит: </b>{{text}}</p>
-    <p><a href="/spotify/nonamegamego/answer" style="font-size: 250%;">Ответить!</a></p>
+    <p><input type="button" class="main styled" value="Ответить!" onclick="answer()" accesskey="space"></p>
     <p class="hints"><b>Доступные подсказки: </b><br>{{hints}}</p>
-    <p><a href="/spotify/home">Выйти</a></p>
+    <p><input type="button" class="exit styled" value="Выйти" onclick="exit()" accesskey="esc"></p>
 </body>
+<script src="/scripts"></script>
 </html>

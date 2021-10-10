@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -15,10 +14,28 @@ func main() {
 		html, err := ioutil.ReadFile("template/root.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
-			fmt.Printf("error: root handler: read file: %v", err)
+			return
 		}
 		w.Header().Set("Content-Type", "text/html")
 		_, _ = w.Write(html)
+	})
+	http.HandleFunc("/styles", func(w http.ResponseWriter, r *http.Request) {
+		css, err := ioutil.ReadFile("static/styles/style.css")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "text/css")
+		_, _ = w.Write(css)
+	})
+	http.HandleFunc("/scripts", func(w http.ResponseWriter, r *http.Request) {
+		css, err := ioutil.ReadFile("static/scripts/script.js")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "text/css")
+		_, _ = w.Write(css)
 	})
 	http.HandleFunc("/spotify/nonamegamego/", router.NonaMegaMegoHandler)
 	http.HandleFunc("/spotify/", spotifyhelper.DefaultHandler)

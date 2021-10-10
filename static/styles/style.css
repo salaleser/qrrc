@@ -1,17 +1,103 @@
 body {
-    font-size: 24;
+    font-size: 48px;
 }
-p, a {
+p, a, ul {
     font-family: "Lucida Console", monospace;
 }
 img {
-    width:100%;
+    width: 100%;
     height: auto;
+}
+.hint-album-cover {
+    width: 40%;
+    height: auto;
+    filter: blur(20px);
+}
+.name {
+    font-family: "Lucida Console", monospace;
+    font-size: 100%;
+}
+.toggle-play {
+    width: 10%;
 }
 .title {
     font-size: 200%;
 }
+.playlist {
+    font-family: "Lucida Console", monospace;
+    font-size: 100%;
+}
+.stats {
+    font-family: "Lucida Console", monospace;
+    font-size: 32px;
+}
+.round {
+    font-family: "Lucida Console", monospace;
+    font-size: 32px;
+    font-weight: bold;
+}
+.hint {
+    color: #244a24;
+}
 .error {
-    font-size: 50%;
+    font-size: 80%;
     color: #aaaaaa;
+}
+.answer-0 {
+    background-color: rgb(208, 0, 0);
+    font-size: 100%;
+}
+.answer-0:hover {
+    background-color: rgba(255, 0, 0, 1);
+}
+.answer-1 {
+    background-color: rgb(210, 160, 0);
+    font-size: 100%;
+}
+.answer-1:hover {
+    background-color: rgba(255, 160, 0, 1);
+}
+.answer-2 {
+    background-color: rgb(0, 210, 0);
+    font-size: 100%;
+}
+.answer-2:hover {
+    background-color: rgba(0, 255, 0, 1);
+}
+.answer-album-cover {
+    width: 70%;
+    height: auto;
+}
+.main {
+    background-color: rgba(220, 0, 0, 1);
+    font-size: 120%;
+}
+.main:hover {
+    background-color: rgba(255, 0, 0, 1);
+}
+.exit {
+    background-color: rgb(89, 89, 89);
+    font-size: 80%;
+}
+.exit:hover {
+    background-color: rgb(142, 140, 140);
+}
+.styled {
+    border: 0;
+    line-height: 2.5;
+    padding: 0 20px;
+    text-align: center;
+    color: #fff;
+    text-shadow: 1px 1px 1px #000;
+    border-radius: 10px;
+    background-image: linear-gradient(to top left,
+                                    rgba(0, 0, 0, .2),
+                                    rgba(0, 0, 0, .2) 30%,
+                                    rgba(0, 0, 0, 0));
+    box-shadow: inset 2px 2px 3px rgba(255, 255, 255, .6),
+                inset -2px -2px 3px rgba(0, 0, 0, .6);
+}
+.styled:active {
+    box-shadow: inset -2px -2px 3px rgba(255, 255, 255, .6),
+                inset 2px 2px 3px rgba(0, 0, 0, .6);
 }

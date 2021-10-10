@@ -3,42 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Game</title>
-    <!-- <link rel="stylesheet" href="../static/styles/style.css"> -->
+    <link rel="stylesheet" href="/styles">
 </head>
-<style>
-    body {
-        font-size: 48px;
-    }
-    p, a, ul {
-        font-family: "Lucida Console", monospace;
-    }
-    img {
-        width: 100%;
-        height: auto;
-    }
-    .title {
-        font-size: 200%;
-    }
-    .playlist {
-        width: 24%;
-        height: auto;
-    }
-    .error {
-        font-size: 80%;
-        color: #aaaaaa;
-    }
-</style>
 <body>
     <p class="title"><b><u>Угадайка</u></b></p>
     <p>{{text}}</p>
-    <a href="/spotify/game/hint?step={{step}}">Подсказка</a><br/>
-    <br/>
-    {{playlists}}
-    <br>
-    <br>
-    <a href="/spotify/home">Выйти</a>
-    <br>
-    <br>
+    <p><a href="/spotify/game/hint?step={{step}}">Подсказка</a></p>
+    <p>{{playlists}}</p>
+    <p><input type="button" class="exit styled" value="Выйти" onclick="exit()" accesskey="esc"></p>
     <img src="https://i.imgur.com/UuQY84x.png">
 </body>
+<script src="/scripts"></script>
 </html>

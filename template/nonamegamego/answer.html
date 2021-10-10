@@ -3,46 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>NonaMegaMego: Ответ</title>
-    <!-- <link rel="stylesheet" href="../static/styles/style.css"> -->
+    <link rel="stylesheet" href="/styles">
 </head>
-<style>
-    body {
-        font-size: 48px;
-    }
-    p, a, ul {
-        font-family: "Lucida Console", monospace;
-    }
-    img {
-        width: 100%;
-        height: auto;
-    }
-    .title {
-        font-size: 200%;
-    }
-    .playlist {
-        width: 24%;
-        height: auto;
-    }
-    .stats {
-        font-family: "Lucida Console", monospace;
-        font-size: 32px;
-    }
-    .round {
-        font-family: "Lucida Console", monospace;
-        font-size: 32px;
-        font-weight: bold;
-    }
-    .error {
-        font-size: 80%;
-        color: #aaaaaa;
-    }
-</style>
 <body>
     <p class="title"><b><u>Ответ</u></b></p>
     <p>{{text}}</p>
-    {{buttons}}
-    <br>
-    <br>
-    <a href="/spotify/home">Выйти</a>
+    <input type="button" class="answer-2 styled" value="Правильно полностью" onclick="answer2()">
+    <input type="button" class="answer-1 styled" value="Правильно частично" onclick="answer1()">
+    <input type="button" class="answer-0 styled" value="Неправильно" onclick="answer0()">
+    <p><input type="button" class="exit styled" value="Выйти" onclick="exit()" accesskey="esc"></p>
 </body>
+<script src="/scripts"></script>
 </html>

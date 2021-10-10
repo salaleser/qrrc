@@ -220,7 +220,8 @@ func (n *NonaMegaMego) hintAlbumImage() string {
 	if err != nil {
 		return err.Error()
 	}
-	return fmt.Sprintf("<img src=%q>", t.Album.ImageURL)
+	return fmt.Sprintf(`<img src="%s" class="hint-album-cover">`,
+		t.Album.ImageURL)
 }
 
 func getChar(s string, n int) string {

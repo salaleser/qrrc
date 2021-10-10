@@ -20,17 +20,11 @@ type NonaMegaMego struct {
 }
 
 type settings struct {
-	playersCount           int
-	playlist               *spotifyhelper.Playlist
-	answerCorrectAll       int
-	answerCorrectPartially int
-	answerIncorrect        int
+	playlist *spotifyhelper.Playlist
 }
 
 func (s *settings) String() string {
-	return fmt.Sprintf("Количество игроков: %d<br>Плейлист: %s",
-		s.playersCount, s.playlist,
-	)
+	return s.playlist.String()
 }
 
 type round struct {
@@ -39,7 +33,9 @@ type round struct {
 }
 
 type turn struct {
-	hint  []string
+	// hint is the list of hints used by the current player in this turn
+	hint []string
+	// hints is the list of all unused available hints
 	hints map[int]hint
 }
 
@@ -49,11 +45,9 @@ var handlers map[string]handler
 
 func New(web *webhelper.WebHelper, s *spotifyhelper.SpotifyHelper) *NonaMegaMego {
 	n := &NonaMegaMego{
-		web: web,
-		s:   s,
-		settings: settings{
-			playersCount: 2,
-		},
+		web:      web,
+		s:        s,
+		settings: settings{},
 	}
 
 	handlers = map[string]handler{
@@ -91,76 +85,25 @@ func (n *NonaMegaMego) handleStart(params url.Values) error {
 
 func (n *NonaMegaMego) handleSetup(params url.Values) error {
 	var err error
-
-	playersCountParam := params.Get("players_count")
-	if playersCountParam != "" {
-		n.settings.playersCount, err = strconv.Atoi(playersCountParam)
-		if err != nil {
-			return errors.Wrap(err, "не удалось спарсить число участников")
-		}
-	}
-
 	playlistParam := params.Get("playlist")
-	if playlistParam == "-" {
-		n.settings.playlist = nil
-	} else if playlistParam != "" {
+	if playlistParam != "" {
 		n.settings.playlist, err = n.s.SearchPlaylist(playlistParam)
 		if err != nil {
 			return errors.Wrap(err, "search playlist")
 		}
+	} else {
+		n.settings.playlist = nil
 	}
 
-	n.settings.answerCorrectAll = 100
-	n.settings.answerCorrectPartially = 50
-	n.settings.answerIncorrect = -50
-
-	playersCountOptions := []string{
-		"1", "2", "3", "4", "5", "6", "7", "8", "9",
-	}
-	playersCount := make(Buttons, len(playersCountOptions))
-	for i, v := range playersCountOptions {
-		playersCount[i] = Button{
-			Link: "setup",
-			Text: v,
-			Params: url.Values{
-				"players_count": {v},
-			},
-		}
-	}
-
-	playerNames := make(Fields, n.settings.playersCount)
-	for i := 0; i < n.settings.playersCount; i++ {
-		playerNames[i] = Field{
-			Text: fmt.Sprintf("Игрок %d", i+1),
-		}
-	}
-
-	playlistOptions := []struct {
-		text string
-		code string
-	}{
-		{"BALDEJ", "BALDEJ"},
-		{"Русский рок", "русский+рок"},
-		{"Russian Pop (1980)", "russian+pop+1980"},
-		{"Best of Rock (1970)", "best+of+rock+1970"},
-		{"(использовать текущий плейлист)", "-"},
-	}
-	playlists := make(Buttons, len(playlistOptions))
-	for i, v := range playlistOptions {
-		playlists[i] = Button{
-			Link: "setup",
-			Text: v.text,
-			Params: url.Values{
-				"playlist": {v.code},
-			},
-		}
+	playersCount := 5
+	playerNames := make(Fields, playersCount)
+	for i := 0; i < playersCount; i++ {
+		playerNames[i] = Field{}
 	}
 
 	n.web.LoadSetupPage(
 		n.settings.String(),
-		playersCount.Join(" "),
 		playerNames.Join("<br>"),
-		playlists.Join("<br>"),
 	)
 
 	return nil
@@ -173,7 +116,6 @@ func (n *NonaMegaMego) handleMain(params url.Values) error {
 	if startParam == "true" {
 		playerNamesParam := params.Get("player_names")
 		playerNames := strings.Split(playerNamesParam, ",")
-		n.settings.playersCount = len(playerNames)
 		n.stats = NewStats(playerNames)
 		n.round = round{
 			number: 1,
@@ -263,28 +205,9 @@ func (n *NonaMegaMego) handleAnswer(params url.Values) error {
 		hints: n.updateHints(),
 	}
 
-	options := []struct {
-		text  string
-		value int
-	}{
-		{"Правильно все", n.settings.answerCorrectAll},
-		{"Правильно частично", n.settings.answerCorrectPartially},
-		{"Неправильно", n.settings.answerIncorrect},
-	}
-	buttons := make(Buttons, len(options))
-	for i, v := range options {
-		buttons[i] = Button{
-			Link: "main",
-			Text: v.text,
-			Params: url.Values{
-				"correct": {strconv.Itoa(v.value)},
-			},
-		}
-	}
-
 	n.web.LoadAnswerPage(
-		fmt.Sprintf("%s<br><img src=%q>", t.String(), t.Album.ImageURL),
-		buttons.Join("<br>"),
+		fmt.Sprintf(`<p>%s</p><img src="%s" class="answer-album-cover">`,
+			t.String(), t.Album.ImageURL),
 	)
 
 	return nil
