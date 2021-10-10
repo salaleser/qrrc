@@ -15,23 +15,12 @@
     img {
         width: 40%;
         height: auto;
-        filter: blur(12px);
+        filter: blur(20px);
     }
     .title {
         font-size: 200%;
     }
-    .stats {
-        font-family: "Lucida Console", monospace;
-        font-size: 32px;
-    }
-    .round {
-        font-family: "Lucida Console", monospace;
-        font-size: 32px;
-        font-weight: bold;
-    }
     .hint {
-        font-family: "Lucida Console", monospace;
-        font-size: 32px;
         color: #244a24;
     }
     .error {
@@ -41,17 +30,12 @@
 </style>
 <body>
     <p class="title"><b><u>Игра</u></b></p>
-    <p class="round">{{round}}</p>
+    <p class="round"><b>Раунд: </b>{{round}}</p>
     <p class="stats">{{stats}}</p>
-    <p class="hint">{{hint}}</p>
-    <p>{{text}}</p>
-    {{buttons}}
-    <br>
-    <br>
-    <br>
-    <a href="/spotify/nonamegamego/answer">Ответить!</a>
-    <br>
-    <br>
-    <a href="/spotify/home">Выйти</a>
+    <p class="hint"><b>Использованные подсказки: </b><br>{{hint}}</p>
+    <p><b>Ходит: </b>{{text}}</p>
+    <p><a href="/spotify/nonamegamego/answer" style="font-size: 250%;">Ответить!</a></p>
+    <p class="hints"><b>Доступные подсказки: </b><br>{{hints}}</p>
+    <p><a href="/spotify/home">Выйти</a></p>
 </body>
 </html>

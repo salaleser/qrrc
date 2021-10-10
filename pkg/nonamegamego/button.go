@@ -3,6 +3,7 @@ package nonamegamego
 import (
 	"fmt"
 	"net/url"
+	"sort"
 	"strings"
 )
 
@@ -24,11 +25,10 @@ func (b *Button) String() string {
 }
 
 func (b *Buttons) Join(sep string) string {
-	var builder strings.Builder
-	for _, v := range *b {
-		builder.WriteString(v.String())
-		builder.WriteString(sep)
+	a := make([]string, len(*b))
+	for i, v := range *b {
+		a[i] = v.String()
 	}
-	result := builder.String()
-	return strings.TrimRight(result, sep)
+	sort.Strings(a)
+	return strings.Join(a, sep)
 }

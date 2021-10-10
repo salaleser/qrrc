@@ -39,11 +39,11 @@ func (h *WebHelper) LoadSettingsPage(
 	)
 }
 
-func (h *WebHelper) LoadMainPage(round, stats, hint, text, buttons string) {
+func (h *WebHelper) LoadMainPage(round, stats, hint, text, hints string) {
 	h.LoadPage(
 		"nonamegamego/main",
-		[]string{"round", "stats", "hint", "text", "buttons"},
-		[]string{round, stats, hint, text, buttons},
+		[]string{"round", "stats", "hint", "text", "hints"},
+		[]string{round, stats, hint, text, hints},
 	)
 }
 
@@ -64,7 +64,7 @@ func (h *WebHelper) LoadAnswerPage(text, buttons string) {
 }
 
 func (h *WebHelper) LoadSetupPage(
-	text string,
+	settings string,
 	playersCount string,
 	playerNames string,
 	playlists string,
@@ -72,13 +72,13 @@ func (h *WebHelper) LoadSetupPage(
 	h.LoadPage(
 		"nonamegamego/setup",
 		[]string{
-			"text",
+			"settings",
 			"players-count",
 			"player-names",
 			"playlists",
 		},
 		[]string{
-			text,
+			settings,
 			playersCount,
 			playerNames,
 			playlists,

@@ -63,13 +63,13 @@ func (s *Stats) ActivePlayerNumber() int {
 
 func (s *Stats) String() string {
 	var builder strings.Builder
-	builder.WriteString("┌Статистика:──────────┐")
+	builder.WriteString("┌Статистика:───────")
 	builder.WriteString("<br>")
 	for _, p := range s.players {
-		builder.WriteString(fmt.Sprintf("| %s |", p.String()))
+		builder.WriteString(fmt.Sprintf("| %s", p.String()))
 		builder.WriteString("<br>")
 	}
-	builder.WriteString("└─────────────────────┘")
+	builder.WriteString("└──────────────────")
 	builder.WriteString("<br>")
 	return builder.String()
 }

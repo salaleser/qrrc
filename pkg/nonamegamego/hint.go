@@ -22,69 +22,79 @@ func (h *hint) String() string {
 func (n *NonaMegaMego) updateHints() map[int]hint {
 	return map[int]hint{
 		1: {
-			text:  "Первая буква наименования артиста",
+			text:  "Первая буква исполнителя",
 			value: 6,
 			f:     n.hintArtistTitleFirstLetter,
 		},
 		2: {
-			text:  "Первая буква наименования альбома",
-			value: 3,
-			f:     n.hintAlbumTitleFirstLetter,
+			text:  "Вторая буква исполнителя",
+			value: 8,
+			f:     n.hintArtistTitleSecondLetter,
 		},
 		3: {
-			text:  "Первая буква наименования трека",
-			value: 6,
-			f:     n.hintTrackTitleFirstLetter,
+			text:  "Третья буква исполнителя",
+			value: 10,
+			f:     n.hintArtistTitleThirdLetter,
 		},
 		4: {
-			text:  "Количество букв в наименовании артиста",
+			text:  "Последняя буква исполнителя",
+			value: 6,
+			f:     n.hintArtistTitleLastLetter,
+		},
+		5: {
+			text:  "Количество букв в исполнителе",
 			value: 6,
 			f:     n.hintArtistTitleLettersCount,
 		},
-		5: {
-			text:  "Количество букв в наименовании альбома",
-			value: 4,
-			f:     n.hintAlbumTitleLettersCount,
-		},
 		6: {
-			text:  "Количество букв в наименовании трека",
-			value: 5,
-			f:     n.hintTrackTitleLettersCount,
+			text:  "Первая буква трека",
+			value: 6,
+			f:     n.hintTrackTitleFirstLetter,
 		},
 		7: {
-			text:  "Дата релиза",
-			value: 2,
-			f:     n.hintAlbumReleaseDate,
-		},
-		8: {
-			text:  "Обложка альбома",
-			value: 6,
-			f:     n.hintAlbumImage,
-		},
-		9: {
-			text:  "Последняя буква наименования артиста",
-			value: 4,
-			f:     n.hintArtistTitleLastLetter,
-		},
-		10: {
-			text:  "Вторая буква наименования трека",
+			text:  "Вторая буква трека",
 			value: 8,
 			f:     n.hintTrackTitleSecondLetter,
 		},
-		11: {
-			text:  "Последняя буква наименования трека",
+		8: {
+			text:  "Третья буква трека",
+			value: 12,
+			f:     n.hintTrackTitleThirdLetter,
+		},
+		9: {
+			text:  "Последняя буква трека",
 			value: 3,
 			f:     n.hintTrackTitleLastLetter,
 		},
-		12: {
+		10: {
+			text:  "Количество букв в треке",
+			value: 5,
+			f:     n.hintTrackTitleLettersCount,
+		},
+		11: {
 			text:  "Структура наименования трека",
 			value: 9,
 			f:     n.hintTrackTitleStructure,
 		},
+		12: {
+			text:  "Первая буква альбома",
+			value: 3,
+			f:     n.hintAlbumTitleFirstLetter,
+		},
 		13: {
-			text:  "Вторая буква наименования трека",
-			value: 12,
-			f:     n.hintTrackTitleThirdLetter,
+			text:  "Количество букв в альбоме",
+			value: 4,
+			f:     n.hintAlbumTitleLettersCount,
+		},
+		14: {
+			text:  "Дата релиза",
+			value: 2,
+			f:     n.hintAlbumReleaseDate,
+		},
+		15: {
+			text:  "Обложка альбома",
+			value: 6,
+			f:     n.hintAlbumImage,
 		},
 	}
 }
@@ -94,8 +104,23 @@ func (n *NonaMegaMego) hintArtistTitleFirstLetter() string {
 	if err != nil {
 		return err.Error()
 	}
-	_, c := utf8.DecodeRuneInString(t.Artist.Title)
-	return t.Artist.Title[:c]
+	return getChar(t.Artist.Title, 1)
+}
+
+func (n *NonaMegaMego) hintArtistTitleSecondLetter() string {
+	t, err := n.s.GetCurrentTrack()
+	if err != nil {
+		return err.Error()
+	}
+	return getChar(t.Artist.Title, 2)
+}
+
+func (n *NonaMegaMego) hintArtistTitleThirdLetter() string {
+	t, err := n.s.GetCurrentTrack()
+	if err != nil {
+		return err.Error()
+	}
+	return getChar(t.Artist.Title, 3)
 }
 
 func (n *NonaMegaMego) hintArtistTitleLastLetter() string {
@@ -103,25 +128,7 @@ func (n *NonaMegaMego) hintArtistTitleLastLetter() string {
 	if err != nil {
 		return err.Error()
 	}
-
-	a := []rune{}
-	b := []byte(t.Artist.Title)
-	i := 0
-	for i < len(b) {
-		r, size := utf8.DecodeRune(b[i:])
-		a = append(a, r)
-		i += size
-	}
-	return string(a[len(a)-1])
-}
-
-func (n *NonaMegaMego) hintAlbumTitleFirstLetter() string {
-	t, err := n.s.GetCurrentTrack()
-	if err != nil {
-		return err.Error()
-	}
-	_, c := utf8.DecodeRuneInString(t.Album.Title)
-	return t.Album.Title[:c]
+	return getChar(t.Artist.Title, -1)
 }
 
 func (n *NonaMegaMego) hintArtistTitleLettersCount() string {
@@ -132,12 +139,37 @@ func (n *NonaMegaMego) hintArtistTitleLettersCount() string {
 	return strconv.Itoa(utf8.RuneCount([]byte(t.Artist.Title)))
 }
 
-func (n *NonaMegaMego) hintAlbumTitleLettersCount() string {
+func (n *NonaMegaMego) hintTrackTitleFirstLetter() string {
 	t, err := n.s.GetCurrentTrack()
 	if err != nil {
 		return err.Error()
 	}
-	return strconv.Itoa(utf8.RuneCount([]byte(t.Album.Title)))
+	return getChar(t.Title, 1)
+}
+
+func (n *NonaMegaMego) hintTrackTitleSecondLetter() string {
+	t, err := n.s.GetCurrentTrack()
+	if err != nil {
+		return err.Error()
+	}
+	return getChar(t.Title, 2)
+}
+
+func (n *NonaMegaMego) hintTrackTitleThirdLetter() string {
+	t, err := n.s.GetCurrentTrack()
+	if err != nil {
+		return err.Error()
+	}
+	return getChar(t.Title, 3)
+}
+
+func (n *NonaMegaMego) hintTrackTitleLastLetter() string {
+	t, err := n.s.GetCurrentTrack()
+	if err != nil {
+		return err.Error()
+	}
+
+	return getChar(t.Title, -1)
 }
 
 func (n *NonaMegaMego) hintTrackTitleLettersCount() string {
@@ -146,6 +178,33 @@ func (n *NonaMegaMego) hintTrackTitleLettersCount() string {
 		return err.Error()
 	}
 	return strconv.Itoa(utf8.RuneCount([]byte(t.Title)))
+}
+
+func (n *NonaMegaMego) hintTrackTitleStructure() string {
+	t, err := n.s.GetCurrentTrack()
+	if err != nil {
+		return err.Error()
+	}
+
+	l := regexp.MustCompile(`[а-яА-ЯёЁa-zA-Z0-9]`)
+	b := l.ReplaceAll([]byte(t.Title), []byte("?"))
+	return string(b)
+}
+
+func (n *NonaMegaMego) hintAlbumTitleFirstLetter() string {
+	t, err := n.s.GetCurrentTrack()
+	if err != nil {
+		return err.Error()
+	}
+	return getChar(t.Album.Title, 1)
+}
+
+func (n *NonaMegaMego) hintAlbumTitleLettersCount() string {
+	t, err := n.s.GetCurrentTrack()
+	if err != nil {
+		return err.Error()
+	}
+	return strconv.Itoa(utf8.RuneCount([]byte(t.Album.Title)))
 }
 
 func (n *NonaMegaMego) hintAlbumReleaseDate() string {
@@ -164,57 +223,17 @@ func (n *NonaMegaMego) hintAlbumImage() string {
 	return fmt.Sprintf("<img src=%q>", t.Album.ImageURL)
 }
 
-func (n *NonaMegaMego) hintTrackTitleFirstLetter() string {
-	t, err := n.s.GetCurrentTrack()
-	if err != nil {
-		return err.Error()
-	}
-	_, c := utf8.DecodeRuneInString(t.Title)
-	return t.Title[0*c : 1*c]
-}
-
-func (n *NonaMegaMego) hintTrackTitleSecondLetter() string {
-	t, err := n.s.GetCurrentTrack()
-	if err != nil {
-		return err.Error()
-	}
-	_, c := utf8.DecodeRuneInString(t.Title)
-	return t.Title[1*c : 2*c]
-}
-
-func (n *NonaMegaMego) hintTrackTitleThirdLetter() string {
-	t, err := n.s.GetCurrentTrack()
-	if err != nil {
-		return err.Error()
-	}
-	_, c := utf8.DecodeRuneInString(t.Title)
-	return t.Title[2*c : 3*c]
-}
-
-func (n *NonaMegaMego) hintTrackTitleLastLetter() string {
-	t, err := n.s.GetCurrentTrack()
-	if err != nil {
-		return err.Error()
-	}
-
+func getChar(s string, n int) string {
 	a := []rune{}
-	b := []byte(t.Title)
+	b := []byte(s)
 	i := 0
 	for i < len(b) {
 		r, size := utf8.DecodeRune(b[i:])
 		a = append(a, r)
 		i += size
 	}
-	return string(a[len(a)-1])
-}
-
-func (n *NonaMegaMego) hintTrackTitleStructure() string {
-	t, err := n.s.GetCurrentTrack()
-	if err != nil {
-		return err.Error()
+	if n == 0 {
+		return string(a[len(a)-1])
 	}
-
-	l := regexp.MustCompile(`[а-яА-ЯёЁa-zA-Z0-9]`)
-	b := l.ReplaceAll([]byte(t.Title), []byte("?"))
-	return string(b)
+	return string(a[n-1])
 }

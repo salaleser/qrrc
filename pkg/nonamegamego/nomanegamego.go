@@ -27,6 +27,12 @@ type settings struct {
 	answerIncorrect        int
 }
 
+func (s *settings) String() string {
+	return fmt.Sprintf("Количество игроков: %d<br>Плейлист: %s",
+		s.playersCount, s.playlist,
+	)
+}
+
 type round struct {
 	number int
 	turn   turn
@@ -151,11 +157,7 @@ func (n *NonaMegaMego) handleSetup(params url.Values) error {
 	}
 
 	n.web.LoadSetupPage(
-		fmt.Sprintf(
-			"Количество игроков: %d<br>Плейлист: %s",
-			n.settings.playersCount,
-			n.settings.playlist,
-		),
+		n.settings.String(),
 		playersCount.Join(" "),
 		playerNames.Join("<br>"),
 		playlists.Join("<br>"),
@@ -228,9 +230,9 @@ func (n *NonaMegaMego) handleMain(params url.Values) error {
 		}
 	}
 
-	buttons := make(Buttons, 0)
+	hints := make(Buttons, 0)
 	for k, v := range n.round.turn.hints {
-		buttons = append(buttons, Button{
+		hints = append(hints, Button{
 			Link: "main",
 			Text: v.String(),
 			Params: url.Values{
@@ -240,11 +242,11 @@ func (n *NonaMegaMego) handleMain(params url.Values) error {
 	}
 
 	n.web.LoadMainPage(
-		fmt.Sprintf("Раунд: %d", n.round.number),
+		strconv.Itoa(n.round.number),
 		n.stats.String(),
 		strings.Join(n.round.turn.hint, "<br>"),
-		fmt.Sprintf("Ходит <b>%s</b>", n.stats.ActivePlayer().name),
-		buttons.Join("<br>"),
+		n.stats.ActivePlayer().name,
+		hints.Join("<br>"),
 	)
 
 	return nil

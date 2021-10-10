@@ -86,7 +86,7 @@ type Playlist struct {
 
 func (p *Playlist) String() string {
 	if p == nil {
-		return "-"
+		return "(текущий плейлист)"
 	}
 	return fmt.Sprintf("%q", p.Title)
 }

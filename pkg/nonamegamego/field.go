@@ -12,7 +12,7 @@ type Field struct {
 type Fields []Field
 
 func (f *Field) String() string {
-	return fmt.Sprintf(`<input class="name" type="text" value="%s">`, f.Text)
+	return fmt.Sprintf(`<input class="name" name="test" type="text" value="%s">`, f.Text)
 }
 
 func (f *Fields) Join(sep string) string {

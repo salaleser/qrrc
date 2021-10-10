@@ -30,11 +30,12 @@
 </style>
 <body>
     <p class="title"><b><u>Настройки</u></b></p>
-    <p><b>Настройки: </b><br>{{text}}</p>
+    <p><b>Настройки: </b><br>{{settings}}</p>
     <p><b>Выберите количество игроков: </b>{{players-count}}</p>
     <p><b>Укажите имена: </b><br>{{player-names}}</p>
     <p><b>Выберите плейлист: </b><br>{{playlists}}</p>
-    <p><input type="button" value="Начать игру" onclick="start()"></p>
+    <p><a href="/spotify/nonamegamego/main?start=true&player_names=Лёша,Катя" style="font-size: 250%;">Начать игру</a></p>
+    <!-- <p><input type="button" value="Начать игру" onclick="start()"></p> -->
     <p><a href="/spotify/home">Выйти</a></p>
 </body>
 <script>
@@ -50,7 +51,7 @@
             names.push(v)
         }
 
-        window.location.href = "/spotify/nonamegamego/main?start=true&player_names=" + names.join(',')
+        document.location.href = "/spotify/nonamegamego/main?start=true&player_names=" + names.join(',')
     }
 </script>
 </html>

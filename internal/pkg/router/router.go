@@ -22,7 +22,8 @@ func NonaMegaMegoHandler(w http.ResponseWriter, r *http.Request) {
 	action := strings.TrimPrefix(r.URL.Path, "/spotify/nonamegamego/")
 	params := r.URL.Query()
 
-	if err := instance.Route(action, params); err != nil {
+	err := instance.Route(action, params)
+	if err != nil {
 		web.LoadErrorPage(action, err)
 		return
 	}
