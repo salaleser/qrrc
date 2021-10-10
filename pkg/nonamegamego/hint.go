@@ -9,6 +9,7 @@ import (
 
 type hint struct {
 	text  string
+	image string
 	value int
 	f     hintHandler
 }
@@ -16,83 +17,87 @@ type hint struct {
 type hintHandler func() string
 
 func (h *hint) String() string {
-	return fmt.Sprintf("%s (%d)", h.text, h.value)
+	return fmt.Sprintf(`<img class="hints" src="/images/%s.png" alt="%s">%d`,
+		h.image, h.text, h.value)
 }
 
 func (n *NonaMegaMego) updateHints() map[int]hint {
 	return map[int]hint{
-		1: {
+		11: {
 			text:  "Первая буква исполнителя",
+			image: "artist-first-letter",
 			value: 6,
 			f:     n.hintArtistTitleFirstLetter,
 		},
-		2: {
+		12: {
 			text:  "Вторая буква исполнителя",
+			image: "artist-second-letter",
 			value: 8,
 			f:     n.hintArtistTitleSecondLetter,
 		},
-		3: {
+		13: {
 			text:  "Третья буква исполнителя",
+			image: "artist-third-letter",
 			value: 10,
 			f:     n.hintArtistTitleThirdLetter,
 		},
-		4: {
+		14: {
 			text:  "Последняя буква исполнителя",
+			image: "aritst-last-letter",
 			value: 6,
 			f:     n.hintArtistTitleLastLetter,
 		},
-		5: {
+		15: {
 			text:  "Количество букв в исполнителе",
+			image: "artist-letters-count",
 			value: 6,
 			f:     n.hintArtistTitleLettersCount,
 		},
-		6: {
+		21: {
 			text:  "Первая буква трека",
+			image: "track-first-letter",
 			value: 6,
 			f:     n.hintTrackTitleFirstLetter,
 		},
-		7: {
+		22: {
 			text:  "Вторая буква трека",
+			image: "track-second-letter",
 			value: 8,
 			f:     n.hintTrackTitleSecondLetter,
 		},
-		8: {
+		23: {
 			text:  "Третья буква трека",
+			image: "track-third-letter",
 			value: 12,
 			f:     n.hintTrackTitleThirdLetter,
 		},
-		9: {
+		24: {
 			text:  "Последняя буква трека",
+			image: "track-last-letter",
 			value: 3,
 			f:     n.hintTrackTitleLastLetter,
 		},
-		10: {
+		25: {
 			text:  "Количество букв в треке",
+			image: "track-letters-count",
 			value: 5,
 			f:     n.hintTrackTitleLettersCount,
 		},
-		11: {
+		26: {
 			text:  "Структура наименования трека",
+			image: "track-name-structure",
 			value: 9,
 			f:     n.hintTrackTitleStructure,
 		},
-		12: {
-			text:  "Первая буква альбома",
-			value: 3,
-			f:     n.hintAlbumTitleFirstLetter,
-		},
-		13: {
-			text:  "Количество букв в альбоме",
-			value: 4,
-			f:     n.hintAlbumTitleLettersCount,
-		},
-		14: {
+		31: {
 			text:  "Дата релиза",
+			image: "release-date",
 			value: 2,
 			f:     n.hintAlbumReleaseDate,
 		},
-		15: {
+		32: {
 			text:  "Обложка альбома",
+			image: "album-cover",
 			value: 6,
 			f:     n.hintAlbumImage,
 		},
@@ -189,22 +194,6 @@ func (n *NonaMegaMego) hintTrackTitleStructure() string {
 	l := regexp.MustCompile(`[а-яА-ЯёЁa-zA-Z0-9]`)
 	b := l.ReplaceAll([]byte(t.Title), []byte("?"))
 	return string(b)
-}
-
-func (n *NonaMegaMego) hintAlbumTitleFirstLetter() string {
-	t, err := n.s.GetCurrentTrack()
-	if err != nil {
-		return err.Error()
-	}
-	return getChar(t.Album.Title, 1)
-}
-
-func (n *NonaMegaMego) hintAlbumTitleLettersCount() string {
-	t, err := n.s.GetCurrentTrack()
-	if err != nil {
-		return err.Error()
-	}
-	return strconv.Itoa(utf8.RuneCount([]byte(t.Album.Title)))
 }
 
 func (n *NonaMegaMego) hintAlbumReleaseDate() string {

@@ -7,6 +7,7 @@ import (
 	"qrrc/pkg/spotifyhelper"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/pkg/errors"
 )
@@ -36,7 +37,8 @@ type turn struct {
 	// hint is the list of hints used by the current player in this turn
 	hint []string
 	// hints is the list of all unused available hints
-	hints map[int]hint
+	hints   map[int]hint
+	started time.Time
 }
 
 type handler func(params url.Values) error
@@ -51,7 +53,6 @@ func New(web *webhelper.WebHelper, s *spotifyhelper.SpotifyHelper) *NonaMegaMego
 	}
 
 	handlers = map[string]handler{
-		"start":  n.handleStart,
 		"setup":  n.handleSetup,
 		"main":   n.handleMain,
 		"answer": n.handleAnswer,
@@ -77,12 +78,6 @@ func (n *NonaMegaMego) Route(action string, params url.Values) error {
 	return nil
 }
 
-func (n *NonaMegaMego) handleStart(params url.Values) error {
-	n.web.LoadStartPage()
-
-	return nil
-}
-
 func (n *NonaMegaMego) handleSetup(params url.Values) error {
 	var err error
 	playlistParam := params.Get("playlist")
@@ -98,7 +93,14 @@ func (n *NonaMegaMego) handleSetup(params url.Values) error {
 	playersCount := 5
 	playerNames := make(Fields, playersCount)
 	for i := 0; i < playersCount; i++ {
-		playerNames[i] = Field{}
+		playerNames[i] = Field{
+			Text: func() string {
+				if i < 2 {
+					return fmt.Sprintf("Игрок %d", i+1)
+				}
+				return ""
+			}(),
+		}
 	}
 
 	n.web.LoadSetupPage(
@@ -120,8 +122,9 @@ func (n *NonaMegaMego) handleMain(params url.Values) error {
 		n.round = round{
 			number: 1,
 			turn: turn{
-				hint:  []string{},
-				hints: n.updateHints(),
+				hint:    []string{},
+				hints:   n.updateHints(),
+				started: time.Now(),
 			},
 		}
 		if n.settings.playlist != nil {
@@ -188,7 +191,7 @@ func (n *NonaMegaMego) handleMain(params url.Values) error {
 		n.stats.String(),
 		strings.Join(n.round.turn.hint, "<br>"),
 		n.stats.ActivePlayer().name,
-		hints.Join("<br>"),
+		hints.Join(" "),
 	)
 
 	return nil
@@ -201,8 +204,9 @@ func (n *NonaMegaMego) handleAnswer(params url.Values) error {
 	}
 
 	n.round.turn = turn{
-		hint:  []string{},
-		hints: n.updateHints(),
+		hint:    []string{},
+		hints:   n.updateHints(),
+		started: time.Now(),
 	}
 
 	n.web.LoadAnswerPage(

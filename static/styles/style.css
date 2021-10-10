@@ -8,6 +8,14 @@ img {
     width: 100%;
     height: auto;
 }
+.hints {
+    width: 200px;
+    height: auto;
+    font-size: 20%;
+}
+.hints:hover {
+    filter: brightness(0.9);
+}
 .hint-album-cover {
     width: 40%;
     height: auto;

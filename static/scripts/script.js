@@ -38,5 +38,8 @@ function start() {
 
 function setPlaylist() {
     const v = document.getElementById('playlist').value
+    if (v === '-') {
+        v = ''
+    }
     document.location.href = `/spotify/nonamegamego/setup?playlist=${v}`
 }
