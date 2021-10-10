@@ -232,7 +232,7 @@ func getChar(s string, n int) string {
 		a = append(a, r)
 		i += size
 	}
-	if n == 0 {
+	if n < 0 {
 		return string(a[len(a)-1])
 	}
 	return string(a[n-1])
