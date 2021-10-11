@@ -4,20 +4,24 @@ import "fmt"
 
 type Player struct {
 	name   string
-	score  int
+	score  float64
+	prev   float64
 	active bool
 }
 
 func (p *Player) String() string {
 	var s string
 	if p.active {
-		s = " (!)"
+		s = " *"
 	}
-	return fmt.Sprintf("%q [%d]%s", p.name, p.score, s)
+
+	return fmt.Sprintf("%.0f: %q %+.0f %s", p.score,
+		p.name, p.prev, s)
 }
 
-func (p *Player) AddScore(n int) {
-	p.score += n
+func (p *Player) AddScore(n float64) {
+	p.prev = n
+	p.score += p.prev
 }
 
 func (p *Player) SetActive(active bool) {

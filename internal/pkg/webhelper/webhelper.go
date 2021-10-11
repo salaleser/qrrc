@@ -47,11 +47,20 @@ func (h *WebHelper) LoadMainPage(round, stats, hint, text, hints string) {
 	)
 }
 
-func (h *WebHelper) LoadAnswerPage(text string) {
+func (h *WebHelper) LoadAnswerPage(
+	text string,
+	response string,
+) {
 	h.LoadPage(
 		"nonamegamego/answer",
-		[]string{"text"},
-		[]string{text},
+		[]string{
+			"text",
+			"response",
+		},
+		[]string{
+			text,
+			response,
+		},
 	)
 }
 

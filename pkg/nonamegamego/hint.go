@@ -38,12 +38,12 @@ func (n *NonaMegaMego) updateHints() map[int]hint {
 		13: {
 			text:  "Третья буква исполнителя",
 			image: "artist-third-letter",
-			value: 10,
+			value: 9,
 			f:     n.hintArtistTitleThirdLetter,
 		},
 		14: {
 			text:  "Последняя буква исполнителя",
-			image: "aritst-last-letter",
+			image: "artist-last-letter",
 			value: 6,
 			f:     n.hintArtistTitleLastLetter,
 		},
@@ -68,7 +68,7 @@ func (n *NonaMegaMego) updateHints() map[int]hint {
 		23: {
 			text:  "Третья буква трека",
 			image: "track-third-letter",
-			value: 12,
+			value: 9,
 			f:     n.hintTrackTitleThirdLetter,
 		},
 		24: {

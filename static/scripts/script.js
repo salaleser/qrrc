@@ -18,6 +18,17 @@ function exit() {
     document.location.href = "/spotify/home"
 }
 
+$(window).keydown((e) => {
+    var code = e.which || e.keyCode;
+    switch (code) {
+        case 43:
+        //do stuff
+        return false;
+        default:
+        break;
+    }
+});
+
 function start() {
     const names = []
     const c = document.getElementsByClassName('name')

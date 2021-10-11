@@ -41,7 +41,8 @@ func main() {
 	http.HandleFunc("/images/", func(w http.ResponseWriter, r *http.Request) {
 		f, err := ioutil.ReadFile(fmt.Sprintf("static/%s", r.URL.Path))
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			http.Error(w, fmt.Sprintf("%s: %v", r.URL.Path, err),
+				http.StatusInternalServerError)
 			return
 		}
 		w.Header().Set("Content-Type", "image/png")

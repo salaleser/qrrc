@@ -37,8 +37,9 @@ type turn struct {
 	// hint is the list of hints used by the current player in this turn
 	hint []string
 	// hints is the list of all unused available hints
-	hints   map[int]hint
-	started time.Time
+	hints    map[int]hint
+	started  time.Time
+	response time.Duration
 }
 
 type handler func(params url.Values) error
@@ -148,7 +149,7 @@ func (n *NonaMegaMego) handleMain(params url.Values) error {
 			delete(n.round.turn.hints, hintID)
 			n.round.turn.hint = append(n.round.turn.hint,
 				fmt.Sprintf("%s: <b>%s</b>", hint.text, hint.f()))
-			n.stats.ActivePlayer().AddScore(-hint.value)
+			n.stats.ActivePlayer().AddScore(-float64(hint.value))
 		}
 	} else {
 		if n.settings.playlist != nil {
@@ -164,11 +165,24 @@ func (n *NonaMegaMego) handleMain(params url.Values) error {
 		}
 
 		correctParam := params.Get("correct")
-		correct, err := strconv.Atoi(correctParam)
+		score, err := strconv.ParseFloat(correctParam, 64)
 		if err != nil {
 			return errors.Wrap(err, "parse correct")
 		}
-		n.stats.ActivePlayer().AddScore(correct)
+		multiplier := 1.0
+		if n.round.turn.response < 2*time.Second {
+			multiplier = 1.2
+		} else if n.round.turn.response > 90*time.Second {
+			multiplier = 0.8
+		}
+
+		n.stats.ActivePlayer().AddScore(multiplier * score)
+
+		n.round.turn = turn{
+			hint:    []string{},
+			hints:   n.updateHints(),
+			started: time.Now(),
+		}
 
 		if n.stats.SetActiveNext() {
 			n.round.number = n.round.number + 1
@@ -198,20 +212,22 @@ func (n *NonaMegaMego) handleMain(params url.Values) error {
 }
 
 func (n *NonaMegaMego) handleAnswer(params url.Values) error {
+	n.round.turn.response = time.Since(n.round.turn.started)
+
+	err := n.s.Pause()
+	if err != nil {
+		return err
+	}
+
 	t, err := n.s.GetCurrentTrack()
 	if err != nil {
 		return err
 	}
 
-	n.round.turn = turn{
-		hint:    []string{},
-		hints:   n.updateHints(),
-		started: time.Now(),
-	}
-
 	n.web.LoadAnswerPage(
 		fmt.Sprintf(`<p>%s</p><img src="%s" class="answer-album-cover">`,
 			t.String(), t.Album.ImageURL),
+		fmt.Sprintf("%.1f", n.round.turn.response.Seconds()),
 	)
 
 	return nil
