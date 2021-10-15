@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Лобби</title>
+    <link rel="stylesheet" href="/styles">
+</head>
+<body>
+    <p class="title"><b><u>Лобби</u></b></p>
+    <p class="manual">Я работаю над упрощением процедуры создания комнаты. На текущий момент она довольно запутана, я написал
+        подробную инструкцию (внизу). По любым вопросам всегда можете <a href="https://t.me/salaleser">обратиться ко
+        мне в телегу</a> (<label class="username">@salaleser</label>). Если вы фронтендер и у вас болят глаза от верстки, то помогите делом, пожалумста :)
+    <hr>
+    <p><b>Комнаты:</b><br>{{rooms}}</p>
+    <p class="description">Из комнаты можно управлять привязанным аккаунтом Spotify. Пока вход без защиты, но однажды запилю
+        аутентификацию и авторизацию. Управлять можно только переключением
+        треков и получением инфы по текущему треку, то есть, максимум, что сможет сделать злоумышленник — это побаловаться вашим
+        плеером и узнать какой трек сейчас воспроизводится. В любой момент вы сможете сделать сброс (кнопка "RESET") Client Secret
+        на <a href="https://developer.spotify.com/dashboard/applications/">странице управления приложением в Spotify</a> или
+        удалить приложение, а также можно просто удалить комнату.</p>
+    <p class="description">Используемые права (для параноиков и/или понимающих):<br>
+    <li class="description">"user-read-currently-playing" — seeks read access to a user's currently playing track</li>
+    <li class="description">"user-read-playback-state" — seeks read access to the user's current playback state</li>
+    <li class="description">"user-modify-playback-state" — seeks write access to the user's current playback state</li>
+    <hr>
+    <p><b>Добавить новую комнату:</b><br>
+    <input type="text" class="name" id="new-room" size="12" placeholder="Имя комнаты" required pattern="[a-z0-9_]{2,32}"><br>
+    <input type="text" class="name" id="client-id" size="12" placeholder="Client ID"><br>
+    <input type="text" class="name" id="client-secret" size="12" placeholder="Client Secret"><br>
+    <input type="button" class="answer-2 styled" value="Добавить" onclick="addRoom()"></p>
+    <hr>
+    <p><b>Как создать свою балдежную комнату:</b></p>
+    <p class="manual">— TL;DR (для бывалых):</p>
+    <li class="manual"><a href="https://developer.spotify.com/dashboard/applications/">добавить прилу</a></li>
+    <li class="manual">добавить колбек вида https://salaleser.app/callback/{room_name}.</li>
+    <p class="manual">— Для новичков:</p>
+    <li class="manual">Заполнить поле "Имя комнаты" словом, содержащим маленькие латинские буквы, цифры или знак
+        подчеркивания</li>
+    <li class="manual">Создать новое приложение на странице разработчика
+        в <a href="https://developer.spotify.com/dashboard/applications/">Spotify</a> нажав кнопку "CREATE AN APP" (поля заполнить
+        любыми значениями)</li>
+    <li class="manual">На странице приложения нажать кнопку "SHOW CLIENT SECRET". Заполнить поля "Client
+        ID" и "Client Secret" комнаты соответствующими значениями из полей "Client ID" и "Client Secret" приложения</li>
+    <li class="manual">Нажать кнопку "EDIT SETTINGS", добавить в раздел "Redirect URIs" URI
+        "<b>https://salaleser.app/callback/{имя_комнаты}</b>" (вместо "{имя_комнаты}" подставить имя комнаты
+        из поля "Имя комнаты") и нажать кнопку "ADD" справа и потом "SAVE" внизу</li>
+    <li class="manual">Все готово, можно нажимать кнопку "Добавить"</li>
+    <p class="manual">— Задания со звездочкой:</p>
+    <li class="manual">Если у вас уже было создано приложение, то можно использовать его</li>
+    <li class="manual">Можно добавлять несколько своих комнат по количеству записей из раздела "Redirect URIs"</li>
+    <hr>
+    <p><b>Возможные ошибки и способы их устранения:</b><br>
+    <li class="manual">INVALID_CLIENT: Invalid redirect URI — в Spotify нет
+        колбека в разделе "Redirect URIs" настроек приложения, соответствующего значению поля "Имя комнаты".
+        Перепроверьте список колбеков раздела "Redirect URIs": они должны быть вида https://salaleser.app/callback/{имя_комнаты}</li>
+    <li class="manual">INVALID_CLIENT: Invalid client — Client ID и/или Client Secret, указанные в
+        полях настроек комнаты не соответствуют значениям приложения в Spotify.
+    </li>
+    <hr>
+    <p><input type="button" class="exit styled" value="Выйти" onclick="exit()"></p>
+</body>
+<script src="/scripts"></script>
+</html>

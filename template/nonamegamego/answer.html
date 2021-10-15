@@ -2,17 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>NonaMegaMego: Ответ</title>
+    <title>Ответ</title>
     <link rel="stylesheet" href="/styles">
 </head>
 <body>
-    <p class="title"><b><u>Ответ</u></b></p>
+    <p class="title" id="{{room-id}}"><b><u>Ответ</u></b></p>
     <p>{{text}}</p>
     <p><b>Время ответа: </b>{{response}} с</p>
     <input type="button" class="answer-2 styled" value="Правильно полностью" onclick="answer2()">
     <input type="button" class="answer-1 styled" value="Правильно частично" onclick="answer1()">
     <input type="button" class="answer-0 styled" value="Неправильно" onclick="answer0()">
-    <p><input type="button" class="exit styled" value="Выйти" onclick="exit()" accesskey="q"></p>
+    <hr>
+    <p><input type="button" class="exit styled" value="Выйти" onclick="exit()"></p>
 </body>
 <script src="/scripts"></script>
 </html>

@@ -8,94 +8,139 @@ import (
 )
 
 type WebHelper struct {
-	w http.ResponseWriter
+	rw http.ResponseWriter
+	r  *http.Request
 }
 
-func New(w http.ResponseWriter) *WebHelper {
+func New(rw http.ResponseWriter, r *http.Request) *WebHelper {
 	return &WebHelper{
-		w: w,
+		rw: rw,
+		r:  r,
 	}
 }
 
-func (h *WebHelper) LoadErrorPage(text string, err error) {
-	h.LoadPage(
-		"error",
-		[]string{"text", "error"},
-		[]string{text, err.Error()},
-	)
+func (w *WebHelper) Redirect(url string) {
+	http.Redirect(w.rw, w.r, url, http.StatusFound)
 }
 
-func (h *WebHelper) LoadSettingsPage(
-	devices string,
+func (w *WebHelper) LoadErrorPage(
+	text string,
+	err error,
 ) {
-	h.LoadPage(
-		"settings",
+	w.LoadPage(
+		"error",
 		[]string{
-			"devices",
+			"text",
+			"error",
 		},
 		[]string{
-			devices,
+			text,
+			err.Error(),
 		},
 	)
 }
 
-func (h *WebHelper) LoadMainPage(round, stats, hint, text, hints string) {
-	h.LoadPage(
-		"nonamegamego/main",
-		[]string{"round", "stats", "hint", "text", "hints"},
-		[]string{round, stats, hint, text, hints},
+func (w *WebHelper) LoadLobbyPage(
+	rooms string,
+) {
+	w.LoadPage(
+		"nonamegamego/lobby",
+		[]string{
+			"rooms",
+		},
+		[]string{
+			rooms,
+		},
 	)
 }
 
-func (h *WebHelper) LoadAnswerPage(
+func (w *WebHelper) LoadRoomPage(
+	roomID string,
+	round string,
+	stats string,
+	hint string,
+	text string,
+	hints string,
+) {
+	w.LoadPage(
+		"nonamegamego/room",
+		[]string{
+			"room-id",
+			"round",
+			"stats",
+			"hint",
+			"text",
+			"hints",
+		},
+		[]string{
+			roomID,
+			round,
+			stats,
+			hint,
+			text,
+			hints,
+		},
+	)
+}
+
+func (w *WebHelper) LoadAnswerPage(
+	roomID string,
 	text string,
 	response string,
 ) {
-	h.LoadPage(
+	w.LoadPage(
 		"nonamegamego/answer",
 		[]string{
+			"room-id",
 			"text",
 			"response",
 		},
 		[]string{
+			roomID,
 			text,
 			response,
 		},
 	)
 }
 
-func (h *WebHelper) LoadSetupPage(
+func (w *WebHelper) LoadSetupPage(
+	roomID string,
+	status string,
 	settingsPlaylist string,
 	playerNames string,
 ) {
-	h.LoadPage(
+	w.LoadPage(
 		"nonamegamego/setup",
 		[]string{
+			"room-id",
+			"status",
 			"settings-playlist",
 			"player-names",
 		},
 		[]string{
+			roomID,
+			status,
 			settingsPlaylist,
 			playerNames,
 		},
 	)
 }
 
-func (web *WebHelper) LoadPage(p string, old []string, new []string) {
+func (w *WebHelper) LoadPage(p string, old []string, new []string) {
 	html, err := ioutil.ReadFile(fmt.Sprintf("template/%s.html", p))
 	if err != nil {
-		http.Error(web.w, err.Error(), http.StatusInternalServerError)
+		http.Error(w.rw, err.Error(), http.StatusInternalServerError)
 		fmt.Printf("error: load page replace: read file: %v", err)
 	}
-	web.w.Header().Set("Content-Type", "text/html")
+	w.rw.Header().Set("Content-Type", "text/html")
 	for i := 0; i < len(old); i++ {
 		html = []byte(strings.Replace(
 			string(html), "{{"+old[i]+"}}", new[i], -1,
 		))
 	}
-	_, err = web.w.Write(html)
+	_, err = w.rw.Write(html)
 	if err != nil {
-		http.Error(web.w, err.Error(), http.StatusInternalServerError)
+		http.Error(w.rw, err.Error(), http.StatusInternalServerError)
 		fmt.Printf("error: load page replace: %v", err)
 	}
 }

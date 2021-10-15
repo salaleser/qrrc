@@ -4,10 +4,6 @@
 
 ## Игра угадайка
 
-### tracks.txt
+1. Перейти в [настройки приложений в Spotify](https://developer.spotify.com/dashboard/applications)
 
-Содержит имена треков специального плейлиста "top500"
-
-### playlists.txt
-
-Содержит имена плейлистов
+2. 

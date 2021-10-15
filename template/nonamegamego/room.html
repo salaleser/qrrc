@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Комната</title>
+    <link rel="stylesheet" href="/styles">
+</head>
+<body>
+    <p class="title" id="{{room-id}}"><b><u>Комната "{{room-id}}"</u></b></p>
+    <p class="round"><b>Раунд: </b>{{round}}</p>
+    <p class="stats">{{stats}}</p>
+    <p class="hint"><b>Использованные подсказки: </b><br>{{hint}}</p>
+    <p><b>Ходит: </b>{{text}}</p>
+    <p><input type="button" class="main styled" value="Ответить!" onclick="answer()"></p>
+    <p><b>Доступные подсказки: </b><br>{{hints}}</p>
+    <hr>
+    <p><input type="button" class="exit styled" value="Выйти" onclick="exit()">
+    <input type="button" class="delete styled" value="Удалить комнату" onclick="deleteRoom()">
+    <input type="button" class="restart styled" value="Перезапустить" onclick="restartRoom()"></p>
+</body>
+<script src="/scripts"></script>
+</html>

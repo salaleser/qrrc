@@ -1,61 +1,73 @@
 package spotifyhelper
 
 import (
-	"bufio"
+	"context"
 	"fmt"
 	"math/rand"
-	"os"
-	"qrrc/internal/pkg/webhelper"
+	"net/http"
 	"strings"
 	"time"
 
 	"github.com/pkg/errors"
-	"github.com/zmb3/spotify"
+	"github.com/zmb3/spotify/v2"
+	spotifyauth "github.com/zmb3/spotify/v2/auth"
 )
 
 const ErrNoActiveDeviceFound = "Player command failed: No active device found"
-const state = "pidor777"
-
-var Instance *SpotifyHelper
-var gamePlaylistsImages map[string]string
 
 type SpotifyHelper struct {
 	client *spotify.Client
-	web    *webhelper.WebHelper
-	auth   spotify.Authenticator
+	ctx    context.Context
+	auth   *spotifyauth.Authenticator
 	ch     chan *spotify.Client
+	state  string
 }
 
-func Start() {
-	s := &SpotifyHelper{
-		auth: spotify.NewAuthenticator(
-			fmt.Sprintf("https://%s/spotify/callback", os.Getenv("QRRC_REDIRECT_HOST")),
-			spotify.ScopeUserReadCurrentlyPlaying,
-			spotify.ScopeUserReadPlaybackState,
-			spotify.ScopeUserModifyPlaybackState,
+func New(roomID, clientID, clientSecret string) *SpotifyHelper {
+	return &SpotifyHelper{
+		ctx: context.Background(),
+		auth: spotifyauth.New(
+			spotifyauth.WithRedirectURL(
+				fmt.Sprintf("https://salaleser.app/callback/%s", roomID)),
+			spotifyauth.WithScopes(
+				spotifyauth.ScopeUserReadCurrentlyPlaying,
+				spotifyauth.ScopeUserReadPlaybackState,
+				spotifyauth.ScopeUserModifyPlaybackState,
+			),
+			spotifyauth.WithClientID(clientID),
+			spotifyauth.WithClientSecret(clientSecret),
 		),
-		ch: make(chan *spotify.Client),
+		ch:    make(chan *spotify.Client),
+		state: roomID,
 	}
-
-	go s.start()
-
-	Instance = s
 }
 
-func (s *SpotifyHelper) start() {
+func (s *SpotifyHelper) Auth() {
 	s.client = <-s.ch
+}
 
-	u, err := s.client.CurrentUser()
-	if err != nil {
-		fmt.Printf("error: get current user: %v\n", err)
-	}
-	fmt.Println("Logged in as:", u.ID)
+func (s *SpotifyHelper) AuthURL() string {
+	return s.auth.AuthURL(s.state)
+}
 
-	ps, err := s.client.PlayerState()
+func (s *SpotifyHelper) HasClient() bool {
+	return s.client != nil
+}
+
+func (s *SpotifyHelper) CompleteAuth(r *http.Request) error {
+	t, err := s.auth.Token(r.Context(), s.state, r)
 	if err != nil {
-		fmt.Printf("error: get player state: %v\n", err)
+		return errors.Wrap(err, "get token")
 	}
-	fmt.Printf("Found your %s (%s)\n", ps.Device.Type, ps.Device.Name)
+	if st := r.FormValue("state"); st != s.state {
+		return fmt.Errorf("state mismatch: %s != %s", st, s.state)
+	}
+
+	client := spotify.New(s.auth.Client(r.Context(), t))
+
+	s.ch <- client
+
+	return nil
 }
 
 type Track struct {
@@ -119,7 +131,7 @@ func (d *Devices) Join(sep string) string {
 }
 
 func (s *SpotifyHelper) GetDevices() (*Devices, error) {
-	d, err := Instance.client.PlayerDevices()
+	d, err := s.client.PlayerDevices(s.ctx)
 	if err != nil {
 		return nil, errors.Wrap(err, "player devices")
 	}
@@ -137,7 +149,7 @@ func (s *SpotifyHelper) GetDevices() (*Devices, error) {
 }
 
 func (s *SpotifyHelper) SearchTrack(query string) (Track, error) {
-	sr, err := Instance.client.Search(query, spotify.SearchTypeTrack)
+	sr, err := s.client.Search(s.ctx, query, spotify.SearchTypeTrack)
 	if err != nil {
 		return Track{}, errors.Wrap(err, "search track")
 	}
@@ -165,7 +177,7 @@ func (s *SpotifyHelper) SearchTrack(query string) (Track, error) {
 }
 
 func (s *SpotifyHelper) GetCurrentTrack() (Track, error) {
-	ps, err := s.client.PlayerState()
+	ps, err := s.client.PlayerState(s.ctx)
 	if err != nil {
 		return Track{}, errors.Wrap(err, "player state")
 	}
@@ -195,7 +207,7 @@ func (t *Track) String() string {
 }
 
 func (s *SpotifyHelper) Pause() error {
-	if err := Instance.client.Pause(); err != nil {
+	if err := s.client.Pause(s.ctx); err != nil {
 		return errors.Wrap(err, "pause")
 	}
 
@@ -203,7 +215,7 @@ func (s *SpotifyHelper) Pause() error {
 }
 
 func (s *SpotifyHelper) PlayRandomTrack(p *Playlist) error {
-	tracks, err := Instance.GetPlaylistTracks(p.ID)
+	tracks, err := s.GetPlaylistTracks(p.ID)
 	if err != nil {
 		return errors.Wrapf(err, "get playlist tracks (%s)", p.ID)
 	}
@@ -211,18 +223,18 @@ func (s *SpotifyHelper) PlayRandomTrack(p *Playlist) error {
 	rand.Seed(time.Now().UnixNano())
 	track := tracks[rand.Intn(len(tracks)-1)]
 
-	err = Instance.client.QueueSong(track.ID)
+	err = s.client.QueueSong(s.ctx, track.ID)
 	if err != nil {
 		return errors.Wrapf(err, "queue song (%s)", track.ID)
 	}
 
-	err = Instance.client.Next()
+	err = s.client.Next(s.ctx)
 	if err != nil {
 		return errors.Wrap(err, "next")
 	}
 
 	d := track.Duration
-	err = Instance.client.Seek(d/4 + rand.Intn(d/4))
+	err = s.client.Seek(s.ctx, d/4+rand.Intn(d/4))
 	if err != nil {
 		return errors.Wrapf(err, "seek (%d)", d)
 	}
@@ -231,7 +243,7 @@ func (s *SpotifyHelper) PlayRandomTrack(p *Playlist) error {
 }
 
 func (s *SpotifyHelper) PlayNextTrack() error {
-	err := Instance.client.Next()
+	err := s.client.Next(s.ctx)
 	if err != nil {
 		return errors.Wrap(err, "next")
 	}
@@ -243,7 +255,7 @@ func (s *SpotifyHelper) PlayNextTrack() error {
 
 	d := track.Duration
 	rand.Seed(time.Now().UnixNano())
-	err = Instance.client.Seek(d/4 + rand.Intn(d/4))
+	err = s.client.Seek(s.ctx, d/4+rand.Intn(d/4))
 	if err != nil {
 		return errors.Wrapf(err, "seek (%d)", d)
 	}
@@ -252,7 +264,7 @@ func (s *SpotifyHelper) PlayNextTrack() error {
 }
 
 func (s *SpotifyHelper) SearchPlaylist(playlistTitle string) (*Playlist, error) {
-	sr, err := Instance.client.Search(playlistTitle, spotify.SearchTypePlaylist)
+	sr, err := s.client.Search(s.ctx, playlistTitle, spotify.SearchTypePlaylist)
 	if err != nil {
 		return nil, errors.Wrap(err, "search playlist")
 	}
@@ -275,7 +287,7 @@ func (s *SpotifyHelper) SearchPlaylist(playlistTitle string) (*Playlist, error) 
 }
 
 func (s *SpotifyHelper) GetPlaylistTracks(id spotify.ID) ([]Track, error) {
-	ptp, err := Instance.client.GetPlaylistTracks(id)
+	ptp, err := s.client.GetPlaylistTracks(s.ctx, id)
 	if err != nil {
 		return []Track{}, err
 	}
@@ -289,37 +301,4 @@ func (s *SpotifyHelper) GetPlaylistTracks(id spotify.ID) ([]Track, error) {
 		}
 	}
 	return result, nil
-}
-
-func initGamePlaylistsImagesCache() error {
-	if gamePlaylistsImages != nil {
-		return nil
-	}
-
-	playlistsFile, err := os.Open("playlists.txt")
-	if err != nil {
-		return errors.Wrap(err, "open playlists file")
-	}
-	defer playlistsFile.Close()
-	scanner := bufio.NewScanner(playlistsFile)
-	playlists := make([]string, 0)
-	for scanner.Scan() {
-		playlists = append(playlists, scanner.Text())
-	}
-	err = scanner.Err()
-	if err != nil {
-		return errors.Wrap(err, "scan")
-	}
-
-	gamePlaylistsImages = make(map[string]string)
-	for _, v := range playlists {
-		p, err := Instance.SearchPlaylist(v)
-		if err != nil {
-			fmt.Printf("error: search playlist (%s): %v\n", v, err)
-			continue
-		}
-		gamePlaylistsImages[v] = p.ImageURL
-	}
-
-	return nil
 }

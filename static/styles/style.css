@@ -1,12 +1,25 @@
 body {
     font-size: 48px;
 }
-p, a, ul {
+p, a, ul, li {
     font-family: "Lucida Console", monospace;
 }
 img {
     width: 100%;
     height: auto;
+}
+.username {
+    color: rgb(0, 166, 255);
+}
+.manual {
+    font-size: 80%;
+}
+.description {
+    font-size: 60%;
+    color: gray;
+}
+.player-name {
+    font-weight: bold;
 }
 .hints {
     width: 200px;
@@ -58,6 +71,20 @@ img {
 .answer-0:hover {
     background-color: rgba(255, 0, 0, 1);
 }
+.delete {
+    background-color: rgb(208, 0, 0);
+    font-size: 80%;
+}
+.delete:hover {
+    background-color: rgba(255, 0, 0, 1);
+}
+.restart {
+    background-color: rgb(208, 132, 0);
+    font-size: 80%;
+}
+.restart:hover {
+    background-color: rgba(255, 132, 0, 1);
+}
 .answer-1 {
     background-color: rgb(210, 160, 0);
     font-size: 100%;
@@ -76,6 +103,12 @@ img {
     width: 70%;
     height: auto;
 }
+.success {
+    color: green;
+}
+.fail {
+    color: red;
+}
 .main {
     background-color: rgba(220, 0, 0, 1);
     font-size: 120%;
@@ -91,6 +124,7 @@ img {
     background-color: rgb(142, 140, 140);
 }
 .styled {
+    font-family: "Lucida Console", monospace;
     border: 0;
     line-height: 2.5;
     padding: 0 20px;

@@ -66,7 +66,7 @@ func (s *Stats) String() string {
 	builder.WriteString("┌Статистика:───────")
 	builder.WriteString("<br>")
 	for _, p := range s.players {
-		builder.WriteString(fmt.Sprintf("| %s", p.String()))
+		builder.WriteString(fmt.Sprintf(`| %s`, p.String()))
 		builder.WriteString("<br>")
 	}
 	builder.WriteString("└──────────────────")
