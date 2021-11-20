@@ -50,7 +50,26 @@ func (h *PGHelper) Query(query string) ([]string, error) {
 	}
 	defer rows.Close()
 
-	result := make([]string, 0)
+	var result []string
+	for rows.Next() {
+		var value string
+		if err := rows.Scan(&value); err != nil {
+			return nil, errors.Wrap(err, "next row")
+		}
+		result = append(result, value)
+	}
+
+	return result, nil
+}
+
+func (h *PGHelper) Route(command string) ([]string, error) {
+	rows, err := h.db.Query("SELECT side.route(1, '1', -1, '11', '" + command + "');")
+	if err != nil {
+		return nil, errors.Wrap(err, "query")
+	}
+	defer rows.Close()
+
+	var result []string
 	for rows.Next() {
 		var value string
 		if err := rows.Scan(&value); err != nil {

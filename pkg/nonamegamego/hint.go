@@ -101,11 +101,23 @@ func (r *Room) updateHints() map[int]hint {
 			value: 6,
 			f:     r.hintAlbumImage,
 		},
+		// 1: {
+		// 	text:  "Буква исполнителя",
+		// 	image: "selector",
+		// 	value: 6,
+		// 	f:     r.hintArtistTitleNextLetter,
+		// },
+		// 2: {
+		// 	text:  "Буква трека",
+		// 	image: "selector",
+		// 	value: 6,
+		// 	f:     r.hintTrackTitleNextLetter,
+		// },
 	}
 }
 
 func (r *Room) hintArtistTitleFirstLetter() string {
-	t, err := r.s.GetCurrentTrack()
+	t, err := r.s.CurrentTrack()
 	if err != nil {
 		return err.Error()
 	}
@@ -113,7 +125,7 @@ func (r *Room) hintArtistTitleFirstLetter() string {
 }
 
 func (r *Room) hintArtistTitleSecondLetter() string {
-	t, err := r.s.GetCurrentTrack()
+	t, err := r.s.CurrentTrack()
 	if err != nil {
 		return err.Error()
 	}
@@ -121,7 +133,7 @@ func (r *Room) hintArtistTitleSecondLetter() string {
 }
 
 func (r *Room) hintArtistTitleThirdLetter() string {
-	t, err := r.s.GetCurrentTrack()
+	t, err := r.s.CurrentTrack()
 	if err != nil {
 		return err.Error()
 	}
@@ -129,7 +141,7 @@ func (r *Room) hintArtistTitleThirdLetter() string {
 }
 
 func (r *Room) hintArtistTitleLastLetter() string {
-	t, err := r.s.GetCurrentTrack()
+	t, err := r.s.CurrentTrack()
 	if err != nil {
 		return err.Error()
 	}
@@ -137,7 +149,7 @@ func (r *Room) hintArtistTitleLastLetter() string {
 }
 
 func (r *Room) hintArtistTitleLettersCount() string {
-	t, err := r.s.GetCurrentTrack()
+	t, err := r.s.CurrentTrack()
 	if err != nil {
 		return err.Error()
 	}
@@ -145,7 +157,7 @@ func (r *Room) hintArtistTitleLettersCount() string {
 }
 
 func (r *Room) hintTrackTitleFirstLetter() string {
-	t, err := r.s.GetCurrentTrack()
+	t, err := r.s.CurrentTrack()
 	if err != nil {
 		return err.Error()
 	}
@@ -153,7 +165,7 @@ func (r *Room) hintTrackTitleFirstLetter() string {
 }
 
 func (r *Room) hintTrackTitleSecondLetter() string {
-	t, err := r.s.GetCurrentTrack()
+	t, err := r.s.CurrentTrack()
 	if err != nil {
 		return err.Error()
 	}
@@ -161,7 +173,7 @@ func (r *Room) hintTrackTitleSecondLetter() string {
 }
 
 func (r *Room) hintTrackTitleThirdLetter() string {
-	t, err := r.s.GetCurrentTrack()
+	t, err := r.s.CurrentTrack()
 	if err != nil {
 		return err.Error()
 	}
@@ -169,7 +181,7 @@ func (r *Room) hintTrackTitleThirdLetter() string {
 }
 
 func (r *Room) hintTrackTitleLastLetter() string {
-	t, err := r.s.GetCurrentTrack()
+	t, err := r.s.CurrentTrack()
 	if err != nil {
 		return err.Error()
 	}
@@ -178,7 +190,7 @@ func (r *Room) hintTrackTitleLastLetter() string {
 }
 
 func (r *Room) hintTrackTitleLettersCount() string {
-	t, err := r.s.GetCurrentTrack()
+	t, err := r.s.CurrentTrack()
 	if err != nil {
 		return err.Error()
 	}
@@ -186,7 +198,7 @@ func (r *Room) hintTrackTitleLettersCount() string {
 }
 
 func (r *Room) hintTrackTitleStructure() string {
-	t, err := r.s.GetCurrentTrack()
+	t, err := r.s.CurrentTrack()
 	if err != nil {
 		return err.Error()
 	}
@@ -197,7 +209,7 @@ func (r *Room) hintTrackTitleStructure() string {
 }
 
 func (r *Room) hintAlbumReleaseDate() string {
-	t, err := r.s.GetCurrentTrack()
+	t, err := r.s.CurrentTrack()
 	if err != nil {
 		return err.Error()
 	}
@@ -205,13 +217,22 @@ func (r *Room) hintAlbumReleaseDate() string {
 }
 
 func (r *Room) hintAlbumImage() string {
-	t, err := r.s.GetCurrentTrack()
+	t, err := r.s.CurrentTrack()
 	if err != nil {
 		return err.Error()
 	}
 	return fmt.Sprintf(`<img src="%s" class="hint-album-cover">`,
 		t.Album.ImageURL)
 }
+
+// func (r *Room) hintArtistTitleNextLetter() string {
+// 	r.round.turn.hintArtistCursor++
+
+// }
+
+// func (r *Room) hintTrackTitleNextLetter() string {
+
+// }
 
 func getChar(s string, n int) string {
 	a := []rune{}

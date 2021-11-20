@@ -74,6 +74,7 @@ type Track struct {
 	ID       spotify.ID
 	Title    string
 	Duration int
+	Progress int
 	Album    Album
 	Artist   Artist
 }
@@ -176,7 +177,7 @@ func (s *SpotifyHelper) SearchTrack(query string) (Track, error) {
 	}, nil
 }
 
-func (s *SpotifyHelper) GetCurrentTrack() (Track, error) {
+func (s *SpotifyHelper) CurrentTrack() (Track, error) {
 	ps, err := s.client.PlayerState(s.ctx)
 	if err != nil {
 		return Track{}, errors.Wrap(err, "player state")
@@ -188,6 +189,7 @@ func (s *SpotifyHelper) GetCurrentTrack() (Track, error) {
 		ID:       i.ID,
 		Title:    i.Name,
 		Duration: i.Duration,
+		Progress: ps.Progress,
 		Album: Album{
 			ID:          i.Album.ID,
 			Title:       i.Album.Name,
@@ -215,7 +217,7 @@ func (s *SpotifyHelper) Pause() error {
 }
 
 func (s *SpotifyHelper) PlayRandomTrack(p *Playlist) error {
-	tracks, err := s.GetPlaylistTracks(p.ID)
+	tracks, err := s.PlaylistTracks(p.ID)
 	if err != nil {
 		return errors.Wrapf(err, "get playlist tracks (%s)", p.ID)
 	}
@@ -248,9 +250,9 @@ func (s *SpotifyHelper) PlayNextTrack() error {
 		return errors.Wrap(err, "next")
 	}
 
-	track, err := s.GetCurrentTrack()
+	track, err := s.CurrentTrack()
 	if err != nil {
-		return errors.Wrap(err, "get current track")
+		return errors.Wrap(err, "current track")
 	}
 
 	d := track.Duration
@@ -286,7 +288,7 @@ func (s *SpotifyHelper) SearchPlaylist(playlistTitle string) (*Playlist, error) 
 	}, nil
 }
 
-func (s *SpotifyHelper) GetPlaylistTracks(id spotify.ID) ([]Track, error) {
+func (s *SpotifyHelper) PlaylistTracks(id spotify.ID) ([]Track, error) {
 	ptp, err := s.client.GetPlaylistTracks(s.ctx, id)
 	if err != nil {
 		return []Track{}, err

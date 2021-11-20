@@ -35,9 +35,11 @@ type turn struct {
 	// hint is the list of hints used by the current player in this turn
 	hint []string
 	// hints is the list of all unused available hints
-	hints    map[int]hint
-	started  time.Time
-	response time.Duration
+	hints            map[int]hint
+	started          time.Time
+	response         time.Duration
+	hintTrackCursor  int
+	hintArtistCursor int
 }
 
 func New() *Game {
@@ -96,7 +98,7 @@ func (g *Game) setupHandler(params url.Values) error {
 	clientID := params.Get("client_id")
 	clientSecret := params.Get("client_secret")
 	playerNamesParam := params.Get("player_names")
-	playerNamesArray := strings.Split(playerNamesParam, ",")
+	playerNamesParamArray := strings.Split(playerNamesParam, ",")
 
 	if clientID != "" && clientSecret != "" {
 		s := spotifyhelper.New(roomID, clientID, clientSecret)
@@ -128,14 +130,10 @@ func (g *Game) setupHandler(params url.Values) error {
 	for i := 0; i < playersCount; i++ {
 		playerNames[i] = Field{
 			Text: func() string {
-				if len(playerNamesArray) < i {
-					if i < 2 {
-						return fmt.Sprintf("Игрок %d", i+1)
-					}
-					return ""
+				if len(playerNamesParamArray) > i {
+					return playerNamesParamArray[i]
 				}
-				// return playerNamesArray[i]
-				return fmt.Sprintf("Участник %d", i+1)
+				return ""
 			}(),
 		}
 	}
@@ -166,6 +164,8 @@ func (g *Game) roomHandler(params url.Values) error {
 	statusParam := params.Get("status")
 	hintParam := params.Get("hint")
 
+	var err error
+	var t spotifyhelper.Track
 	if statusParam == "start" {
 		playerNamesParam := params.Get("player_names")
 		playerNames := strings.Split(playerNamesParam, ",")
@@ -230,10 +230,12 @@ func (g *Game) roomHandler(params url.Values) error {
 			return errors.Wrap(err, "parse correct")
 		}
 		multiplier := 1.0
-		if room.round.turn.response < 2*time.Second {
-			multiplier = 1.2
-		} else if room.round.turn.response > 90*time.Second {
-			multiplier = 0.8
+		if score > 0 {
+			if room.round.turn.response < 5*time.Second {
+				multiplier = 1.2
+			} else if room.round.turn.response > 90*time.Second {
+				multiplier = 0.8
+			}
 		}
 
 		room.stats.ActivePlayer().AddScore(multiplier * score)
@@ -261,11 +263,23 @@ func (g *Game) roomHandler(params url.Values) error {
 		})
 	}
 
+	t, err = room.s.CurrentTrack()
+	if err != nil {
+		return errors.Wrap(err, "current track")
+	}
+
+	track := ""
+
+	artist := ""
+
 	g.w.LoadRoomPage(
 		roomID,
 		strconv.Itoa(room.round.number),
+		strconv.Itoa(t.Duration-t.Progress),
 		room.stats.String(),
 		strings.Join(room.round.turn.hint, "<br>"),
+		track,
+		artist,
 		room.stats.ActivePlayer().name,
 		hints.Join(" "),
 	)
@@ -287,9 +301,9 @@ func (g *Game) answerHandler(params url.Values) error {
 		return err
 	}
 
-	t, err := room.s.GetCurrentTrack()
+	t, err := room.s.CurrentTrack()
 	if err != nil {
-		return err
+		return errors.Wrap(err, "current track")
 	}
 
 	g.w.LoadAnswerPage(

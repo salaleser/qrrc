@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"qrrc/internal/pkg/pghelper"
 	"qrrc/internal/pkg/webhelper"
 	"qrrc/pkg/nonamegamego"
 	"strings"
@@ -36,13 +37,20 @@ func main() {
 		_, _ = rw.Write(css)
 	})
 	http.HandleFunc("/scripts", func(rw http.ResponseWriter, r *http.Request) {
-		css, err := ioutil.ReadFile("static/scripts/script.js")
+		file, err := ioutil.ReadFile("static/scripts/script.js")
 		if err != nil {
 			http.Error(rw, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		rw.Header().Set("Content-Type", "text/css")
-		_, _ = rw.Write(css)
+		_, _ = rw.Write(file)
+	})
+	http.HandleFunc("/scripts/", func(rw http.ResponseWriter, r *http.Request) {
+		f, err := ioutil.ReadFile(fmt.Sprintf("static/%s.js", r.URL.Path))
+		if err != nil {
+			http.Error(rw, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		_, _ = rw.Write(f)
 	})
 	http.HandleFunc("/images/", func(rw http.ResponseWriter, r *http.Request) {
 		f, err := ioutil.ReadFile(fmt.Sprintf("static/%s", r.URL.Path))
@@ -87,6 +95,27 @@ func main() {
 			w.LoadErrorPage(action, err)
 			return
 		}
+	})
+	http.HandleFunc("/side", func(rw http.ResponseWriter, r *http.Request) {
+		params := r.URL.Query()
+		pg, err := pghelper.New(pghelper.Connection{
+			User:     "side",
+			Host:     "localhost",
+			Port:     "5432",
+			Database: "side",
+		})
+		if err != nil {
+			_, _ = rw.Write([]byte(err.Error()))
+			return
+		}
+		defer pg.Close()
+
+		data, err := pg.Route(params.Get("command"))
+		if err != nil {
+			_, _ = rw.Write([]byte(err.Error()))
+			return
+		}
+		_, _ = rw.Write([]byte(data[0]))
 	})
 
 	err := http.ListenAndServeTLS(":443",

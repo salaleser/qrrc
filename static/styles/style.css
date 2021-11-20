@@ -64,6 +64,20 @@ img {
     font-size: 80%;
     color: #aaaaaa;
 }
+#timer {
+    color: crimson;
+}
+.block {
+    border:1px solid black;
+    background-color: burlywood;
+}
+.restart {
+    background-color: rgb(208, 201, 0);
+    font-size: 80%;
+}
+.restart:hover {
+    background-color: rgba(255, 201, 0, 1);
+}
 .answer-0 {
     background-color: rgb(208, 0, 0);
     font-size: 100%;
@@ -77,13 +91,6 @@ img {
 }
 .delete:hover {
     background-color: rgba(255, 0, 0, 1);
-}
-.restart {
-    background-color: rgb(208, 132, 0);
-    font-size: 80%;
-}
-.restart:hover {
-    background-color: rgba(255, 132, 0, 1);
 }
 .answer-1 {
     background-color: rgb(210, 160, 0);

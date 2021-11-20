@@ -24,7 +24,7 @@
     <li class="description">"user-modify-playback-state" — seeks write access to the user's current playback state</li>
     <hr>
     <p><b>Добавить новую комнату:</b><br>
-    <input type="text" class="name" id="new-room" size="12" placeholder="Имя комнаты" required pattern="[a-z0-9_]{2,32}"><br>
+    <input type="text" class="name" id="new-room" size="12" placeholder="Имя комнаты" onchange="updateCallbackLink()"><input type="text" class="name" id="callback-link" size="40" placeholder="Пример колбека в разделе Redirect URIs"><br>
     <input type="text" class="name" id="client-id" size="12" placeholder="Client ID"><br>
     <input type="text" class="name" id="client-secret" size="12" placeholder="Client Secret"><br>
     <input type="button" class="answer-2 styled" value="Добавить" onclick="addRoom()"></p>
@@ -60,4 +60,5 @@
     <p><input type="button" class="exit styled" value="Выйти" onclick="exit()"></p>
 </body>
 <script src="/scripts"></script>
+<script src="/scripts/lobby"></script>
 </html>

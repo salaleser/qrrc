@@ -15,8 +15,8 @@ func (p *Player) String() string {
 		s = " *"
 	}
 
-	return fmt.Sprintf(`%.0f: "<label class="player-name">%s</label>" %+.0f %s`,
-		p.score, p.name, p.prev, s)
+	return fmt.Sprintf(`%+.0f: "<label class="player-name">%s</label>" %.0f %s`,
+		p.prev, p.name, p.score, s)
 }
 
 func (p *Player) AddScore(n float64) {
