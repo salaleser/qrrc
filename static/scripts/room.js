@@ -1,14 +1,15 @@
-const roomId = getRoomId()
-
 function answer() {
+    const roomId = document.getElementById('room-id').textContent
     document.location.href = `/spotify/nonamegamego/answer?room=${roomId}`
 }
 
 function deleteRoom() {
+    const roomId = document.getElementById('room-id').textContent
     document.location.href = `/spotify/nonamegamego/room?room=${roomId}&status=delete`
 }
 
 function restartRoom() {
+    const roomId = document.getElementById('room-id').textContent
     const playerNames = []
     const c = document.getElementsByClassName('player-name')
     for (let i = 0; i < c.length; i++) {

@@ -1,11 +1,11 @@
-const roomId = getRoomId()
-
 function updateCallbackLink() {
+    const roomId = document.getElementById('new-room').value
     const callbackLink = document.getElementById('callback-link')
     callbackLink.value = `https://salaleser.app/callback/${roomId}`
 }
 
 function addRoom() {
+    const roomId = document.getElementById('new-room').value
     const found = roomId.match(/[^a-z0-9_]/g)
     if (found) {
         alert('Имя комнаты не должно содержать символы, ' +
