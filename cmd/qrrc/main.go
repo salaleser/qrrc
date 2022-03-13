@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"qrrc/internal/pkg/pghelper"
 	"qrrc/internal/pkg/webhelper"
 	"qrrc/pkg/nonamegamego"
 	"strings"
@@ -95,27 +94,6 @@ func main() {
 			w.LoadErrorPage(action, err)
 			return
 		}
-	})
-	http.HandleFunc("/side", func(rw http.ResponseWriter, r *http.Request) {
-		params := r.URL.Query()
-		pg, err := pghelper.New(pghelper.Connection{
-			User:     "side",
-			Host:     "localhost",
-			Port:     "5432",
-			Database: "side",
-		})
-		if err != nil {
-			_, _ = rw.Write([]byte(err.Error()))
-			return
-		}
-		defer pg.Close()
-
-		data, err := pg.Route(params.Get("command"))
-		if err != nil {
-			_, _ = rw.Write([]byte(err.Error()))
-			return
-		}
-		_, _ = rw.Write([]byte(data[0]))
 	})
 
 	err := http.ListenAndServeTLS(":443",
