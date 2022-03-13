@@ -110,6 +110,10 @@ img {
     width: 70%;
     height: auto;
 }
+.nickname-sert {
+    width: 50%;
+    height: auto;
+}
 .success {
     color: green;
 }
